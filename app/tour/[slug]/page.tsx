@@ -152,13 +152,19 @@ export default async function TourStopPage({ params }: PageProps) {
           <div><span>How the tour moves</span><h2>IBX in every community</h2></div>
           <p>A connected programme bringing education, innovation and opportunity directly to local ecosystems.</p>
         </div>
-        <div className="tour-activities__grid">
-          {activities.map((activity) => (
-            <article key={activity.title}>
-              <div><Image src={activity.image} fill sizes="(max-width: 800px) 100vw, 33vw" alt="" /></div>
-              <section><span>{activity.eyebrow}</span><h3>{activity.title}</h3><p>{activity.copy}</p></section>
-            </article>
-          ))}
+        <div className="tour-activities__viewport" aria-label="IBX community programmes">
+          <div className="tour-activities__track">
+            {[0, 1].map((setIndex) => (
+              <div className="tour-activities__set" key={setIndex} aria-hidden={setIndex === 1 ? "true" : undefined}>
+                {activities.map((activity) => (
+                  <article key={`${setIndex}-${activity.title}`}>
+                    <div><Image src={activity.image} fill sizes="(max-width: 800px) 86vw, 430px" alt="" /></div>
+                    <section><span>{activity.eyebrow}</span><h3>{activity.title}</h3><p>{activity.copy}</p></section>
+                  </article>
+                ))}
+              </div>
+            ))}
+          </div>
         </div>
       </section>
 
@@ -182,9 +188,15 @@ export default async function TourStopPage({ params }: PageProps) {
 
       <section className="country-partners" id="partners">
         <span>Powered together</span><h2>Tour partners</h2>
-        <div>
-          <article><Image src="/images/partners/bitcoin-com.png" width={320} height={67} alt="Bitcoin.com" /></article>
-          <article><Image src="/images/partners/tour-partner-wordmark.png" width={320} height={74} alt="IBX Tour partner" /></article>
+        <div className="country-partners__viewport">
+          <div className="country-partners__track">
+            {[0, 1].map((setIndex) => (
+              <div className="country-partners__set" key={setIndex} aria-hidden={setIndex === 1 ? "true" : undefined}>
+                <article><Image src="/images/partners/bitcoin-com.png" width={320} height={67} alt={setIndex === 0 ? "Bitcoin.com" : ""} /></article>
+                <article><Image src="/images/partners/tour-partner-wordmark.png" width={320} height={74} alt={setIndex === 0 ? "Tangem" : ""} /></article>
+              </div>
+            ))}
+          </div>
         </div>
       </section>
 

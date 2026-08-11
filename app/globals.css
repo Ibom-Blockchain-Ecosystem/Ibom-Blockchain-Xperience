@@ -660,16 +660,29 @@ button { cursor: pointer; }
 .country-programme__grid strong { margin-bottom: auto; color: var(--purple); font-size: 10px; }
 .country-programme__grid h3 { margin-bottom: 14px; font-family: var(--font-square-block), Montserrat, sans-serif; font-size: 31px; font-weight: 400; text-transform: uppercase; }
 .country-programme__grid p { margin-bottom: 0; color: #686270; font-size: 13px; line-height: 1.6; }
-.tour-activities { padding: 110px max(4.2vw, calc((100% - 1456px) / 2)); background: #11101f; color: #fff; }
+.tour-activities { overflow: hidden; padding: 110px 0; background: #11101f; color: #fff; }
+.tour-activities > .country-section-heading { padding-right: max(4.2vw, calc((100% - 1456px) / 2)); padding-left: max(4.2vw, calc((100% - 1456px) / 2)); }
 .country-section-heading--dark span { color: #ff7b36; }
-.tour-activities__grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }
-.tour-activities__grid > article { overflow: hidden; border-radius: 13px; background: #fff; color: #11101f; }
-.tour-activities__grid > article > div { position: relative; height: 240px; }
-.tour-activities__grid > article img { object-fit: cover; }
-.tour-activities__grid > article > section { min-height: 190px; padding: 24px; }
-.tour-activities__grid span { color: var(--purple); font-size: 9px; font-weight: 700; letter-spacing: .13em; text-transform: uppercase; }
-.tour-activities__grid h3 { margin: 13px 0; font-family: var(--font-square-block), Montserrat, sans-serif; font-size: 27px; font-weight: 400; line-height: .95; text-transform: uppercase; }
-.tour-activities__grid p { margin-bottom: 0; color: #696473; font-size: 12px; line-height: 1.55; }
+.tour-activities__viewport { width: 100%; overflow: hidden; }
+.tour-activities__track { display: flex; width: max-content; will-change: transform; animation: tour-activities-marquee 68s linear infinite; }
+.tour-activities__set { display: flex; gap: 18px; padding-right: 18px; }
+.tour-activities__set > article { width: clamp(350px, 29vw, 445px); flex: 0 0 auto; overflow: hidden; border-radius: 13px; background: #fff; color: #11101f; }
+.tour-activities__set > article > div { position: relative; height: 240px; }
+.tour-activities__set > article img { object-fit: cover; }
+.tour-activities__set > article > section { min-height: 190px; padding: 24px; }
+.tour-activities__set span { color: var(--purple); font-size: 9px; font-weight: 700; letter-spacing: .13em; text-transform: uppercase; }
+.tour-activities__set h3 { margin: 13px 0; font-family: var(--font-square-block), Montserrat, sans-serif; font-size: 27px; font-weight: 400; line-height: .95; text-transform: uppercase; }
+.tour-activities__set p { margin-bottom: 0; color: #696473; font-size: 12px; line-height: 1.55; }
+.tour-activities__viewport:hover .tour-activities__track, .tour-activities__viewport:focus-within .tour-activities__track { animation-play-state: paused; }
+@keyframes tour-activities-marquee { to { transform: translateX(-50%); } }
+@media (prefers-reduced-motion: reduce) {
+  .tour-activities__viewport { overflow-x: auto; }
+  .tour-activities__track { animation: none; }
+  .tour-activities__set:nth-child(2) { display: none; }
+  .country-partners__viewport { overflow-x: auto; mask-image: none; -webkit-mask-image: none; }
+  .country-partners__track { animation: none; }
+  .country-partners__set:nth-child(2) { display: none; }
+}
 .country-gallery { background: #fff; }
 .country-gallery__grid { display: grid; grid-template-columns: 1.4fr .8fr .8fr; grid-template-rows: 280px 280px; gap: 18px; }
 .country-gallery figure { position: relative; margin: 0; overflow: hidden; border-radius: 12px; }
@@ -683,11 +696,17 @@ button { cursor: pointer; }
 .country-people__grid article { min-height: 270px; display: flex; flex-direction: column; justify-content: flex-end; padding: 20px; border: 1px dashed #918b96; border-radius: 12px; background: #f4f3f1; }
 .country-people__grid span { margin-bottom: 9px; color: var(--purple); font-size: 9px; text-transform: uppercase; }
 .country-people__grid strong { font-size: 12px; text-transform: uppercase; }
-.country-partners { border-top: 1px solid #e2ddd5; text-align: center; }
-.country-partners h2 { margin: 15px 0 42px; font-size: clamp(48px, 5vw, 74px); line-height: .9; }
-.country-partners > div { display: flex; align-items: center; justify-content: center; flex-wrap: wrap; gap: 18px; }
-.country-partners article { width: min(360px, 100%); min-height: 120px; display: grid; place-items: center; padding: 24px 30px; border: 1px solid #ded9d1; border-radius: 12px; background: #fff; }
-.country-partners article img { display: block; max-width: 100%; width: auto; height: auto; max-height: 62px; object-fit: contain; }
+.country-partners { position: relative; isolation: isolate; overflow: hidden; display: flex; flex-direction: column; align-items: center; padding-top: 70px; padding-bottom: 70px; border-top: 1px solid #e2ddd5; text-align: center; }
+.country-partners::before { content: "IBX TOUR"; position: absolute; z-index: -1; left: 50%; top: 55%; color: rgba(17,16,31,.035); font-family: var(--font-square-block), Montserrat, sans-serif; font-size: clamp(120px, 18vw, 310px); line-height: .7; letter-spacing: .02em; white-space: nowrap; transform: translate(-50%, -50%); pointer-events: none; }
+.country-partners h2 { margin: 12px 0 30px; font-size: clamp(42px, 4vw, 60px); line-height: .9; }
+.country-partners__viewport { width: min(680px, 100%); overflow: hidden; -webkit-mask-image: linear-gradient(90deg, transparent, #000 12%, #000 88%, transparent); mask-image: linear-gradient(90deg, transparent, #000 12%, #000 88%, transparent); }
+.country-partners__track { display: flex; width: max-content; will-change: transform; animation: partner-marquee 18s linear infinite; }
+.country-partners__set { display: flex; align-items: center; gap: 28px; padding-right: 28px; }
+.country-partners article { width: min(290px, 100%); min-height: 82px; display: grid; place-items: center; padding: 14px 20px; border: 0; background: transparent; }
+.country-partners article img { display: block; max-width: 100%; width: auto; height: auto; max-height: 50px; object-fit: contain; opacity: .82; transition: opacity .3s ease; }
+.country-partners article:hover img { opacity: 1; }
+.country-partners__viewport:hover .country-partners__track { animation-play-state: paused; }
+@keyframes partner-marquee { to { transform: translateX(-50%); } }
 .tour-tangem { position: relative; min-height: 520px; display: grid; grid-template-columns: 1.2fr .8fr; align-items: center; gap: 70px; padding: 80px max(4.2vw, calc((100% - 1456px) / 2)); overflow: hidden; background: #ffbd22 url("/images/tour/tangem-pattern.webp") center/cover; color: #11101f; }
 .tour-tangem::before { content: ""; position: absolute; inset: 0; background: linear-gradient(90deg, rgba(255,189,34,.94), rgba(255,189,34,.76) 52%, rgba(19,150,255,.5)); }
 .tour-tangem > * { position: relative; z-index: 1; }
@@ -731,9 +750,11 @@ button { cursor: pointer; }
 
 @media (max-width: 900px) {
   .detail-facts { grid-template-columns: 1fr 1fr; }
-  .country-programme, .country-gallery, .country-people, .country-partners, .tour-activities { padding: 80px 22px; }
+  .country-programme, .country-gallery, .country-people, .country-partners { padding: 80px 22px; }
+  .tour-activities { padding: 80px 0; }
+  .tour-activities > .country-section-heading { padding-right: 22px; padding-left: 22px; }
   .country-section-heading { align-items: flex-start; flex-direction: column; gap: 25px; }
-  .country-programme__grid, .tour-activities__grid { grid-template-columns: 1fr 1fr; }
+  .country-programme__grid { grid-template-columns: 1fr 1fr; }
   .country-gallery__grid { grid-template-columns: 1fr 1fr; grid-template-rows: 350px 230px 230px; }
   .country-gallery figure:first-child { grid-column: span 2; grid-row: auto; }
   .country-people { grid-template-columns: 1fr; }
@@ -745,15 +766,21 @@ button { cursor: pointer; }
 @media (max-width: 600px) {
   .detail-facts article { min-height: 125px; padding: 24px 20px; }
   .detail-facts strong, .detail-facts a { font-size: 11px; }
-  .country-programme__grid, .tour-activities__grid { grid-template-columns: 1fr; }
+  .country-programme__grid { grid-template-columns: 1fr; }
   .country-section-heading h2, .country-people h2, .country-partners h2, .country-final-cta h2 { font-size: clamp(40px, 12vw, 54px); line-height: .9; }
-  .tour-activities__grid > article > div { height: 230px; }
+  .tour-activities__viewport { overflow-x: auto; padding: 0 22px 18px; scroll-padding-left: 22px; scroll-snap-type: x mandatory; scrollbar-width: thin; scrollbar-color: var(--orange) rgba(255,255,255,.12); }
+  .tour-activities__track { animation: none; }
+  .tour-activities__set { gap: 14px; padding-right: 14px; }
+  .tour-activities__set:nth-child(2) { display: none; }
+  .tour-activities__set > article { width: min(84vw, 390px); scroll-snap-align: start; }
+  .tour-activities__set > article > div { height: 230px; }
   .country-gallery__grid { display: flex; flex-direction: column; }
   .country-gallery figure { min-height: 260px; }
   .country-gallery figure:first-child { min-height: 380px; }
   .country-people__grid { overflow-x: auto; }
   .country-people__grid article { min-width: 190px; }
-  .country-partners article { width: 100%; min-height: 105px; }
+  .country-partners { padding: 60px 22px; }
+  .country-partners article { width: min(300px, 100%); min-height: 92px; }
   .tour-tangem { min-height: 720px; }
   .tour-tangem h2 { font-size: 58px; }
   .tour-tangem__countdown time { min-width: 0; flex: 1; padding: 8px; }
