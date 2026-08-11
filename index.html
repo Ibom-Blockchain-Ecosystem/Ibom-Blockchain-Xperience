@@ -1,0 +1,171 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#f2efe8" />
+    <meta
+      name="description"
+      content="Explore the Ibom Blockchain Xperience Tour across Africa."
+    />
+    <title>IBX Tour — Generations</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&family=Instrument+Serif:ital@0;1&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="./styles.css" />
+    <script src="./script.js" defer></script>
+  </head>
+  <body>
+    <a class="skip-link" href="#main">Skip to content</a>
+
+    <main id="main" class="experience">
+      <section class="landing is-active" id="landing" aria-labelledby="landing-title">
+        <div class="grid-lines" aria-hidden="true"></div>
+        <img
+          class="world-map-image"
+          src="./assets/world-map-background.jpg"
+          alt=""
+          aria-hidden="true"
+        />
+
+        <header class="site-header site-header--light">
+          <a class="brand" href="#landing" aria-label="IBX Tour home">
+            <img src="./assets/brand/ibx-tour-generations-logo-trimmed.png" alt="IBX Tour — Generations" />
+          </a>
+
+          <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="main-nav">
+            <span>Menu</span><i></i>
+          </button>
+
+          <nav class="main-nav" id="main-nav" aria-label="Main navigation">
+            <a class="nav-tangem" href="#tangem" data-affiliate-link>
+              Get Tangem Wallet <span aria-hidden="true">↗</span>
+            </a>
+            <button type="button" data-enter-tour>Countries</button>
+            <a href="#about">About</a>
+            <a href="#partners">Partners</a>
+          </nav>
+
+          <button class="join-button" type="button" data-enter-tour>
+            Join the movement <span aria-hidden="true">↗</span>
+          </button>
+        </header>
+
+        <div class="continent-stage">
+          <p class="continent-kicker">The IBX movement across borders</p>
+          <h1 class="sr-only" id="landing-title">Choose a continent to explore the IBX Tour</h1>
+          <div class="continent-picker" role="listbox" aria-label="Choose a continent">
+            <button type="button" role="option" data-continent="Asia">Asia</button>
+            <button type="button" role="option" data-continent="Europe">Europe</button>
+            <button type="button" role="option" data-continent="Africa">Africa</button>
+            <button type="button" role="option" data-continent="North America">North America</button>
+            <button type="button" role="option" data-continent="South America">South America</button>
+          </div>
+          <p class="continent-caption" aria-live="polite">
+            <span id="continent-status">Africa</span>
+            <i></i>
+            Scroll to explore
+          </p>
+        </div>
+
+        <footer class="landing-footer">
+          <div class="lead-partner">
+            <span>Lead partner</span>
+            <strong>TANGEM</strong>
+          </div>
+          <p>Adoption <i></i> Connection <i></i> Expansion</p>
+          <button type="button" id="enter-selected-continent">
+            <span>Enter Africa</span>
+            <i aria-hidden="true">↗</i>
+          </button>
+        </footer>
+      </section>
+
+      <section class="tour" id="tour" aria-label="IBX country tour" aria-hidden="true">
+        <div class="tour-backgrounds" aria-hidden="true"></div>
+        <div class="tour-shade" aria-hidden="true"></div>
+        <div class="grid-lines grid-lines--dark" aria-hidden="true"></div>
+
+        <header class="site-header site-header--dark">
+          <button class="brand brand-button" type="button" data-back-home aria-label="Return to landing page">
+            <img src="./assets/brand/ibx-tour-generations-logo-trimmed.png" alt="IBX Tour — Generations" />
+          </button>
+
+          <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="tour-nav">
+            <span>Menu</span><i></i>
+          </button>
+
+          <nav class="main-nav" id="tour-nav" aria-label="Tour navigation">
+            <a class="nav-tangem" href="#tangem" data-affiliate-link>
+              Get Tangem Wallet <span aria-hidden="true">↗</span>
+            </a>
+            <button class="is-current" type="button">Countries</button>
+            <a href="#about">About</a>
+            <a href="#partners">Partners</a>
+          </nav>
+
+          <button class="join-button join-button--dark" type="button" data-open-details>
+            Join this stop <span aria-hidden="true">↗</span>
+          </button>
+        </header>
+
+        <div class="tour-content" aria-live="polite">
+          <p class="tour-eyebrow"><span id="country-name">Côte d’Ivoire</span> · West Africa</p>
+          <h2 id="city-name">Abidjan</h2>
+          <p class="country-intro" id="country-intro"></p>
+          <button class="explore-button" type="button" data-open-details>
+            <span aria-hidden="true">→</span>
+            <strong>Explore this stop</strong>
+          </button>
+        </div>
+
+        <aside class="tour-controls" aria-label="Destination controls">
+          <p><strong id="current-index">01</strong> / <span id="total-count">06</span></p>
+          <div>
+            <button type="button" data-previous aria-label="Previous destination">←</button>
+            <button type="button" data-next aria-label="Next destination">→</button>
+          </div>
+        </aside>
+
+        <div class="country-rail" role="tablist" aria-label="Tour countries"></div>
+
+        <div class="tour-hint" aria-hidden="true">
+          <span>Use arrows or scroll</span><i>↕</i>
+        </div>
+      </section>
+
+      <aside class="details-panel" id="details-panel" aria-hidden="true" aria-labelledby="details-title">
+        <button class="panel-close" type="button" data-close-details aria-label="Close tour details">×</button>
+        <div class="panel-number" id="panel-number">01</div>
+        <p class="eyebrow"><span></span> IBX Tour stop</p>
+        <h2 id="details-title">Abidjan</h2>
+        <p class="panel-country" id="panel-country">Côte d’Ivoire</p>
+        <p class="panel-copy" id="panel-copy"></p>
+
+        <dl class="stop-facts">
+          <div><dt>Status</dt><dd>Tour details coming soon</dd></div>
+          <div><dt>Focus</dt><dd>Community · Education · Adoption</dd></div>
+          <div><dt>Region</dt><dd>West Africa</dd></div>
+        </dl>
+
+        <div class="panel-actions">
+          <a href="mailto:partnerships@ibomblockchain.com">Become a partner <span>↗</span></a>
+          <button type="button">Register interest <span>→</span></button>
+        </div>
+
+        <div class="tangem-card" id="tangem">
+          <span>Lead partner</span>
+          <strong>TANGEM</strong>
+          <p>Secure your Web3 journey with a hardware wallet built for everyday use.</p>
+          <a href="#" data-affiliate-link>Get Tangem Wallet <span>↗</span></a>
+          <small>Affiliate link · Final URL to be added</small>
+        </div>
+      </aside>
+
+      <div class="panel-backdrop" data-close-details aria-hidden="true"></div>
+    </main>
+  </body>
+</html>
