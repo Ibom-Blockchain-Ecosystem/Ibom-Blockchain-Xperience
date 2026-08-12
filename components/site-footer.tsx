@@ -13,7 +13,7 @@ export function SiteFooter({ nextCountry }: SiteFooterProps) {
       <section className="site-footer__newsletter" aria-labelledby="newsletter-title">
         <div>
           <span>Stay connected to the movement</span>
-          <h2 id="newsletter-title">News from across the IBX ecosystem.</h2>
+          <h2 id="newsletter-title">News Across The IBX Ecosystem.</h2>
         </div>
         <form action={newsletterUrl} method="post">
           <label htmlFor="newsletter-email">Your email address</label>
@@ -37,7 +37,6 @@ export function SiteFooter({ nextCountry }: SiteFooterProps) {
       <div className="site-footer__main">
         <div className="site-footer__identity">
           <Image src="/brand/ibx-tour-white.png" width={3000} height={820} alt="IBX Tour — Building for Generations" />
-          <p>Education. Innovation. Community.</p>
         </div>
         <nav aria-label="Footer navigation">
           <Link href="/">IBX home</Link>
@@ -51,6 +50,7 @@ export function SiteFooter({ nextCountry }: SiteFooterProps) {
 
       <div className="site-footer__legal">
         <span>© {new Date().getFullYear()} Ibom Blockchain Xperience</span>
+        <span>Education. Innovation. Community.</span>
         <span>Building for Generations</span>
       </div>
     </footer>

@@ -711,6 +711,7 @@ button { cursor: pointer; }
 .tour-activities__set > article { width: clamp(350px, 29vw, 445px); flex: 0 0 auto; overflow: hidden; border-radius: 13px; background: #fff; color: #11101f; }
 .tour-activities__set > article > div { position: relative; height: 240px; }
 .tour-activities__set > article img { object-fit: cover; }
+.tour-activities__set > article:nth-child(5) img { object-position: 50% 27%; }
 .tour-activities__set > article > section { min-height: 190px; padding: 24px; }
 .tour-activities__set span { color: var(--purple); font-size: 9px; font-weight: 700; letter-spacing: .13em; text-transform: uppercase; }
 .tour-activities__set h3 { margin: 13px 0; font-family: var(--font-square-block), Montserrat, sans-serif; font-size: 27px; font-weight: 400; line-height: .95; text-transform: uppercase; }
@@ -775,7 +776,7 @@ button { cursor: pointer; }
 .tour-tangem__sale-tag { position: absolute; z-index: 3; top: 18px; right: 18px; width: 108px; min-height: 166px; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 20px 10px 12px; border-radius: 11px; background: linear-gradient(155deg, #ff4a3c, #df0910 66%, #ff3b20); color: #fff8e8; box-shadow: 0 13px 28px rgba(175,8,14,.3), inset 0 1px rgba(255,255,255,.42); text-align: center; text-transform: uppercase; transform: rotate(2deg); }
 .tour-tangem__sale-tag::before { content: ""; position: absolute; top: -18px; left: 50%; width: 48px; height: 32px; border: 2px solid rgba(255,248,232,.92); border-bottom: 0; border-radius: 32px 32px 0 0; transform: translateX(-50%); }
 .tour-tangem__sale-tag small { font-size: 5px; font-weight: 800; letter-spacing: .11em; }
-.tour-tangem__sale-tag strong { margin: 14px 0 9px; font-family: var(--font-square-block), Montserrat, sans-serif; font-size: 28px; font-weight: 400; line-height: .72; }
+.tour-tangem__sale-tag strong { margin: 14px 0 9px; font-family: var(--font-square-block), Montserrat, sans-serif; font-size: 24px; font-weight: 400; line-height: .76; }
 .tour-tangem__sale-tag del { margin-bottom: 3px; color: rgba(255,248,232,.72); font-family: var(--font-square-block), Montserrat, sans-serif; font-size: 15px; line-height: 1; text-decoration-thickness: 2px; }
 .tour-tangem__sale-tag span { width: 100%; padding-top: 8px; border-top: 1px solid rgba(255,248,232,.55); font-family: var(--font-square-block), Montserrat, sans-serif; font-size: 27px; line-height: 1; }
 .tour-tangem__sale-tag em { margin-top: 5px; font-size: 5px; font-style: normal; font-weight: 700; }
@@ -1006,6 +1007,7 @@ button { cursor: pointer; }
 .country-story__canvas { position: relative; min-height: 820px; overflow: hidden; color: #fff; isolation: isolate; }
 .country-story__canvas::before { content: ""; position: absolute; z-index: -1; inset: 0; background: radial-gradient(circle at 78% 35%, rgba(8,124,255,.2), transparent 30%), linear-gradient(120deg, #090812, #131026 62%, #080711); }
 .country-story__outline { position: absolute; z-index: 0; top: 42px; left: 32%; max-width: 70%; overflow: hidden; color: transparent; -webkit-text-stroke: 1px rgba(8,124,255,.52); font-family: var(--font-square-block), Montserrat, sans-serif; font-size: clamp(115px, 15vw, 250px); line-height: .75; text-transform: uppercase; white-space: nowrap; }
+.country-story__map { display: none; }
 .country-story__media { position: absolute; z-index: 1; top: 0; right: 0; width: 67%; height: 100%; }
 .country-story__image { position: absolute; margin: 0; overflow: hidden; }
 .country-story__image img { object-fit: cover; transition: transform 1s cubic-bezier(.2,.8,.2,1); }
@@ -1022,16 +1024,21 @@ button { cursor: pointer; }
 .country-story__cities { position: absolute; z-index: 5; left: max(4.2vw, calc((100% - 1456px) / 2)); bottom: 45px; display: flex; gap: 38px; }
 .country-story__cities span { display: flex; align-items: center; gap: 10px; color: #fff; font-size: 9px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; }
 .country-story__cities i { color: var(--orange); font-style: normal; }
+.country-story--gateway .country-story__cities i { font-size: 13px; line-height: 1; }
 
-.country-story--gateway .country-story__image--main { inset: 150px -2% 0 15%; clip-path: none; }
+.country-story--gateway .country-story__image--main { inset: 150px -2% 0 15%; clip-path: none; -webkit-mask-image: linear-gradient(90deg, transparent 0, #000 13%, #000 100%), linear-gradient(0deg, #000 0, #000 86%, transparent 100%); -webkit-mask-composite: source-in; mask-image: linear-gradient(90deg, transparent 0, #000 13%, #000 100%), linear-gradient(0deg, #000 0, #000 86%, transparent 100%); mask-composite: intersect; }
 .country-story--gateway .country-story__image--main img { object-position: 50% 44%; }
-.country-story--gateway .country-story__image--support { top: 290px; left: 4%; width: 25%; height: 350px; border: 1px solid #28c76f; clip-path: polygon(0 8%, 88% 0, 100% 100%, 14% 92%); filter: hue-rotate(18deg) saturate(1.15); }
+.country-story--gateway .country-story__image--support { top: 290px; left: 4%; width: 25%; height: 350px; border: 0; clip-path: polygon(0 8%, 88% 0, 100% 100%, 14% 92%); filter: hue-rotate(18deg) saturate(1.15); -webkit-mask-image: radial-gradient(ellipse at center, #000 48%, rgba(0,0,0,.8) 68%, transparent 100%); mask-image: radial-gradient(ellipse at center, #000 48%, rgba(0,0,0,.8) 68%, transparent 100%); }
 .country-story--gateway .country-story__image--detail { right: 3%; bottom: 45px; width: clamp(220px, 22vw, 330px); height: clamp(220px, 22vw, 330px); overflow: hidden; padding: 7px; border: 0; border-radius: 50%; background: conic-gradient(from 20deg, #f94a02, #8238af 27%, #087cff 52%, #24c76f 76%, #f7c52b 90%, #f94a02); box-shadow: 0 22px 60px rgba(0,0,0,.34); transform: none; }
 .country-story--gateway .country-story__image--detail img { inset: 7px !important; width: calc(100% - 14px) !important; height: calc(100% - 14px) !important; border-radius: 50%; object-fit: cover; object-position: 50% 52%; }
 .country-story--gateway .country-story__canvas { min-height: 920px; }
 .country-story--gateway .country-story__copy { top: 135px; width: min(650px, 48vw); }
 .country-story--gateway .country-story__copy h2 { max-width: 650px; font-size: clamp(48px, 4.35vw, 70px); line-height: .88; text-wrap: balance; }
 .country-story--gateway .country-story__copy p { max-width: 530px; }
+.country-story--gateway .country-story__map { position: absolute; z-index: 2; left: max(2.2vw, calc((100% - 1510px) / 2)); bottom: -105px; display: block; width: min(470px, 31vw); aspect-ratio: 1; margin: 0; opacity: .13; filter: blur(1.8px); pointer-events: none; }
+.country-story--gateway .country-story__map img { object-fit: contain; }
+.country-story--gateway .country-story__cities { width: min(760px, 48vw); display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 10px 22px; padding: 15px 0; }
+.country-story--gateway .country-story__cities span { min-width: 0; gap: 7px; font-size: 8px; white-space: nowrap; }
 
 .country-story--bilingual .country-story__canvas::before { background: linear-gradient(90deg, #100b22 0 49.5%, #071b3b 50% 100%); }
 .country-story--bilingual .country-story__media { width: 58%; }
@@ -1075,6 +1082,8 @@ button { cursor: pointer; }
   .country-story--gateway .country-story__canvas { min-height: 0; }
   .country-story--gateway .country-story__copy { top: auto; width: 100%; }
   .country-story--gateway .country-story__copy h2 { max-width: 720px; font-size: clamp(43px, 8.5vw, 64px); }
+  .country-story--gateway .country-story__map { right: -45px; bottom: 5px; left: auto; width: 330px; opacity: .1; }
+  .country-story--gateway .country-story__cities { width: 100%; min-width: 0; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 0 18px; padding: 0 28px 38px; border: 0; border-radius: 0; background: transparent; backdrop-filter: none; }
 }
 
 @media (max-width: 600px) {
@@ -1085,5 +1094,7 @@ button { cursor: pointer; }
   .country-story__copy p { font-size: 12px; }
   .country-story__cities { grid-template-columns: 1fr; padding: 0 20px 30px; }
   .country-story__cities span { gap: 8px; min-height: 40px; padding: 0; font-size: 8px; }
+  .country-story--gateway .country-story__cities { grid-template-columns: repeat(2, minmax(0, 1fr)); padding: 0 20px 30px; }
+  .country-story--gateway .country-story__cities span { font-size: 7px; }
   .country-story__copy .tour-action { width: 100%; }
 }

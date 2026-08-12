@@ -51,19 +51,19 @@ export function TangemCampaign({ requestUrl }: { requestUrl: string }) {
           </div>
 
           <a className={`tour-action tour-action--dark${soldOut || hasEnded ? " is-disabled" : ""}`} href={soldOut || hasEnded ? undefined : requestUrl} target={soldOut || hasEnded ? undefined : "_blank"} rel={soldOut || hasEnded ? undefined : "noopener noreferrer"} aria-disabled={soldOut || hasEnded}>
-            {soldOut || hasEnded ? "Sold out" : "Request Tangem wallet"}
+            {soldOut || hasEnded ? "Sold out" : "Get Your Wallet"}
           </a>
           <small className="tour-tangem__terms">Maximum three cards per person. No payment is required now. The IBX team will contact you to confirm your reservation and collection.</small>
       </div>
 
         <div className="tour-tangem__card">
           <Image src="/images/sponsors/tangem-white-card.webp" fill sizes="(max-width: 900px) 90vw, 39vw" alt="Tangem hardware wallet cards" />
-          <div className="tour-tangem__sale-tag" aria-label="IBX Tangem flash sale">
-            <small>Tour exclusive</small>
-            <strong>Flash<br />sale</strong>
-            <del>$50</del>
+          <div className="tour-tangem__sale-tag" aria-label="IBX Tangem limited-slots offer">
+            <small>IBX tour offer</small>
+            <strong>Limited<br />slots</strong>
+            <del>$69.99</del>
             <span>$30</span>
-            <em>+ $5 Bitcoin free</em>
+            <em>+ free $5 Bitcoin</em>
           </div>
           <div className="tour-tangem__progress">
             <p><strong>{RESERVED} / {TOTAL}</strong><span>{TOTAL - RESERVED} cards remaining</span></p>

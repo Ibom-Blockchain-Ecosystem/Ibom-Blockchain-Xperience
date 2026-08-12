@@ -97,6 +97,11 @@ export default async function TourStopPage({ params }: PageProps) {
         ) : stop.visualTheme ? (
           <div className="country-story__canvas">
             <div className="country-story__outline" aria-hidden="true">{stop.country}</div>
+            {stop.visualTheme === "gateway" && (
+              <figure className="country-story__map" aria-hidden="true">
+                <Image src="/images/tour/nigeria-map-transparent.webp" fill sizes="520px" alt="" />
+              </figure>
+            )}
             <div className="country-story__media" aria-hidden="true">
               <figure className="country-story__image country-story__image--main"><Image src={stop.visualTheme === "gateway" ? stop.storyImages?.[0] ?? stop.image : stop.image} fill sizes="(max-width: 800px) 100vw, 62vw" alt="" /></figure>
               <figure className="country-story__image country-story__image--support"><Image src={stop.visualTheme === "gateway" ? stop.storyImages?.[1] ?? stop.image : stop.storyImages?.[0] ?? stop.alternateImage ?? stop.image} fill sizes="(max-width: 800px) 60vw, 24vw" alt="" /></figure>
@@ -109,7 +114,7 @@ export default async function TourStopPage({ params }: PageProps) {
               <p>{stop.description}</p>
             </div>
             <div className="country-story__cities" aria-label={`${stop.country} featured cities`}>
-              {stop.featuredCities?.map((city, index) => <span key={city}><i>{String(index + 1).padStart(2, "0")}</i>{city}</span>)}
+              {stop.featuredCities?.map((city) => <span key={city}><i aria-hidden="true">•</i>{city}</span>)}
             </div>
           </div>
         ) : (
@@ -171,7 +176,7 @@ export default async function TourStopPage({ params }: PageProps) {
       <section className="country-gallery">
         <div className="country-section-heading"><div><span>The experience in pictures</span><h2>People, places & moments</h2></div></div>
         <div className="country-gallery__grid">
-          {[stop.image, stop.alternateImage ?? "/images/home/ibx-so-far-audience.webp", "/images/home/ibx-so-far-speaker.webp", "/images/home/ibx-so-far-community.webp", "/images/home/ibx-so-far-panel.webp"].map((image, index) => (
+          {[stop.image, "/images/tour/activities/community-meetup.webp", "/images/tour/activities/builder-session.webp", "/images/tour/activities/market-adoption.webp", "/images/tour/activities/health-screening.webp"].map((image, index) => (
             <figure key={`${image}-${index}`}><Image src={image} fill sizes="(max-width: 800px) 100vw, 33vw" alt={`${stop.country} tour experience ${index + 1}`} /></figure>
           ))}
         </div>
