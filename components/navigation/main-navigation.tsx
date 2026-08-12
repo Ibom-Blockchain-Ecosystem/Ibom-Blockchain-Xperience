@@ -6,7 +6,7 @@ const links = [
   { href: "/tour", label: "Tour" },
   { href: "#build", label: "Build" },
   { href: "#ambassadors", label: "Ambassadors" },
-  { href: "#partners", label: "Partners" },
+  { href: "/tour/nigeria#partners", label: "Partners" },
 ];
 
 export function MainNavigation() {
@@ -21,7 +21,7 @@ export function MainNavigation() {
       </nav>
 
       <div className="ibx-nav__actions">
-        <Link className="ibx-button ibx-button--small ibx-button--outline" href="#partners">Partner with us</Link>
+        <Link className="ibx-button ibx-button--small ibx-button--outline" href="/tour/nigeria#partners">Partner with us</Link>
         <Link className="ibx-button ibx-button--small" href="#register">Register</Link>
       </div>
 

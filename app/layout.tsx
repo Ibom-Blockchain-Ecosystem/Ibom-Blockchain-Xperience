@@ -5,6 +5,7 @@ import "@fontsource/montserrat/500.css";
 import "@fontsource/montserrat/600.css";
 import "@fontsource/montserrat/700.css";
 import "./globals.css";
+import { ThemeToggle } from "@/components/theme-toggle";
 
 const squareBlock = localFont({
   src: "../public/fonts/square-block.ttf",
@@ -39,7 +40,7 @@ export const viewport: Viewport = { width: "device-width", initialScale: 1, them
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="en" className={squareBlock.variable}>
-      <body>{children}</body>
+      <body>{children}<ThemeToggle /></body>
     </html>
   );
 }

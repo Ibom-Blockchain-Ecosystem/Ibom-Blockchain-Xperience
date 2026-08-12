@@ -43,7 +43,7 @@ export function SiteFooter({ nextCountry }: SiteFooterProps) {
           <Link href="/">IBX home</Link>
           <Link href="/tour">Explore the tour</Link>
           <Link href="/#about">About IBX</Link>
-          <Link href="/#partners">Partners</Link>
+          <Link href="/tour/nigeria#partners">Partners</Link>
           <a href="https://form.typeform.com/to/A2YCJwL2" target="_blank" rel="noopener noreferrer">Register interest ↗</a>
         </nav>
         {nextCountry && <Link className="site-footer__next" href={nextCountry.href}>Next country <strong>{nextCountry.label}</strong> →</Link>}

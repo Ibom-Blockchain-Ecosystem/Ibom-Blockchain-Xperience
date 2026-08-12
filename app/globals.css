@@ -8,14 +8,50 @@
   --purple: #8238af;
   --grid-light: rgba(17, 16, 14, .13);
   --grid-dark: rgba(255, 255, 255, .16);
+  color-scheme: light;
+}
+
+:root[data-theme="dark"] {
+  --paper: #11101b;
+  --ink: #f7f4ee;
+  --grid-light: rgba(255,255,255,.12);
+  color-scheme: dark;
 }
 
 * { box-sizing: border-box; }
 html { background: var(--ink); scroll-behavior: smooth; }
 body { margin: 0; background: var(--paper); color: var(--ink); font-family: Arial, Helvetica, sans-serif; }
+.theme-toggle { position: fixed; z-index: 100; right: 18px; bottom: 18px; display: inline-flex; align-items: center; gap: 8px; min-height: 42px; padding: 0 14px; border: 1px solid rgba(255,255,255,.24); border-radius: 999px; background: rgba(17,16,31,.84); color: #fff; box-shadow: 0 10px 32px rgba(0,0,0,.2); backdrop-filter: blur(14px); font-size: 8px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; }
+.theme-toggle span:first-child { font-size: 15px; }
 button, a { color: inherit; font: inherit; }
 button { cursor: pointer; }
 .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0; }
+
+:root[data-theme="dark"] .landing-screen { background: #11101b; }
+:root[data-theme="dark"] .world-map { filter: grayscale(1) invert(1) contrast(.72); mix-blend-mode: screen; opacity: .09; }
+:root[data-theme="dark"] .wheel-items button[aria-selected="true"] { color: #fff; }
+:root[data-theme="dark"] .site-header:not(.site-header-dark) { color: #fff; }
+:root[data-theme="dark"] .site-header:not(.site-header-dark) .brand img { filter: invert(1); }
+:root[data-theme="dark"] .detail-page, :root[data-theme="dark"] .country-gallery, :root[data-theme="dark"] .country-partners { background: #11101b; color: #f7f4ee; }
+:root[data-theme="dark"] .country-programme, :root[data-theme="dark"] .country-people { background: #181624; color: #f7f4ee; }
+:root[data-theme="dark"] .country-programme__grid article, :root[data-theme="dark"] .country-people__grid article { border-color: #393647; background: #201e2b; }
+:root[data-theme="dark"] .country-programme__grid p, :root[data-theme="dark"] .country-people > div > p { color: #b7b1bf; }
+:root[data-theme="dark"] .country-partners::before { color: rgba(255,255,255,.035); }
+:root[data-theme="dark"] .country-partners article img { filter: invert(1) grayscale(1) brightness(1.8); }
+:root[data-theme="dark"] .site-footer__newsletter { background: linear-gradient(120deg, #181624, #211e2d); color: #f7f4ee; }
+:root[data-theme="dark"] .site-footer__newsletter small { color: #aaa4af; }
+
+.not-found { position: relative; min-height: 100svh; overflow: hidden; display: grid; place-items: center; background: #090812; color: #fff; }
+.not-found > img { object-fit: cover; }
+.not-found__shade { position: absolute; z-index: 1; inset: 0; background: linear-gradient(90deg, rgba(8,7,17,.94), rgba(8,7,17,.62) 65%, rgba(8,7,17,.78)); }
+.not-found__brand { position: absolute; z-index: 2; top: 34px; left: max(5vw, 24px); width: min(280px, 60vw); }
+.not-found__brand img { width: 100%; height: auto; }
+.not-found__content { position: relative; z-index: 2; width: min(900px, calc(100% - 40px)); text-align: center; }
+.not-found__content > span { color: var(--orange); font-size: 9px; font-weight: 700; letter-spacing: .18em; text-transform: uppercase; }
+.not-found__content > strong { display: block; margin: 18px 0 -15px; color: rgba(255,255,255,.1); font-family: var(--font-square-block), Montserrat, sans-serif; font-size: clamp(150px, 24vw, 360px); font-weight: 400; line-height: .65; }
+.not-found__content h1 { margin: 0; font-family: var(--font-square-block), Montserrat, sans-serif; font-size: clamp(45px, 6vw, 88px); font-weight: 400; line-height: .86; text-transform: uppercase; }
+.not-found__content p { max-width: 570px; margin: 25px auto; color: rgba(255,255,255,.68); line-height: 1.7; }
+.not-found__content a { display: inline-flex; min-height: 48px; align-items: center; padding: 0 22px; border-radius: 8px; background: var(--orange); color: #fff; font-size: 9px; font-weight: 700; letter-spacing: .13em; text-decoration: none; text-transform: uppercase; }
 
 .experience-shell { min-height: 100svh; overflow: hidden; }
 .landing-screen, .tour-screen { position: relative; min-height: 100svh; overflow: hidden; }
@@ -177,6 +213,8 @@ button { cursor: pointer; }
   .tour-copy { bottom: 18%; width: calc(100vw - 40px); }
   .tour-copy h2 { font-size: clamp(54px, 16vw, 86px); }
   .tour-progress { bottom: 31%; }
+  .tour-progress > span { font-size: 14px; }
+  .tour-progress > span strong { font-size: 29px; }
   .tour-progress > div { display: none; }
   .detail-heading { left: 20px; right: 20px; }
   .detail-heading h1 { font-size: clamp(54px, 17vw, 88px); }
@@ -716,7 +754,7 @@ button { cursor: pointer; }
 .tour-tangem__powered img { display: block; width: 100%; height: auto; }
 .tour-tangem__copy p { max-width: 620px; margin-bottom: 26px; line-height: 1.65; }
 .tour-action--dark { background: #11101f; }
-.tour-tangem__card { position: relative; height: 330px; border-radius: 20px; background: rgba(255,255,255,.76); box-shadow: 0 22px 55px rgba(0,0,0,.16); }
+.tour-tangem__card { position: relative; height: 330px; border-radius: 20px; background: transparent; box-shadow: none; }
 .tour-tangem__card img { object-fit: cover; padding: 0; border-radius: 20px; }
 .tour-tangem--campaign { min-height: 650px; }
 .tour-tangem--campaign .tour-tangem__copy p strong { font-weight: 800; }
@@ -734,6 +772,7 @@ button { cursor: pointer; }
 .tour-tangem__sale-tag::before { content: ""; position: absolute; top: -18px; left: 50%; width: 48px; height: 32px; border: 2px solid rgba(255,248,232,.92); border-bottom: 0; border-radius: 32px 32px 0 0; transform: translateX(-50%); }
 .tour-tangem__sale-tag small { font-size: 5px; font-weight: 800; letter-spacing: .11em; }
 .tour-tangem__sale-tag strong { margin: 14px 0 9px; font-family: var(--font-square-block), Montserrat, sans-serif; font-size: 28px; font-weight: 400; line-height: .72; }
+.tour-tangem__sale-tag del { margin-bottom: 3px; color: rgba(255,248,232,.72); font-family: var(--font-square-block), Montserrat, sans-serif; font-size: 15px; line-height: 1; text-decoration-thickness: 2px; }
 .tour-tangem__sale-tag span { width: 100%; padding-top: 8px; border-top: 1px solid rgba(255,248,232,.55); font-family: var(--font-square-block), Montserrat, sans-serif; font-size: 27px; line-height: 1; }
 .tour-tangem__sale-tag em { margin-top: 5px; font-size: 5px; font-style: normal; font-weight: 700; }
 .tour-tangem__progress { position: absolute; z-index: 3; right: 24px; bottom: 20px; left: 24px; padding: 0; color: #11101f; }

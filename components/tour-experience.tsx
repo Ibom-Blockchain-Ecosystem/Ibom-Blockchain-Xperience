@@ -25,6 +25,8 @@ export function TourExperience({ initialScreen = "landing", initialCountry }: To
   });
   const wheelLock = useRef(false);
   const touchStart = useRef(0);
+  const idleTimer = useRef<number | null>(null);
+  const resumeTimer = useRef<number | null>(null);
   const stop = tourStops[stopIndex];
 
   const cycleContinent = (direction: number) => {
@@ -59,6 +61,39 @@ export function TourExperience({ initialScreen = "landing", initialCountry }: To
     window.addEventListener("keydown", handleKey);
     return () => window.removeEventListener("keydown", handleKey);
   }, [continentIndex, enterContinent, screen]);
+
+  useEffect(() => {
+    const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (reducedMotion) return;
+    const clearRotation = () => {
+      if (idleTimer.current) window.clearInterval(idleTimer.current);
+      if (resumeTimer.current) window.clearTimeout(resumeTimer.current);
+      idleTimer.current = null;
+      resumeTimer.current = null;
+    };
+    const startRotation = () => {
+      clearRotation();
+      const advance = screen === "landing" ? () => cycleContinent(1) : () => cycleStop(1);
+      const interval = screen === "landing" ? 4200 : 6500;
+      idleTimer.current = window.setInterval(advance, interval);
+    };
+    const restartAfterIdle = () => {
+      clearRotation();
+      resumeTimer.current = window.setTimeout(startRotation, 5000);
+    };
+    startRotation();
+    window.addEventListener("pointerdown", restartAfterIdle);
+    window.addEventListener("touchstart", restartAfterIdle, { passive: true });
+    window.addEventListener("wheel", restartAfterIdle, { passive: true });
+    window.addEventListener("keydown", restartAfterIdle);
+    return () => {
+      clearRotation();
+      window.removeEventListener("pointerdown", restartAfterIdle);
+      window.removeEventListener("touchstart", restartAfterIdle);
+      window.removeEventListener("wheel", restartAfterIdle);
+      window.removeEventListener("keydown", restartAfterIdle);
+    };
+  }, [screen]);
 
   const handleWheel = (delta: number) => {
     if (wheelLock.current || Math.abs(delta) < 12) return;

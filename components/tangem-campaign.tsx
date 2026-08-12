@@ -61,6 +61,7 @@ export function TangemCampaign({ requestUrl }: { requestUrl: string }) {
           <div className="tour-tangem__sale-tag" aria-label="IBX Tangem flash sale">
             <small>Tour exclusive</small>
             <strong>Flash<br />sale</strong>
+            <del>$50</del>
             <span>$30</span>
             <em>+ $5 Bitcoin free</em>
           </div>

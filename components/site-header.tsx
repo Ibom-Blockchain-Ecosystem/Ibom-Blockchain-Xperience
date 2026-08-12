@@ -1,9 +1,9 @@
 import Image from "next/image";
 import Link from "next/link";
 
-type SiteHeaderProps = { dark?: boolean; onCountries?: () => void };
+type SiteHeaderProps = { dark?: boolean; onCountries?: () => void; partnerHref?: string };
 
-export function SiteHeader({ dark = false, onCountries }: SiteHeaderProps) {
+export function SiteHeader({ dark = false, onCountries, partnerHref = "/tour/nigeria#partners" }: SiteHeaderProps) {
   const tangemUrl = process.env.NEXT_PUBLIC_TANGEM_AFFILIATE_URL ?? "#tangem";
   const joinMovementUrl = "https://form.typeform.com/to/A2YCJwL2";
   return (
@@ -15,7 +15,7 @@ export function SiteHeader({ dark = false, onCountries }: SiteHeaderProps) {
         <a className="tangem-link" href={tangemUrl} target={tangemUrl.startsWith("http") ? "_blank" : undefined} rel={tangemUrl.startsWith("http") ? "sponsored noopener noreferrer" : undefined}>Get Tangem Wallet ↗</a>
         {onCountries ? <button type="button" onClick={onCountries}>Countries</button> : <Link href="/tour">Countries</Link>}
         <Link href="/#about">About</Link>
-        <Link href="/#partners">Partners</Link>
+        <Link href={partnerHref}>Partners</Link>
       </nav>
       <a className="join-link" href={joinMovementUrl} target="_blank" rel="noopener noreferrer">Join the movement ↗</a>
       <details className="tour-mobile-menu">
@@ -24,7 +24,7 @@ export function SiteHeader({ dark = false, onCountries }: SiteHeaderProps) {
           <a href={tangemUrl} target={tangemUrl.startsWith("http") ? "_blank" : undefined} rel={tangemUrl.startsWith("http") ? "sponsored noopener noreferrer" : undefined}>Get Tangem Wallet ↗</a>
           {onCountries ? <button type="button" onClick={onCountries}>Countries</button> : <Link href="/tour">Countries</Link>}
           <Link href="/#about">About</Link>
-          <Link href="/#partners">Partners</Link>
+          <Link href={partnerHref}>Partners</Link>
           <a href={joinMovementUrl} target="_blank" rel="noopener noreferrer">Join the movement ↗</a>
         </nav>
       </details>

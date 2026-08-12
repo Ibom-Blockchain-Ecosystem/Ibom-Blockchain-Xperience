@@ -65,7 +65,7 @@ export default async function TourStopPage({ params }: PageProps) {
         <Image src={stop.image} fill sizes="100vw" alt={`${stop.country} landscape`} priority />
         <div className="detail-shade" />
         <div className="detail-grid" aria-hidden="true">{Array.from({ length: 6 }, (_, index) => <i key={index} />)}</div>
-        <SiteHeader dark />
+        <SiteHeader dark partnerHref="#partners" />
         <Link className="detail-back" href={`/tour?view=countries&country=${stop.slug}`}>← Back to countries</Link>
         <div className="detail-heading">
           <span>{stop.region} · IBX Tour</span>
