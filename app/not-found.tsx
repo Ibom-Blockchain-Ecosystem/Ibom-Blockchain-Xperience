@@ -10,11 +10,14 @@ export default function NotFound() {
         <Image src="/brand/ibx-tour-white.png" width={2724} height={731} alt="IBX Tour — Building for Generations" />
       </Link>
       <div className="not-found__content">
-        <span>Lost between stops</span>
-        <strong aria-hidden="true">404</strong>
-        <h1>This route is not on the tour.</h1>
-        <p>Return to the country display and continue exploring the IBX movement across borders.</p>
-        <Link href="/tour">Back to the tour →</Link>
+        <span>Something new is being built</span>
+        <strong aria-hidden="true">SOON</strong>
+        <h1>We are currently updating this page.</h1>
+        <p>Fresh stories, programme information and opportunities from across the IBX ecosystem are on the way. In the meantime, continue exploring the Tour and its country stops.</p>
+        <div className="not-found__actions">
+          <Link href="/tour">Explore the tour →</Link>
+          <Link href="/tour?view=countries">View countries</Link>
+        </div>
       </div>
     </main>
   );

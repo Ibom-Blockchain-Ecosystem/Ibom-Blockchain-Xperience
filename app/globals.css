@@ -31,7 +31,8 @@ button { cursor: pointer; }
 :root[data-theme="dark"] .world-map { filter: grayscale(1) invert(1) contrast(.72); mix-blend-mode: screen; opacity: .09; }
 :root[data-theme="dark"] .wheel-items button[aria-selected="true"] { color: #fff; }
 :root[data-theme="dark"] .site-header:not(.site-header-dark) { color: #fff; }
-:root[data-theme="dark"] .site-header:not(.site-header-dark) .brand img { filter: invert(1); }
+:root[data-theme="dark"] .brand__logo--light { display: none !important; }
+:root[data-theme="dark"] .brand__logo--dark { display: block !important; }
 :root[data-theme="dark"] .detail-page, :root[data-theme="dark"] .country-gallery, :root[data-theme="dark"] .country-partners { background: #11101b; color: #f7f4ee; }
 :root[data-theme="dark"] .country-programme, :root[data-theme="dark"] .country-people { background: #181624; color: #f7f4ee; }
 :root[data-theme="dark"] .country-programme__grid article, :root[data-theme="dark"] .country-people__grid article { border-color: #393647; background: #201e2b; }
@@ -52,6 +53,8 @@ button { cursor: pointer; }
 .not-found__content h1 { margin: 0; font-family: var(--font-square-block), Montserrat, sans-serif; font-size: clamp(45px, 6vw, 88px); font-weight: 400; line-height: .86; text-transform: uppercase; }
 .not-found__content p { max-width: 570px; margin: 25px auto; color: rgba(255,255,255,.68); line-height: 1.7; }
 .not-found__content a { display: inline-flex; min-height: 48px; align-items: center; padding: 0 22px; border-radius: 8px; background: var(--orange); color: #fff; font-size: 9px; font-weight: 700; letter-spacing: .13em; text-decoration: none; text-transform: uppercase; }
+.not-found__actions { display: flex; justify-content: center; flex-wrap: wrap; gap: 12px; }
+.not-found__actions a:last-child { border: 1px solid rgba(255,255,255,.5); background: transparent; }
 
 .experience-shell { min-height: 100svh; overflow: hidden; }
 .landing-screen, .tour-screen { position: relative; min-height: 100svh; overflow: hidden; }
@@ -65,6 +68,7 @@ button { cursor: pointer; }
 .site-header-dark { color: white; border-color: var(--grid-dark); }
 .brand { display: block; width: clamp(210px, 18vw, 285px); }
 .brand img { display: block; width: 100%; height: auto; }
+.brand__logo--dark { display: none !important; }
 .site-header nav { display: flex; align-items: center; justify-content: center; gap: clamp(22px, 3vw, 48px); text-transform: uppercase; letter-spacing: .12em; font-size: 10px; }
 .site-header nav button, .site-header nav a { border: 0; padding: 11px 0; background: none; text-decoration: none; white-space: nowrap; }
 .site-header .tangem-link { color: var(--orange); font-weight: 700; }
@@ -727,14 +731,14 @@ button { cursor: pointer; }
 .country-gallery figure:first-child { grid-row: span 2; }
 .country-gallery img { object-fit: cover; transition: transform .6s ease; }
 .country-gallery figure:hover img { transform: scale(1.03); }
-.country-people { display: grid; grid-template-columns: .85fr 1.15fr; align-items: center; gap: 70px; border-top: 1px solid #e2ddd5; }
+.country-people { display: grid; grid-template-columns: .85fr 1.15fr; align-items: center; gap: 70px; border-top: 0; }
 .country-people h2 { max-width: 620px; margin: 15px 0 20px; font-size: clamp(46px, 4.8vw, 72px); line-height: .9; }
 .country-people > div > p { max-width: 560px; color: #686270; line-height: 1.7; }
 .country-people__grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
 .country-people__grid article { min-height: 270px; display: flex; flex-direction: column; justify-content: flex-end; padding: 20px; border: 1px dashed #918b96; border-radius: 12px; background: #f4f3f1; }
 .country-people__grid span { margin-bottom: 9px; color: var(--purple); font-size: 9px; text-transform: uppercase; }
 .country-people__grid strong { font-size: 12px; text-transform: uppercase; }
-.country-partners { position: relative; isolation: isolate; overflow: hidden; display: flex; flex-direction: column; align-items: center; padding-top: 70px; padding-bottom: 70px; border-top: 1px solid #e2ddd5; text-align: center; }
+.country-partners { position: relative; isolation: isolate; overflow: hidden; display: flex; flex-direction: column; align-items: center; padding-top: 70px; padding-bottom: 70px; border-top: 0; text-align: center; }
 .country-partners::before { content: "IBX TOUR"; position: absolute; z-index: -1; left: 50%; top: 55%; color: rgba(17,16,31,.035); font-family: var(--font-square-block), Montserrat, sans-serif; font-size: clamp(120px, 18vw, 310px); line-height: .7; letter-spacing: .02em; white-space: nowrap; transform: translate(-50%, -50%); pointer-events: none; }
 .country-partners h2 { margin: 12px 0 30px; font-size: clamp(42px, 4vw, 60px); line-height: .9; }
 .country-partners__viewport { width: min(680px, 100%); overflow: hidden; -webkit-mask-image: linear-gradient(90deg, transparent, #000 12%, #000 88%, transparent); mask-image: linear-gradient(90deg, transparent, #000 12%, #000 88%, transparent); }
@@ -1020,9 +1024,10 @@ button { cursor: pointer; }
 .country-story__cities i { color: var(--orange); font-style: normal; }
 
 .country-story--gateway .country-story__image--main { inset: 150px -2% 0 15%; clip-path: none; }
-.country-story--gateway .country-story__image--main img { object-position: 50% 38%; }
+.country-story--gateway .country-story__image--main img { object-position: 50% 44%; }
 .country-story--gateway .country-story__image--support { top: 290px; left: 4%; width: 25%; height: 350px; border: 1px solid #28c76f; clip-path: polygon(0 8%, 88% 0, 100% 100%, 14% 92%); filter: hue-rotate(18deg) saturate(1.15); }
-.country-story--gateway .country-story__image--detail { right: 3%; bottom: 60px; border-color: #087cff; }
+.country-story--gateway .country-story__image--detail { right: 3%; bottom: 45px; width: clamp(220px, 22vw, 330px); height: clamp(220px, 22vw, 330px); overflow: hidden; padding: 7px; border: 0; border-radius: 50%; background: conic-gradient(from 20deg, #f94a02, #8238af 27%, #087cff 52%, #24c76f 76%, #f7c52b 90%, #f94a02); box-shadow: 0 22px 60px rgba(0,0,0,.34); transform: none; }
+.country-story--gateway .country-story__image--detail img { inset: 7px !important; width: calc(100% - 14px) !important; height: calc(100% - 14px) !important; border-radius: 50%; object-fit: cover; object-position: 50% 52%; }
 .country-story--gateway .country-story__canvas { min-height: 920px; }
 .country-story--gateway .country-story__copy { top: 135px; width: min(650px, 48vw); }
 .country-story--gateway .country-story__copy h2 { max-width: 650px; font-size: clamp(48px, 4.35vw, 70px); line-height: .88; text-wrap: balance; }

@@ -98,9 +98,9 @@ export default async function TourStopPage({ params }: PageProps) {
           <div className="country-story__canvas">
             <div className="country-story__outline" aria-hidden="true">{stop.country}</div>
             <div className="country-story__media" aria-hidden="true">
-              <figure className="country-story__image country-story__image--main"><Image src={stop.image} fill sizes="(max-width: 800px) 100vw, 62vw" alt="" /></figure>
-              <figure className="country-story__image country-story__image--support"><Image src={stop.storyImages?.[0] ?? stop.alternateImage ?? stop.image} fill sizes="(max-width: 800px) 60vw, 24vw" alt="" /></figure>
-              <figure className="country-story__image country-story__image--detail"><Image src={stop.storyImages?.[1] ?? stop.image} fill sizes="(max-width: 800px) 60vw, 22vw" alt="" /></figure>
+              <figure className="country-story__image country-story__image--main"><Image src={stop.visualTheme === "gateway" ? stop.storyImages?.[0] ?? stop.image : stop.image} fill sizes="(max-width: 800px) 100vw, 62vw" alt="" /></figure>
+              <figure className="country-story__image country-story__image--support"><Image src={stop.visualTheme === "gateway" ? stop.storyImages?.[1] ?? stop.image : stop.storyImages?.[0] ?? stop.alternateImage ?? stop.image} fill sizes="(max-width: 800px) 60vw, 24vw" alt="" /></figure>
+              <figure className="country-story__image country-story__image--detail"><Image src={stop.visualTheme === "gateway" ? stop.storyImages?.[2] ?? stop.image : stop.storyImages?.[1] ?? stop.image} fill sizes="(max-width: 800px) 60vw, 22vw" alt="" /></figure>
               <i className="country-story__shape" />
             </div>
             <div className="country-story__copy">

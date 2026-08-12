@@ -9,7 +9,14 @@ export function SiteHeader({ dark = false, onCountries, partnerHref = "/tour/nig
   return (
     <header className={`site-header ${dark ? "site-header-dark" : ""}`}>
       <Link href="/" className="brand" aria-label="IBX Tour home">
-        <Image src={dark ? "/brand/ibx-tour-white.png" : "/brand/ibx-tour-black.png"} width={3000} height={820} alt="IBX Tour — Building for Generations" priority />
+        {dark ? (
+          <Image src="/brand/ibx-tour-white.png" width={3000} height={820} alt="IBX Tour — Building for Generations" priority />
+        ) : (
+          <>
+            <Image className="brand__logo brand__logo--light" src="/brand/ibx-tour-black.png" width={3000} height={820} alt="IBX Tour — Building for Generations" priority />
+            <Image className="brand__logo brand__logo--dark" src="/brand/ibx-tour-white.png" width={3000} height={820} alt="" aria-hidden="true" priority />
+          </>
+        )}
       </Link>
       <nav aria-label="Primary navigation">
         <a className="tangem-link" href={tangemUrl} target={tangemUrl.startsWith("http") ? "_blank" : undefined} rel={tangemUrl.startsWith("http") ? "sponsored noopener noreferrer" : undefined}>Get Tangem Wallet ↗</a>

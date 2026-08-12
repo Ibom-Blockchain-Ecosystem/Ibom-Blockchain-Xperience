@@ -9,7 +9,7 @@ export type TourStop = {
   featuredCities?: string[];
   visualTheme?: "gateway" | "bilingual" | "heritage" | "motion";
   featureHeadline?: string;
-  storyImages?: [string, string];
+  storyImages?: [string, string, string?];
   languageLabel: string;
   welcome: string;
   intro: string;
@@ -21,13 +21,13 @@ export const tourStops: TourStop[] = [
   {
     slug: "nigeria",
     country: "Nigeria",
-    city: "Abuja",
+    city: "Uyo",
     region: "West Africa",
-    image: "/images/tour/nigeria.webp",
+    image: "/images/tour/nigeria-stadium-hero.webp",
     visualTheme: "gateway",
     featuredCities: ["Abuja", "Lagos", "Uyo"],
     featureHeadline: "Where policy, enterprise and builders shape Africa’s digital future.",
-    storyImages: ["/images/tour/nigeria-stadium-enhanced.png", "/images/tour/abuja-night-enhanced.png"],
+    storyImages: ["/images/tour/nigeria.webp", "/images/tour/nigeria-stadium-enhanced.png", "/images/tour/ibom-hall.webp"],
     languageLabel: "English · Hausa · Yorùbá · Igbo",
     welcome: "Welcome · Barka da zuwa · Ẹ káàbọ̀ · Nnọọ",
     intro: "Where policy, enterprise and builders meet Nigeria’s digital future.",
