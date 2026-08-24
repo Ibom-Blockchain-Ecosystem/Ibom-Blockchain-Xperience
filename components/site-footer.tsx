@@ -1,57 +1,70 @@
-import Image from "next/image";
 import Link from "next/link";
 
 type SiteFooterProps = {
   nextCountry?: { href: string; label: string };
 };
 
-export function SiteFooter({ nextCountry }: SiteFooterProps) {
-  const newsletterUrl = process.env.NEXT_PUBLIC_NEWSLETTER_FORM_URL;
+const socialLinks = [
+  { label: "LinkedIn", href: "https://www.linkedin.com/company/ibom-blockchain-summit/" },
+  { label: "Facebook", href: "https://web.facebook.com/Ibomblockchainxperience" },
+  { label: "Instagram", href: "https://www.instagram.com/ibomblockchainxperience/" },
+  { label: "X / Twitter", href: "https://x.com/IbomBlockchain" },
+];
 
+export function SiteFooter({ nextCountry }: SiteFooterProps) {
   return (
     <footer className="site-footer">
-      <section className="site-footer__newsletter" aria-labelledby="newsletter-title">
-        <div>
-          <span>Stay connected to the movement</span>
-          <h2 id="newsletter-title">News Across The IBX Ecosystem.</h2>
+      <div className="site-footer__inner">
+        <div className="site-footer__columns">
+          <nav className="site-footer__column" aria-labelledby="footer-explore">
+            <h2 id="footer-explore">Explore</h2>
+            <Link href="/#about">About IBX</Link>
+            <Link href="/speakers">Speakers</Link>
+            <Link href="/schedule">Schedule</Link>
+            <Link href="/summit">Summit</Link>
+            <Link href="/tour">Tour</Link>
+          </nav>
+
+          <nav className="site-footer__column" aria-labelledby="footer-useful">
+            <h2 id="footer-useful">Useful links</h2>
+            <a href="mailto:partnerships@ibomblockchain.com">Become a partner</a>
+            <Link href="/#collaborators">IBX collaborators</Link>
+            <Link href="/build">IBX Build</Link>
+            <Link href="/ambassadors">Ambassadors</Link>
+            <Link href="/news">News</Link>
+          </nav>
+
+          <nav className="site-footer__column" aria-labelledby="footer-event">
+            <h2 id="footer-event">Event</h2>
+            <Link href="/summit">IBX Summit Nigeria</Link>
+            <Link href="/tour">IBX Tour</Link>
+            <Link href="/den-of-rogues">Den of Rogues</Link>
+            <a href="https://form.typeform.com/to/A2YCJwL2" target="_blank" rel="noopener noreferrer">Register interest</a>
+            {nextCountry && <Link href={nextCountry.href}>Next: {nextCountry.label}</Link>}
+          </nav>
+
+          <nav className="site-footer__column" aria-labelledby="footer-social">
+            <h2 id="footer-social">Social links</h2>
+            {socialLinks.map((social) => (
+              <a key={social.label} href={social.href} target="_blank" rel="noopener noreferrer">{social.label}</a>
+            ))}
+          </nav>
+
+          <section className="site-footer__column site-footer__contact" aria-labelledby="footer-contact">
+            <h2 id="footer-contact">Contact</h2>
+            <a href="mailto:partnerships@ibomblockchain.com"><span aria-hidden="true">✉</span>partnerships@ibomblockchain.com</a>
+            <p><span aria-hidden="true">⌖</span>Uyo, Akwa Ibom<br />Nigeria</p>
+            <a href="https://form.typeform.com/to/A2YCJwL2" target="_blank" rel="noopener noreferrer"><span aria-hidden="true">↗</span>Join the movement</a>
+          </section>
         </div>
-        <form action={newsletterUrl} method="post">
-          <label htmlFor="newsletter-email">Your email address</label>
+
+        <div className="site-footer__legal">
+          <p>© {new Date().getFullYear()} Ibom Blockchain Xperience. All rights reserved.</p>
           <div>
-            <input
-              id="newsletter-email"
-              name="email"
-              type="email"
-              inputMode="email"
-              autoComplete="email"
-              placeholder="name@example.com"
-              required
-              disabled={!newsletterUrl}
-            />
-            <button type="submit" disabled={!newsletterUrl}>Subscribe ↗</button>
+            <Link href="/privacy">Privacy</Link>
+            <Link href="/terms">Terms</Link>
           </div>
-          <small>{newsletterUrl ? "Tour updates, ecosystem stories and IBX27 announcements. No noise." : "Newsletter subscriptions will open soon."}</small>
-        </form>
-      </section>
-
-      <div className="site-footer__main">
-        <div className="site-footer__identity">
-          <Image src="/brand/ibx-tour-white.png" width={3000} height={820} alt="IBX Tour — Building for Generations" />
         </div>
-        <nav aria-label="Footer navigation">
-          <Link href="/">IBX home</Link>
-          <Link href="/tour">Explore the tour</Link>
-          <Link href="/#about">About IBX</Link>
-          <Link href="/tour/nigeria#partners">Partners</Link>
-          <a href="https://form.typeform.com/to/A2YCJwL2" target="_blank" rel="noopener noreferrer">Register interest ↗</a>
-        </nav>
-        {nextCountry && <Link className="site-footer__next" href={nextCountry.href}>Next country <strong>{nextCountry.label}</strong> →</Link>}
-      </div>
-
-      <div className="site-footer__legal">
-        <span>© {new Date().getFullYear()} Ibom Blockchain Xperience</span>
-        <span>Education. Innovation. Community.</span>
-        <span>Building for Generations</span>
       </div>
     </footer>
   );

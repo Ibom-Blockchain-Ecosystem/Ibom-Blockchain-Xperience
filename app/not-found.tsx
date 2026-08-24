@@ -6,8 +6,8 @@ export default function NotFound() {
     <main className="not-found">
       <Image src="/images/tour/cote-divoire.webp" fill sizes="100vw" alt="" priority />
       <div className="not-found__shade" />
-      <Link className="not-found__brand" href="/" aria-label="IBX Tour home">
-        <Image src="/brand/ibx-tour-white.png" width={2724} height={731} alt="IBX Tour — Building for Generations" />
+      <Link className="not-found__brand" href="/" aria-label="Ibom Blockchain Xperience home">
+        <Image src="/brand/ibx-rebrand-white.png" width={3600} height={829} alt="Ibom Blockchain Xperience" />
       </Link>
       <div className="not-found__content">
         <span>Something new is being built</span>

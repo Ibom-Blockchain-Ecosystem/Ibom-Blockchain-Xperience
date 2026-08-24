@@ -10,11 +10,11 @@ export function SiteHeader({ dark = false, onCountries, partnerHref = "/tour/nig
     <header className={`site-header ${dark ? "site-header-dark" : ""}`}>
       <Link href="/" className="brand" aria-label="IBX Tour home">
         {dark ? (
-          <Image src="/brand/ibx-tour-white.png" width={3000} height={820} alt="IBX Tour — Building for Generations" priority />
+          <Image src="/brand/ibx-tour-rebrand-white.png" width={3600} height={766} alt="IBX Tour — Building for Generations" priority />
         ) : (
           <>
-            <Image className="brand__logo brand__logo--light" src="/brand/ibx-tour-black.png" width={3000} height={820} alt="IBX Tour — Building for Generations" priority />
-            <Image className="brand__logo brand__logo--dark" src="/brand/ibx-tour-white.png" width={3000} height={820} alt="" aria-hidden="true" priority />
+            <Image className="brand__logo brand__logo--light" src="/brand/ibx-tour-rebrand-black.png" width={3600} height={702} alt="IBX Tour — Building for Generations" priority />
+            <Image className="brand__logo brand__logo--dark" src="/brand/ibx-tour-rebrand-white.png" width={3600} height={766} alt="" aria-hidden="true" priority />
           </>
         )}
       </Link>

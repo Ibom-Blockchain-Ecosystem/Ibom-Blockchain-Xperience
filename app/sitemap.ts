@@ -2,7 +2,7 @@ import type { MetadataRoute } from "next";
 import { tourStops } from "@/data/stops";
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://tour.ibomblockchain.com";
+  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://www.ibomblockchain.com";
   return [
     { url: baseUrl, lastModified: new Date(), changeFrequency: "weekly", priority: 1 },
     { url: `${baseUrl}/tour`, lastModified: new Date(), changeFrequency: "weekly", priority: .9 },

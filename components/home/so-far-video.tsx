@@ -29,7 +29,7 @@ export function SoFarVideo() {
           <span aria-hidden="true">▶</span>
         </button>
       )}
-      <span className="ibx-so-far__video-label">IBX so far · Watch film</span>
+      <span className="ibx-so-far__video-label">IBX so far · See how it Went</span>
     </div>
   );
 }

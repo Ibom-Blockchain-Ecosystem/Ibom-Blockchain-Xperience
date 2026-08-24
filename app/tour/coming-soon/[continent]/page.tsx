@@ -38,7 +38,7 @@ export default async function ContinentComingSoonPage({ params }: PageProps) {
       <div className="continent-soon__grid" aria-hidden="true">{Array.from({ length: 6 }, (_, index) => <i key={index} />)}</div>
 
       <header className="continent-soon__nav">
-        <Link href="/tour" aria-label="IBX Tour continents"><Image src="/brand/ibx-tour-white.png" width={3000} height={820} alt="IBX Tour — Building for Generations" priority /></Link>
+        <Link href="/tour" aria-label="IBX Tour continents"><Image src="/brand/ibx-tour-rebrand-white.png" width={3600} height={766} alt="IBX Tour — Building for Generations" priority /></Link>
         <nav aria-label="Tour navigation"><Link href="/tour">Countries</Link><Link href="/#about">About the tour</Link><Link href="/#partners">Partners</Link></nav>
         <Link className="continent-soon__return" href="/tour">← Return to continents</Link>
       </header>

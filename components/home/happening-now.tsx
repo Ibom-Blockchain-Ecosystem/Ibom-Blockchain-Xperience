@@ -70,7 +70,7 @@ export function HappeningNow() {
 
       <article className="ibx-newspaper">
         <header>
-          <Image src="/brand/ibx-primary-black.png" width={3001} height={756} alt="Ibom Blockchain Xperience" />
+          <Image src="/brand/ibx-rebrand-black.png" width={3600} height={829} alt="Ibom Blockchain Xperience" />
           <span>Tour edition · 2027</span>
         </header>
         <div className="ibx-newspaper__rule" />

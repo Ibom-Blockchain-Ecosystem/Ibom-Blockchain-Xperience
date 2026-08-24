@@ -105,6 +105,7 @@ export function TourExperience({ initialScreen = "landing", initialCountry }: To
 
   return (
     <main
+      id="main-content"
       className="experience-shell"
       onWheel={(event) => handleWheel(event.deltaY)}
       onTouchStart={(event) => { touchStart.current = event.changedTouches[0].clientY; }}
