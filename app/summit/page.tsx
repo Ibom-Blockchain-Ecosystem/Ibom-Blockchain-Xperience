@@ -15,8 +15,14 @@ export default function SummitPage() {
     <main className="summit-landing" id="main-content">
       <section className="summit-landing__hero" aria-labelledby="summit-title">
         <header className="summit-landing__nav">
-          <Link className="summit-landing__brand" href="/" aria-label="Ibom Blockchain Xperience home">
-            <Image src="/brand/ibx-rebrand-white.png" width={3600} height={829} alt="Ibom Blockchain Xperience" priority />
+          <Link className="summit-landing__brand" href="/" aria-label="Ibom Blockchain Xperience Summit home">
+            <Image
+              src="/brand/programmes/ibx-summit-logo.png"
+              width={1800}
+              height={333}
+              alt="Ibom Blockchain Xperience Summit — Built for This"
+              priority
+            />
           </Link>
 
           <nav aria-label="Summit navigation">
@@ -66,9 +72,9 @@ export default function SummitPage() {
       <SummitDestinations />
 
       <section className="summit-about" id="about-summit">
-        <p>IBX Summit Nigeria</p>
-        <h2>Global blockchain movement meets in Uyo.</h2>
-        <p>The complete programme, speakers, venue and registration details will be announced as the road to IBX27 continues.</p>
+        <p>IBX Global Summit</p>
+        <h2>The Global Blockchain Movement Converges</h2>
+        <p>The Global Blockchain Movement connects people, ideas and opportunities shaping the future of blockchain.</p>
       </section>
       <SiteFooter />
     </main>

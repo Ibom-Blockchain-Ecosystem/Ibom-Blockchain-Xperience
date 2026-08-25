@@ -53,7 +53,6 @@ export function SiteFooter({ nextCountry }: SiteFooterProps) {
           <section className="site-footer__column site-footer__contact" aria-labelledby="footer-contact">
             <h2 id="footer-contact">Contact</h2>
             <a href="mailto:partnerships@ibomblockchain.com"><span aria-hidden="true">✉</span>partnerships@ibomblockchain.com</a>
-            <p><span aria-hidden="true">⌖</span>Uyo, Akwa Ibom<br />Nigeria</p>
             <a href="https://form.typeform.com/to/A2YCJwL2" target="_blank" rel="noopener noreferrer"><span aria-hidden="true">↗</span>Join the movement</a>
           </section>
         </div>
