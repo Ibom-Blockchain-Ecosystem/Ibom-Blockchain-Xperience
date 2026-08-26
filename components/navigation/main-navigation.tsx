@@ -6,7 +6,6 @@ const links = [
   { href: "/tour", label: "Tour" },
   { href: "#build", label: "Build" },
   { href: "#community", label: "Community" },
-  { href: "/tour/nigeria#partners", label: "Partners" },
 ];
 
 export function MainNavigation() {

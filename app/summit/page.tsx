@@ -34,7 +34,7 @@ export default function SummitPage() {
           </nav>
 
           <a className="summit-landing__register" href="https://form.typeform.com/to/A2YCJwL2" target="_blank" rel="noopener noreferrer">
-            Register interest ↗
+            Register interest
           </a>
 
           <details className="summit-landing__mobile-menu">
@@ -51,13 +51,13 @@ export default function SummitPage() {
 
         <div className="summit-landing__lead">
           <div className="summit-landing__copy">
-            <p>The flagship gathering starts here.</p>
+            <p>The first stop of the flagship gathering starts here.</p>
             <h1 id="summit-title">West Africa&apos;s<br /><span>Largest Blockchain Gathering.</span></h1>
             <ul>
               <li>Two days of ideas, building and collaboration.</li>
-              <li>Uyo, Nigeria · May 2027.</li>
+            
             </ul>
-            <Link className="summit-landing__cta" href="#about-summit">Explore the summit <span aria-hidden="true">↗</span></Link>
+            <Link className="summit-landing__cta" href="#about-summit">Explore the summit</Link>
           </div>
 
           <div className="summit-landing__mosaic" aria-label="Ibom Blockchain Xperience Summit identity">

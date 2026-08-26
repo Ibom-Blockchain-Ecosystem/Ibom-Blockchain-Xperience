@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { IbxHome } from "@/components/home/ibx-home";
+import { Analytics } from "@vercel/analytics/next"
 
 export const metadata: Metadata = {
   title: "Ibom Blockchain Xperience (IBX) — West Africa's Largest Blockchain Movement",

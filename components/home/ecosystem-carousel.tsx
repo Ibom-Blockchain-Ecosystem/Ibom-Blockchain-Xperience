@@ -16,6 +16,7 @@ export function EcosystemCarousel({ programmes }: { programmes: EcosystemProgram
   const [activeIndex, setActiveIndex] = useState(0);
   const programme = programmes[activeIndex];
   const previewProgramme = programmes[(activeIndex + 1) % programmes.length];
+  const previewImage = previewProgramme.logo ?? programmeImages[(activeIndex + 1) % programmeImages.length];
   const [accent, ...titleWords] = programme.title.split(" ");
   const [isPaused, setIsPaused] = useState(false);
 
@@ -46,8 +47,8 @@ export function EcosystemCarousel({ programmes }: { programmes: EcosystemProgram
         }
       }}
     >
-      <div key={`left-${programme.title}`} className="ibx-ecosystem-preview ibx-ecosystem-preview--left" aria-hidden="true"><Image src={programmeImages[(activeIndex + 1) % programmeImages.length]} alt="" fill sizes="33vw" /><strong>{previewProgramme.title}</strong></div>
-      <div key={`right-${programme.title}`} className="ibx-ecosystem-preview ibx-ecosystem-preview--right" aria-hidden="true"><Image src={programmeImages[(activeIndex + 1) % programmeImages.length]} alt="" fill sizes="33vw" /><strong>{previewProgramme.title}</strong></div>
+      <div key={`left-${programme.title}`} className={`ibx-ecosystem-preview ibx-ecosystem-preview--left${previewProgramme.logo ? " is-logo" : ""}`} aria-hidden="true"><Image src={previewImage} alt="" fill sizes="33vw" /><strong>{previewProgramme.title}</strong></div>
+      <div key={`right-${programme.title}`} className={`ibx-ecosystem-preview ibx-ecosystem-preview--right${previewProgramme.logo ? " is-logo" : ""}`} aria-hidden="true"><Image src={previewImage} alt="" fill sizes="33vw" /><strong>{previewProgramme.title}</strong></div>
       <span className="ibx-float-star ibx-float-star--ecosystem-one" aria-hidden="true">
         <Image src="/images/home/orange-glossy-star.png" alt="" fill sizes="72px" />
       </span>
@@ -56,8 +57,14 @@ export function EcosystemCarousel({ programmes }: { programmes: EcosystemProgram
       </span>
 
       <div key={programme.title} className="ibx-ecosystem-card" data-slide={activeIndex} aria-live="polite">
-        <div className="ibx-ecosystem-card__visual">
-          <Image src={programmeImages[activeIndex % programmeImages.length]} alt={`${programme.title} experience`} fill sizes="(max-width: 800px) 90vw, 40vw" priority={activeIndex === 0} />
+        <div className={`ibx-ecosystem-card__visual${programme.logo ? " ibx-ecosystem-card__visual--logo" : ""}`}>
+          <Image
+            src={programme.logo ?? programmeImages[activeIndex % programmeImages.length]}
+            alt={programme.logo ? `${programme.title} logo` : `${programme.title} experience`}
+            fill
+            sizes="(max-width: 800px) 90vw, 40vw"
+            priority={activeIndex === 0}
+          />
         </div>
         <div className="ibx-ecosystem-card__content">
           <div className="ibx-ecosystem-card__count" aria-hidden="true">
@@ -66,7 +73,11 @@ export function EcosystemCarousel({ programmes }: { programmes: EcosystemProgram
           <p className="ibx-kicker">{programme.eyebrow}</p>
           <h3><span>{accent}</span>{titleWords.length > 0 ? ` ${titleWords.join(" ")}` : ""}</h3>
           <p className="ibx-ecosystem-card__copy">{programme.description}</p>
-          <Link className="ibx-button" href={programme.href}>{programme.cta}</Link>
+          {programme.href.startsWith("http") ? (
+            <a className="ibx-button" href={programme.href} target="_blank" rel="noopener noreferrer">{programme.cta}</a>
+          ) : (
+            <Link className="ibx-button" href={programme.href}>{programme.cta}</Link>
+          )}
         </div>
       </div>
 

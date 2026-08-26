@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 
 type SiteFooterProps = {
@@ -15,6 +16,10 @@ export function SiteFooter({ nextCountry }: SiteFooterProps) {
   return (
     <footer className="site-footer">
       <div className="site-footer__inner">
+        <Link className="site-footer__brand-logo" href="/" aria-label="Ibom Blockchain Xperience home">
+          <Image src="/brand/ibx-rebrand-white.png" width={320} height={74} alt="Ibom Blockchain Xperience" />
+        </Link>
+
         <div className="site-footer__columns">
           <nav className="site-footer__column" aria-labelledby="footer-explore">
             <h2 id="footer-explore">Explore</h2>
@@ -53,7 +58,6 @@ export function SiteFooter({ nextCountry }: SiteFooterProps) {
           <section className="site-footer__column site-footer__contact" aria-labelledby="footer-contact">
             <h2 id="footer-contact">Contact</h2>
             <a href="mailto:partnerships@ibomblockchain.com"><span aria-hidden="true">✉</span>partnerships@ibomblockchain.com</a>
-            <a href="https://form.typeform.com/to/A2YCJwL2" target="_blank" rel="noopener noreferrer"><span aria-hidden="true">↗</span>Join the movement</a>
           </section>
         </div>
 

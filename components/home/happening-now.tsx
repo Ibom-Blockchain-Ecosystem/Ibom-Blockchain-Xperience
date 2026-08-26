@@ -70,14 +70,14 @@ export function HappeningNow() {
 
       <article className="ibx-newspaper">
         <header>
-          <Image src="/brand/ibx-rebrand-black.png" width={3600} height={829} alt="Ibom Blockchain Xperience" />
+          <Image src="/brand/ibx-tour-rebrand-black.png" width={3600} height={829} alt="Ibom Blockchain Xperience" />
           <span>Tour edition · 2027</span>
         </header>
         <div className="ibx-newspaper__rule" />
         <p className="ibx-newspaper__eyebrow"><i /> Live tour update</p>
         <h2 id="ibx-happening-title">Happening <span>now</span></h2>
         <h3>The IBX27 Tour is moving across West Africa.</h3>
-        <p className="ibx-newspaper__copy">Practical blockchain education, workshops, community sessions and new opportunities—delivered directly to local ecosystems.</p>
+        <p className="ibx-newspaper__copy">Practical blockchain education, workshops, community sessions and new opportunities delivered directly to local ecosystems.</p>
         <footer>
           <Link className="ibx-button" href="/tour">Follow the tour</Link>
           <span>Building for generations</span>

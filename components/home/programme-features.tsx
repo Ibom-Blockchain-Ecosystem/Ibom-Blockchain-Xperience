@@ -12,6 +12,8 @@ const features = [
     href: "#footer-newsletter",
     image: "/brand/programmes/den-of-rogues-logo.png",
     imageAlt: "Den of Rogues — Kill That Bull",
+    imageWidth: 1000,
+    imageHeight: 1216,
     type: "rogues",
   },
   {
@@ -20,8 +22,10 @@ const features = [
     description: "A regional leadership programme for students, founders and technology community builders ready to represent IBX, organise local activations and connect their ecosystems to the wider movement.",
     cta: "Join the waitlist",
     href: "#footer-newsletter",
-    image: "/images/tour/activities/community-meetup.webp",
-    imageAlt: "The IBX community gathered for a local programme",
+    image: "/brand/programmes/ibx-ambassador-logo.jpg",
+    imageAlt: "IBX Ambassador",
+    imageWidth: 1280,
+    imageHeight: 1280,
     type: "ambassadors",
   },
 ] as const;
@@ -67,8 +71,8 @@ export function ProgrammeFeatures() {
           <div className="ibx-programme-focus__visual">
             <Image
               src={active.image}
-              width={active.type === "rogues" ? 1000 : 1800}
-              height={active.type === "rogues" ? 1216 : 2400}
+              width={active.imageWidth}
+              height={active.imageHeight}
               sizes="(max-width: 800px) 82vw, 38vw"
               alt={active.imageAlt}
             />

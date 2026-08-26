@@ -478,7 +478,12 @@ button { cursor: pointer; }
 .ibx-kicker--light { color: #fff; }
 .ibx-kicker--light > span, .ibx-live-dot { display: inline-block; width: 7px; height: 7px; margin-right: 10px; border-radius: 50%; background: var(--orange); }
 .ibx-button { display: inline-flex; min-height: 50px; align-items: center; justify-content: center; gap: 24px; padding: 0 22px; border: 1px solid var(--orange); background: var(--orange); color: #fff; font-size: 10px; font-weight: 700; letter-spacing: .13em; text-transform: uppercase; }
-.ibx-button:hover { background: #fff; color: var(--ink); }
+/* `color: var(--ink)` used to pair with the `#fff` hover background —
+   fine in light mode (--ink is black), invisible in dark mode (--ink is
+   white, so it's white text on the white hover background). The hover
+   background itself never changes with theme, so the text shouldn't
+   either — pin it to true black. */
+.ibx-button:hover { background: #fff; color: var(--ibx-black); }
 .ibx-button--small { min-height: 42px; padding: 0 18px; }
 .ibx-button--dark { border-color: var(--ink); background: var(--ink); }
 .ibx-button--outline { border-color: rgba(255,255,255,.65); background: transparent; }
@@ -738,10 +743,25 @@ button { cursor: pointer; }
 .ibx-programme-showcase[data-programme="ambassadors"] .ibx-programme-focus { background: linear-gradient(135deg, rgba(224,230,243,.88), rgba(218,207,232,.82)); }
 .ibx-programme-focus__visual { position: relative; min-height: 372px; display: grid; place-items: center; overflow: hidden; border-radius: 24px 82px 82px 24px / 24px 54px 54px 24px; background: rgba(8,9,24,.48); box-shadow: inset 0 1px 0 rgba(255,255,255,.12), 0 18px 45px rgba(4,5,19,.24); }
 .ibx-programme-focus__visual::after { content: ""; position: absolute; inset: 0; background: linear-gradient(110deg, transparent 55%, rgba(27,30,53,.18)); pointer-events: none; }
-.ibx-programme-focus__visual img,
-.ibx-programme-showcase[data-programme="ambassadors"] .ibx-programme-focus__visual img { width: 100%; height: 100%; object-fit: cover; filter: saturate(.88) contrast(1.04); }
-.ibx-programme-showcase[data-programme="rogues"] .ibx-programme-focus__visual img { width: min(72%, 310px); height: auto; max-height: 88%; object-fit: contain; filter: drop-shadow(0 24px 42px rgba(0,0,0,.42)); }
-.ibx-programme-showcase[data-programme="ambassadors"] .ibx-programme-focus__visual img { object-position: center 34%; }
+.ibx-programme-focus__visual img { width: 100%; height: 100%; object-fit: cover; filter: saturate(.88) contrast(1.04); }
+/* Fixed `width` + `height:auto` + a `max-height` cap fight each other:
+   once max-height clamps the auto value, width stays put and the box
+   stops matching the logo's own intrinsic ratio, so `contain` was
+   letterboxing into a mis-shaped box instead of a clean centred fit.
+   `max-width` + `max-height` together (both as caps, no fixed axis)
+   let the browser scale the intrinsic ratio down to fit both at once.
+   Rogues and Ambassador both show a square badge logo now, not a
+   photo, so both get this treatment instead of the `cover` above. */
+.ibx-programme-showcase[data-programme="rogues"] .ibx-programme-focus__visual img,
+.ibx-programme-showcase[data-programme="ambassadors"] .ibx-programme-focus__visual img {
+  width: auto;
+  height: auto;
+  max-width: 72%;
+  max-height: 82%;
+  object-fit: contain;
+  object-position: center;
+  filter: drop-shadow(0 24px 42px rgba(0,0,0,.42));
+}
 .ibx-programme-focus__copy { max-width: 470px; }
 .ibx-programme-focus__copy .ibx-programme__eyebrow { margin-bottom: 18px; color: #f94902; }
 .ibx-programme-focus__copy h2 { margin: 0; font-family: var(--font-square-block), Montserrat, sans-serif; font-size: clamp(46px, 4.4vw, 68px); font-weight: 400; line-height: .88; letter-spacing: -.02em; text-transform: uppercase; }
@@ -930,6 +950,37 @@ button { cursor: pointer; }
 }
 .ibx-so-far__simple-grid .ibx-so-far__video > button { z-index: 4; }
 
+/* Speaker quote slider — sits in the former "speaker" tile. The quote,
+   name and title are already lettered into each image, so this only
+   crossfades between full images; there's no text overlay of our own. */
+.ibx-so-far__simple-grid .ibx-so-far__photo--quotes { background: #0b0b0b; }
+.ibx-so-far__quote-slider { position: absolute; inset: 0; }
+.ibx-so-far__quote-slider-image { object-fit: cover; object-position: center; opacity: 0; transition: opacity .6s ease; }
+.ibx-so-far__quote-slider-image.is-active { z-index: 1; opacity: 1; }
+.ibx-so-far__quote-slider-controls { position: absolute; z-index: 2; left: 18px; bottom: 16px; display: flex; align-items: center; gap: 10px; }
+.ibx-so-far__quote-slider-controls > button:first-child,
+.ibx-so-far__quote-slider-controls > button:last-child { flex: none; width: 24px; height: 24px; border: 0; border-radius: 50%; background: rgba(0,0,0,.4); color: #fff; font-size: 12px; line-height: 1; cursor: pointer; backdrop-filter: blur(4px); }
+.ibx-so-far__quote-slider-dots { display: flex; gap: 6px; }
+.ibx-so-far__quote-slider-dots button { width: 14px; height: 3px; padding: 0; border: 0; border-radius: 2px; background: rgba(255,255,255,.4); cursor: pointer; transition: background .2s ease, width .2s ease; }
+.ibx-so-far__quote-slider-dots button.is-active { width: 24px; background: var(--orange); }
+
+/* Generic crossfading slideshow — same pattern as the quote slider above,
+   used for the "Ideas take the stage" panel tile. */
+.ibx-photo-slideshow { position: absolute; inset: 0; }
+.ibx-photo-slideshow__image { object-fit: cover; opacity: 0; transition: opacity .6s ease; }
+.ibx-photo-slideshow__image.is-active { z-index: 1; opacity: 1; }
+.ibx-photo-slideshow__dots { position: absolute; z-index: 2; left: 18px; bottom: 16px; display: flex; gap: 6px; }
+.ibx-photo-slideshow__dots button { width: 14px; height: 3px; padding: 0; border: 0; border-radius: 2px; background: rgba(255,255,255,.4); cursor: pointer; transition: background .2s ease, width .2s ease; }
+.ibx-photo-slideshow__dots button.is-active { width: 24px; background: var(--orange); }
+
+@media (prefers-reduced-motion: reduce) {
+  .ibx-photo-slideshow__image { transition: none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ibx-so-far__quote-slider-image { transition: none; }
+}
+
 @media (max-width: 900px) {
   .ibx-so-far__simple-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -943,11 +994,35 @@ button { cursor: pointer; }
 }
 
 @media (max-width: 560px) {
-  .ibx-home--stage-one .ibx-so-far { padding: 28px 12px 42px; }
-  .ibx-so-far__simple-grid { display: flex; flex-direction: column; gap: 10px; }
+  .ibx-home--stage-one .ibx-so-far { padding: 24px 14px 56px; }
+  /* Stacking-card scroll: each tile is `sticky` at its own increasing
+     offset, so as you scroll, every tile slides up and piles on top of
+     the one before it instead of just flowing past in a plain list.
+     The 48px step between offsets is deliberately generous — anything
+     tighter reads as a rendering glitch rather than a stack — and each
+     card gets a slightly heavier radius + a tight, dark contact shadow
+     so the overlap actually looks like one card lifting onto another. */
+  .ibx-so-far__simple-grid { display: flex; flex-direction: column; gap: 0; padding-bottom: 40px; }
   .ibx-so-far__simple-grid .ibx-so-far__photo,
-  .ibx-so-far__simple-grid .ibx-so-far__video { min-height: 310px; }
-  .ibx-so-far__simple-grid .ibx-so-far__video { order: -1; min-height: 350px; }
+  .ibx-so-far__simple-grid .ibx-so-far__video {
+    position: sticky;
+    min-height: 340px;
+    border-radius: 26px;
+    box-shadow: 0 -22px 36px -18px rgba(0,0,0,.55), 0 18px 30px -14px rgba(0,0,0,.4);
+  }
+  .ibx-so-far__simple-grid .ibx-so-far__video { order: -1; top: 16px; z-index: 1; min-height: 380px; }
+  .ibx-so-far__simple-grid .ibx-so-far__photo--panel { top: 64px; z-index: 2; }
+  .ibx-so-far__simple-grid .ibx-so-far__photo--quotes { top: 112px; z-index: 3; }
+  .ibx-so-far__simple-grid .ibx-so-far__photo--audience { top: 160px; z-index: 4; }
+  .ibx-so-far__simple-grid .ibx-so-far__photo--community { top: 208px; z-index: 5; }
+}
+
+@media (max-width: 560px) and (prefers-reduced-motion: reduce) {
+  /* Sticky stacking is itself a scroll-driven motion effect — fall back
+     to a plain flowing list when the visitor has asked for less motion. */
+  .ibx-so-far__simple-grid .ibx-so-far__photo,
+  .ibx-so-far__simple-grid .ibx-so-far__video { position: static; box-shadow: none; }
+  .ibx-so-far__simple-grid { gap: 10px; }
 }
 
 @media (max-width: 900px) {
@@ -977,6 +1052,19 @@ button { cursor: pointer; }
 .ibx-collaborators__logo img { display: block; width: auto; max-width: 116px; height: auto; max-height: 32px; object-fit: contain; filter: grayscale(1) brightness(0); opacity: .72; transition: opacity .3s ease, transform .3s ease; }
 .ibx-collaborators__logo:hover img { opacity: 1; transform: scale(1.045); }
 .ibx-collaborators__wall:hover .ibx-collaborators__track { animation-play-state: paused; }
+
+/* The collaborator wall was hardcoded to a permanent white band with
+   logos forced pure black (`brightness(0)`) — it never followed the
+   theme toggle, so it sat as a stray white strip in an otherwise dark
+   page. Flip both the band and the logos for dark mode, the same
+   invert-for-dark technique already used for country partner logos. */
+:root[data-theme="dark"] .ibx-collaborators {
+  background: var(--ibx-black);
+  color: #fff;
+}
+:root[data-theme="dark"] .ibx-collaborators__logo img {
+  filter: invert(1) grayscale(1) brightness(1.7);
+}
 @keyframes ibx-collaborator-marquee { to { transform: translateX(-50%); } }
 
 @media (max-width: 650px) {
@@ -1715,6 +1803,28 @@ body .ibx-home--stage-one .ibx-ecosystem-card__copy { min-height: 0; color: #666
 .ibx-ecosystem-card__visual { position: relative; width: 100%; min-height: 372px; overflow: hidden; border-radius: 24px 82px 82px 24px / 24px 54px 54px 24px; background: #0b0b0b; box-shadow: 0 18px 45px rgba(4,5,19,.22); }
 .ibx-ecosystem-card__visual::after { content: ""; position: absolute; inset: 0; background: linear-gradient(110deg, transparent 58%, rgba(27,30,53,.16)); pointer-events: none; }
 .ibx-ecosystem-card__visual img { object-fit: cover; filter: saturate(.86) contrast(1.03); }
+/* Programme logos sit on a plain dark tile, fully visible rather than
+   cropped — swap the photo's cover-fit for a padded, letterboxed logo. */
+.ibx-ecosystem-card__visual--logo::after { display: none; }
+/* next/image's `fill` mode sets position/top/left/right/bottom/width/
+   height as an INLINE style on the <img> itself (see
+   node_modules/next/.../get-img-props.js) — that beats any stylesheet
+   rule here unless it's `!important`, fill defaults included. Shrinking
+   `width` without `!important` on every one of those properties is a
+   no-op: the inline `left:0;top:0;width:100%;height:100%` just wins,
+   which is why the logo was pinning to the top-left corner instead of
+   centring. */
+.ibx-ecosystem-card__visual--logo img {
+  top: 50% !important;
+  left: 50% !important;
+  right: auto !important;
+  bottom: auto !important;
+  width: 70% !important;
+  height: 70% !important;
+  transform: translate(-50%, -50%) !important;
+  object-fit: contain !important;
+  filter: none;
+}
 .ibx-ecosystem-card__content { position: relative; display: flex; flex-direction: column; align-items: flex-start; }
 body .ibx-home--stage-one .ibx-ecosystem-card__content > .ibx-button { background: #f94902; border-color: #f94902; }
 .ibx-ecosystem-preview { align-items: flex-end; overflow: hidden; color: rgba(255,255,255,.7); background: #0b0b0b; }
@@ -1731,6 +1841,8 @@ body .ibx-home--stage-one .ibx-ecosystem-card__content > .ibx-button { backgroun
 /* Five-column IBX event footer */
 body .site-footer { overflow: hidden; color: #f7f7f7; background: #141414; }
 body .site-footer__inner { width: min(1440px, calc(100% - 48px)); margin: 0 auto; padding: 8px 0 0; border-top: 1px solid rgba(255,255,255,.22); }
+.site-footer__brand-logo { display: inline-block; margin-top: clamp(40px, 5vw, 64px); margin-bottom: 8px; }
+.site-footer__brand-logo img { display: block; width: clamp(180px, 20vw, 270px); height: auto; }
 .site-footer__columns { display: grid; grid-template-columns: 1fr 1fr 1fr 1fr 1.12fr; gap: clamp(32px, 5vw, 82px); padding: clamp(48px, 5vw, 76px) 0; }
 .site-footer__column { min-width: 0; display: flex; flex-direction: column; align-items: flex-start; gap: 15px; }
 .site-footer__column h2 { margin: 0 0 10px; color: #fff; font-size: clamp(19px, 1.5vw, 25px); font-weight: 650; line-height: 1; letter-spacing: -.035em; }
@@ -1800,7 +1912,7 @@ body .site-footer__inner { width: min(1440px, calc(100% - 48px)); margin: 0 auto
 .summit-upcoming__lockup > p:first-child { margin: 0 0 26px; padding: 10px 18px; color: #010101; background: #f94902; font-size: 12px; font-weight: 850; letter-spacing: .18em; text-transform: uppercase; }
 .summit-upcoming__logo { width: min(760px, 96%); display: flex; flex-direction: column; align-items: center; gap: 16px; }
 .summit-upcoming__logo img { display: block; width: 100%; height: auto; }
-.summit-upcoming__lockup h2 { margin: 34px 0 12px; color: #fff; font-size: clamp(36px, 4.8vw, 68px); font-weight: 650; line-height: .9; letter-spacing: -.055em; text-transform: uppercase; }
+.summit-upcoming__lockup h2 { margin: 34px 0 12px; color: #fff; font-size: clamp(20px, 2.6vw, 40px); font-weight: 650; line-height: .9; letter-spacing: -.03em; text-transform: uppercase; white-space: nowrap; }
 .summit-upcoming__lockup h2 span { color: #f94902; }
 .summit-upcoming__lockup > p:last-child { margin: 0; color: rgba(255,255,255,.66); font-size: 13px; line-height: 1.5; }
 .summit-upcoming__grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 28px; }
@@ -1817,7 +1929,7 @@ body .site-footer__inner { width: min(1440px, calc(100% - 48px)); margin: 0 auto
 .summit-event-card__status { min-height: 44px; display: flex; align-items: center; justify-content: center; color: rgba(255,255,255,.72); background: rgba(255,255,255,.09); font-size: 10px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; }
 .summit-about { min-height: 70vh; display: grid; place-content: center; gap: 24px; padding: 110px max(6vw, 24px); color: #0b0b0b; background: #f3f1eb; text-align: center; }
 .summit-about > p:first-child { margin: 0; color: #f94902; font-size: 10px; font-weight: 750; letter-spacing: .16em; text-transform: uppercase; }
-.summit-about h2 { max-width: 980px; margin: 0; font-size: clamp(50px, 7vw, 108px); font-weight: 650; line-height: .88; letter-spacing: -.07em; text-transform: uppercase; }
+.summit-about h2 { max-width: 980px; margin: 0; font-size: clamp(32px, 3.8vw, 58px); font-weight: 650; line-height: .96; letter-spacing: -.03em; text-transform: uppercase; text-wrap: balance; }
 .summit-about > p:last-child { max-width: 660px; margin: 0 auto; color: #666666; line-height: 1.7; }
 
 @media (max-width: 900px) {
@@ -1847,6 +1959,7 @@ body .site-footer__inner { width: min(1440px, calc(100% - 48px)); margin: 0 auto
   .summit-upcoming__tape span { padding: 9px 24px; font-size: 9px; }
   .summit-upcoming__lockup { width: calc(100% - 28px); padding-right: 10px; padding-left: 10px; }
   .summit-upcoming__lockup > p:first-child { font-size: 10px; }
+  .summit-upcoming__lockup h2 { font-size: clamp(15px, 4.6vw, 20px); letter-spacing: -.01em; }
   .summit-upcoming__logo { width: min(400px, 94%); }
 }
 
@@ -1899,6 +2012,22 @@ body .site-footer__inner { width: min(1440px, calc(100% - 48px)); margin: 0 auto
   color: #fff;
 }
 
+:root[data-theme="dark"] body .ibx-home--stage-one .ibx-ecosystem-card h3 {
+  color: #fff;
+}
+
+:root[data-theme="dark"] body .ibx-home--stage-one .ibx-ecosystem-card__copy {
+  color: rgba(255,255,255,.68);
+}
+
+/* The dark-theme list above targets the legacy `.ibx-programme__copy`
+   selector, which nothing renders — programme-features.tsx actually uses
+   `.ibx-programme-focus__copy`, so its body text was never corrected for
+   dark mode and stayed at the light-mode grey. */
+:root[data-theme="dark"] .ibx-programme-focus__copy > p:not(.ibx-programme__eyebrow) {
+  color: var(--muted);
+}
+
 :root[data-theme="dark"] :is(
   .ibx-ecosystem-card,
   .ibx-programme-focus,
@@ -1910,6 +2039,15 @@ body .site-footer__inner { width: min(1440px, calc(100% - 48px)); margin: 0 auto
   border-color: rgba(255,255,255,.13);
   background-color: var(--surface-raised);
   color: #fff;
+}
+
+/* `.ibx-programme-focus` (and its "ambassadors" variant) paint their
+   background with the `background` shorthand, which also sets
+   background-image — a `background-color`-only override above can't
+   clear that, so the light gradient kept showing through under white
+   text. Clear it explicitly so the card is actually solid dark. */
+:root[data-theme="dark"] :is(.ibx-programme-focus, .ibx-programme-showcase[data-programme="ambassadors"] .ibx-programme-focus) {
+  background-image: none;
 }
 
 :root[data-theme="dark"] :is(
@@ -1970,6 +2108,14 @@ body .site-footer__inner { width: min(1440px, calc(100% - 48px)); margin: 0 auto
   color: var(--ibx-black);
 }
 
+:root[data-theme="light"] body .ibx-home--stage-one .ibx-ecosystem-card h3 {
+  color: var(--ibx-black);
+}
+
+:root[data-theme="light"] body .ibx-home--stage-one .ibx-ecosystem-card__copy {
+  color: #666666;
+}
+
 :root[data-theme="light"] :is(
   .ibx-ecosystem-card,
   .ibx-programme-focus,
@@ -1980,6 +2126,10 @@ body .site-footer__inner { width: min(1440px, calc(100% - 48px)); margin: 0 auto
   border-color: rgba(1,1,1,.12);
   background-color: #f5f5f5;
   color: var(--ibx-black);
+}
+
+:root[data-theme="light"] :is(.ibx-programme-focus, .ibx-programme-showcase[data-programme="ambassadors"] .ibx-programme-focus) {
+  background-image: none;
 }
 
 :is(
@@ -2170,7 +2320,7 @@ body { overflow-x: clip; }
   .summit-event-card > div:not(.summit-event-card__image) { font-size: 14px; line-height: 1.45; }
   .summit-event-card__status { min-height: 48px; font-size: 11px; }
   .summit-about { min-height: 0; padding: 76px 18px; }
-  .summit-about h2 { font-size: clamp(42px, 13vw, 62px); line-height: .94; }
+  .summit-about h2 { font-size: clamp(24px, 7.5vw, 36px); line-height: 1; letter-spacing: -.02em; }
   .summit-about > p:last-child { font-size: 16px; }
 
   .country-tabs { height: 76px; overscroll-behavior-inline: contain; scrollbar-width: none; }
@@ -2271,4 +2421,340 @@ body { overflow-x: clip; }
   .ibx-home--stage-one .ibx-kpi-strip { overflow-x: auto; mask-image: none; }
   .ibx-home--stage-one .ibx-kpi-strip__track { animation: none; }
   .ibx-home--stage-one .ibx-kpi-strip__group[aria-hidden="true"] { display: none; }
+}
+/* --------------------------------------------------------------------------
+   Final mobile UX pass
+   Keeps the desktop compositions intact while making cards, controls, media,
+   and the footer genuinely phone-sized.
+   -------------------------------------------------------------------------- */
+@media (max-width: 720px) {
+  /* Compact footer: keep useful links visible without making it a full page. */
+  body .site-footer {
+    padding: 34px 0 18px !important;
+  }
+
+  body .site-footer__inner {
+    width: calc(100% - 32px) !important;
+  }
+
+  body .site-footer__columns {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    gap: 28px 20px !important;
+  }
+
+  body .site-footer__column,
+  body .site-footer__contact {
+    min-width: 0;
+    gap: 9px !important;
+  }
+
+  body .site-footer__column h2,
+  body .site-footer__contact h2 {
+    margin: 0 0 5px !important;
+    font-size: 15px !important;
+    line-height: 1.1 !important;
+  }
+
+  body .site-footer__column a,
+  body .site-footer__contact a,
+  body .site-footer__contact p {
+    font-size: 12px !important;
+    line-height: 1.35 !important;
+    overflow-wrap: anywhere;
+  }
+
+  body .site-footer__contact {
+    grid-column: 1 / -1;
+    display: grid !important;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    column-gap: 20px !important;
+  }
+
+  body .site-footer__contact h2 {
+    grid-column: 1 / -1;
+  }
+
+  body .site-footer__legal {
+    margin-top: 28px !important;
+    padding-top: 14px !important;
+    gap: 8px !important;
+    font-size: 10px !important;
+  }
+
+  /* Programme carousel: a compact card with controls below, never over CTA. */
+  .ibx-home--stage-one .ibx-programmes {
+    min-height: 0 !important;
+    padding: 48px 0 66px !important;
+    overflow: clip;
+  }
+
+  .ibx-home--stage-one .ibx-programme-showcase {
+    min-height: 0 !important;
+    padding-bottom: 62px;
+    overflow: visible;
+  }
+
+  .ibx-home--stage-one .ibx-programme-focus {
+    width: calc(100% - 28px) !important;
+    min-height: 0 !important;
+    grid-template-columns: 1fr !important;
+    gap: 16px !important;
+    padding: 14px 14px 22px !important;
+    border-radius: 22px !important;
+  }
+
+  .ibx-home--stage-one .ibx-programme-focus__visual {
+    min-height: 0 !important;
+    aspect-ratio: 4 / 3;
+    border-radius: 18px 18px 38px 18px !important;
+    overflow: hidden;
+  }
+
+  .ibx-home--stage-one .ibx-programme-focus__visual img {
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: cover !important;
+  }
+
+  .ibx-home--stage-one
+    .ibx-programme-focus[data-programme="rogues"]
+    .ibx-programme-focus__visual
+    img,
+  .ibx-home--stage-one
+    .ibx-programme-focus[data-programme="ambassadors"]
+    .ibx-programme-focus__visual
+    img {
+    width: auto !important;
+    height: auto !important;
+    max-width: 64% !important;
+    max-height: 82% !important;
+    object-fit: contain !important;
+    object-position: center !important;
+  }
+
+  .ibx-home--stage-one .ibx-programme-focus__copy {
+    padding: 2px 8px 0 !important;
+  }
+
+  .ibx-home--stage-one .ibx-programme-focus__copy > span {
+    margin-bottom: 10px !important;
+  }
+
+  .ibx-home--stage-one .ibx-programme-focus__copy h2 {
+    font-size: clamp(34px, 10.5vw, 44px) !important;
+    line-height: 0.94 !important;
+  }
+
+  .ibx-home--stage-one .ibx-programme-focus__copy p {
+    margin: 15px 0 18px !important;
+    font-size: 14px !important;
+    line-height: 1.55 !important;
+  }
+
+  .ibx-home--stage-one .ibx-programme-focus__copy .ibx-home-button {
+    width: max-content !important;
+    min-height: 44px !important;
+    padding: 12px 20px !important;
+  }
+
+  .ibx-home--stage-one .ibx-programme-preview,
+  .ibx-home--stage-one .ibx-ecosystem-preview {
+    display: none !important;
+  }
+
+  .ibx-home--stage-one .ibx-programme-controls {
+    bottom: 4px !important;
+    z-index: 30 !important;
+    gap: 2px !important;
+    padding: 3px 5px !important;
+    pointer-events: auto !important;
+  }
+
+  .ibx-home--stage-one .ibx-programme-controls > button,
+  .ibx-home--stage-one .ibx-carousel-controls > button {
+    width: 44px !important;
+    min-width: 44px !important;
+    height: 44px !important;
+    min-height: 44px !important;
+    display: grid !important;
+    place-items: center;
+    pointer-events: auto !important;
+    touch-action: manipulation;
+  }
+
+  .ibx-home--stage-one .ibx-programme-controls__dots button,
+  .ibx-home--stage-one .ibx-carousel-controls__dots button {
+    min-width: 28px !important;
+    min-height: 44px !important;
+    padding: 17px 9px !important;
+    background-clip: content-box !important;
+    pointer-events: auto !important;
+    touch-action: manipulation;
+  }
+
+  .ibx-home--stage-one .ibx-programme-star {
+    width: 38px !important;
+    height: 38px !important;
+    pointer-events: none;
+  }
+
+  /* Ecosystem carousel uses the same compact, reachable mobile pattern. */
+  .ibx-home--stage-one .ibx-ecosystem {
+    min-height: 0 !important;
+    padding: 48px 0 66px !important;
+    overflow: clip;
+  }
+
+  .ibx-home--stage-one .ibx-ecosystem-stage {
+    min-height: 0 !important;
+    padding-bottom: 62px;
+    overflow: visible;
+  }
+
+  .ibx-home--stage-one .ibx-ecosystem-card {
+    width: calc(100% - 28px) !important;
+    min-height: 0 !important;
+    grid-template-columns: 1fr !important;
+    gap: 16px !important;
+    padding: 14px 14px 22px !important;
+    border-radius: 22px !important;
+  }
+
+  .ibx-home--stage-one .ibx-ecosystem-card__visual {
+    min-height: 0 !important;
+    aspect-ratio: 4 / 3;
+    border-radius: 18px 18px 38px 18px !important;
+    overflow: hidden;
+  }
+
+  .ibx-home--stage-one .ibx-ecosystem-card__visual img {
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: cover !important;
+  }
+
+  /* Wordmark logos (Summit, Tour) are extremely wide and short — dropped
+     into the same 4:3 box as a photo, "contain" left most of the panel
+     as bare dead space. Give logo slides their own shorter, letterboxed
+     panel with a centred glow, so the empty space reads as a deliberate
+     spotlight instead of an undefined gap. */
+  .ibx-home--stage-one .ibx-ecosystem-card__visual--logo {
+    aspect-ratio: 16 / 9 !important;
+    background:
+      radial-gradient(circle at 50% 52%, rgba(249,73,2,.22), transparent 62%),
+      #0b0b0b !important;
+  }
+
+  .ibx-home--stage-one .ibx-ecosystem-card__visual--logo img {
+    top: 50% !important;
+    left: 50% !important;
+    right: auto !important;
+    bottom: auto !important;
+    width: 58% !important;
+    height: auto !important;
+    transform: translate(-50%, -50%) !important;
+    object-fit: contain !important;
+  }
+
+  .ibx-home--stage-one .ibx-ecosystem-card__content {
+    padding: 2px 8px 0 !important;
+  }
+
+  .ibx-home--stage-one .ibx-ecosystem-card__content h3 {
+    font-size: clamp(32px, 10vw, 43px) !important;
+    line-height: 0.95 !important;
+  }
+
+  .ibx-home--stage-one .ibx-ecosystem-card__content p {
+    margin: 15px 0 18px !important;
+    font-size: 14px !important;
+    line-height: 1.55 !important;
+  }
+
+  .ibx-home--stage-one .ibx-ecosystem-card__content .ibx-home-button {
+    width: max-content !important;
+    min-height: 44px !important;
+    padding: 12px 20px !important;
+  }
+
+  .ibx-home--stage-one .ibx-carousel-controls {
+    position: absolute !important;
+    left: 50% !important;
+    bottom: 4px !important;
+    z-index: 30 !important;
+    min-width: 0 !important;
+    margin: 0 !important;
+    transform: translateX(-50%) !important;
+    pointer-events: auto !important;
+  }
+
+  .ibx-home--stage-one .ibx-ecosystem-star {
+    width: 38px !important;
+    height: 38px !important;
+    pointer-events: none;
+  }
+
+  /* IBX so far: every tile follows one responsive box model; no black void. */
+  .ibx-home--stage-one .ibx-so-far {
+    padding: 32px 12px 42px !important;
+  }
+
+  .ibx-home--stage-one .ibx-so-far__simple-grid {
+    display: grid !important;
+    grid-template-columns: minmax(0, 1fr) !important;
+    grid-template-rows: none !important;
+    gap: 10px !important;
+  }
+
+  .ibx-home--stage-one .ibx-so-far__simple-grid > * {
+    grid-column: 1 !important;
+    grid-row: auto !important;
+    min-height: 0 !important;
+    aspect-ratio: 4 / 3;
+    border-radius: 18px !important;
+    overflow: hidden;
+  }
+
+  .ibx-home--stage-one .ibx-so-far__video {
+    order: -1;
+    aspect-ratio: 16 / 10 !important;
+    position: relative !important;
+  }
+
+  .ibx-home--stage-one .ibx-so-far__video video {
+    position: absolute !important;
+    inset: 0 !important;
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: cover !important;
+  }
+
+  .ibx-home--stage-one .ibx-so-far__video button {
+    width: 56px !important;
+    height: 56px !important;
+    min-width: 56px !important;
+    min-height: 56px !important;
+  }
+
+  .ibx-home--stage-one .ibx-so-far__simple-grid figcaption,
+  .ibx-home--stage-one .ibx-so-far__video-label {
+    font-size: 12px !important;
+  }
+}
+
+@media (max-width: 390px) {
+  body .site-footer__columns {
+    gap: 24px 16px !important;
+  }
+
+  body .site-footer__column a,
+  body .site-footer__contact a,
+  body .site-footer__contact p {
+    font-size: 11px !important;
+  }
+
+  .ibx-home--stage-one .ibx-programme-focus,
+  .ibx-home--stage-one .ibx-ecosystem-card {
+    width: calc(100% - 20px) !important;
+  }
 }

@@ -1,6 +1,8 @@
 import Image from "next/image";
-import { ecosystemProgrammes, impactStats } from "@/content/site/home";
+import { ecosystemProgrammes, impactStats, speakerQuotes } from "@/content/site/home";
 import { EcosystemCarousel } from "@/components/home/ecosystem-carousel";
+import { PhotoSlideshow } from "@/components/home/photo-slideshow";
+import { SpeakerQuotes } from "@/components/home/speaker-quotes";
 import { SoFarVideo } from "@/components/home/so-far-video";
 import { HappeningNow } from "@/components/home/happening-now";
 import { ComingUpNext } from "@/components/home/upcoming-events";
@@ -43,8 +45,7 @@ export function IbxHome() {
             <span>The Global</span>
             <span>blockchain movement</span>
           </h1>
-          <p className="ibx-event-meta">May 2027 <i /> Uyo, Nigeria</p>
-          <a className="ibx-button" href={registrationUrl}>Register</a>
+          <a className="ibx-button" href={registrationUrl}>Explore</a>
         </div>
 
         <div className="ibx-kpi-strip" aria-label="IBX impact statistics">
@@ -72,24 +73,41 @@ export function IbxHome() {
         <h2 className="sr-only" id="ibx-so-far-title">IBX so far</h2>
         <div className="ibx-so-far__simple-grid">
           <figure className="ibx-so-far__photo ibx-so-far__photo--panel">
-            <Image src="/images/home/ibx-so-far-panel.webp" fill sizes="(max-width: 800px) 100vw, 18vw" alt="An IBX fireside panel on the summit stage" />
+            <PhotoSlideshow
+              sizes="(max-width: 800px) 100vw, 18vw"
+              images={[
+                { src: "/images/home/ibx-so-far-panel-enhanced.webp", alt: "An IBX fireside panel on the summit stage" },
+                { src: "/images/home/ibx-so-far-stage-2-enhanced.jpg", alt: "The Ibom Blockchain Summit main stage with the audience watching two large screens" },
+              ]}
+            />
             <figcaption>Ideas take the stage.</figcaption>
           </figure>
 
-          <figure className="ibx-so-far__photo ibx-so-far__photo--speaker">
-            <Image src="/images/home/ibx-so-far-speaker.webp" fill sizes="(max-width: 800px) 100vw, 18vw" alt="A speaker presenting blockchain career opportunities at IBX" />
-            <figcaption>Practical Web3 learning.</figcaption>
-          </figure>
+          <div className="ibx-so-far__photo ibx-so-far__photo--speaker ibx-so-far__photo--quotes">
+            <SpeakerQuotes quotes={speakerQuotes} />
+          </div>
 
           <SoFarVideo />
 
           <figure className="ibx-so-far__photo ibx-so-far__photo--audience">
-            <Image src="/images/home/ibx-so-far-audience.webp" fill sizes="(max-width: 800px) 100vw, 34vw" alt="A large audience gathered for the Ibom Blockchain Summit" />
+            <PhotoSlideshow
+              sizes="(max-width: 800px) 100vw, 34vw"
+              images={[
+                { src: "/images/home/ibx-so-far-audience-enhanced.webp", alt: "A large audience gathered for the Ibom Blockchain Summit" },
+                { src: "/images/home/ibx-so-far-balcony-enhanced.jpg", alt: "A two-level venue packed with attendees at the Ibom Blockchain Summit" },
+              ]}
+            />
             <figcaption>A community built to connect.</figcaption>
           </figure>
 
           <figure className="ibx-so-far__photo ibx-so-far__photo--community">
-            <Image src="/images/home/ibx-so-far-community.webp" fill sizes="(max-width: 800px) 100vw, 34vw" alt="IBX attendees enjoying a session together" />
+            <PhotoSlideshow
+              sizes="(max-width: 800px) 100vw, 34vw"
+              images={[
+                { src: "/images/home/ibx-so-far-stage-2-enhanced.jpg", alt: "The Ibom Blockchain Summit main stage with the audience watching two large screens" },
+                { src: "/images/home/ibx-so-far-sax-enhanced.jpg", alt: "A musician performing on stage at the Ibom Blockchain Summit" },
+              ]}
+            />
             <figcaption>Builders, founders and future leaders.</figcaption>
           </figure>
         </div>
