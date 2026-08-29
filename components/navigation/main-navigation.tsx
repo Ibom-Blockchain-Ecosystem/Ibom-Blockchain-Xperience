@@ -20,7 +20,7 @@ export function MainNavigation() {
       </nav>
 
       <div className="ibx-nav__actions">
-        <Link className="ibx-button ibx-button--small ibx-button--outline" href="/tour/nigeria#partners">Partner with us</Link>
+        <Link className="ibx-button ibx-button--small ibx-button--outline" href="/partners">Partner with us</Link>
         <Link className="ibx-button ibx-button--small" href="#register">Register</Link>
       </div>
 
@@ -28,7 +28,7 @@ export function MainNavigation() {
         <summary aria-label="Open navigation">Menu</summary>
         <nav aria-label="Mobile navigation">
           {links.map((link) => <Link key={link.href} href={link.href}>{link.label}</Link>)}
-          <Link href="/tour/nigeria#partners">Partner with us</Link>
+          <Link href="/partners">Partner with us</Link>
           <Link href="#register">Register</Link>
         </nav>
       </details>

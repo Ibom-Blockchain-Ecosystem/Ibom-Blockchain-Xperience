@@ -15,22 +15,36 @@ const destinations = [
 
 export function HappeningNow() {
   const [activeIndex, setActiveIndex] = useState(0);
+  const [isPaused, setIsPaused] = useState(false);
   const destination = destinations[activeIndex];
 
   useEffect(() => {
-    const interval = window.setInterval(() => {
+    if (isPaused || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+
+    const timer = window.setTimeout(() => {
       setActiveIndex((current) => (current + 1) % destinations.length);
     }, 5500);
 
-    return () => window.clearInterval(interval);
-  }, []);
+    return () => window.clearTimeout(timer);
+  }, [activeIndex, isPaused]);
 
   const move = (direction: number) => {
     setActiveIndex((current) => (current + direction + destinations.length) % destinations.length);
   };
 
   return (
-    <section className="ibx-happening" aria-labelledby="ibx-happening-title">
+    <section
+      className="ibx-happening"
+      aria-labelledby="ibx-happening-title"
+      onMouseEnter={() => setIsPaused(true)}
+      onMouseLeave={() => setIsPaused(false)}
+      onFocusCapture={() => setIsPaused(true)}
+      onBlurCapture={(event) => {
+        if (!event.currentTarget.contains(event.relatedTarget as Node | null)) {
+          setIsPaused(false);
+        }
+      }}
+    >
       <div className="ibx-happening__slides" aria-live="polite">
         {destinations.map((item, index) => (
           <Image

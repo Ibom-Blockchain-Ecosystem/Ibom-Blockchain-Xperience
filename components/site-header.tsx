@@ -19,20 +19,20 @@ export function SiteHeader({ dark = false, onCountries, partnerHref = "/tour/nig
         )}
       </Link>
       <nav aria-label="Primary navigation">
-        <a className="tangem-link" href={tangemUrl} target={tangemUrl.startsWith("http") ? "_blank" : undefined} rel={tangemUrl.startsWith("http") ? "sponsored noopener noreferrer" : undefined}>Get Tangem Wallet ↗</a>
+        <a className="tangem-link" href={tangemUrl} target={tangemUrl.startsWith("http") ? "_blank" : undefined} rel={tangemUrl.startsWith("http") ? "sponsored noopener noreferrer" : undefined}>Get Tangem Wallet ↗{tangemUrl.startsWith("http") && <span className="sr-only"> (opens in a new tab)</span>}</a>
         {onCountries ? <button type="button" onClick={onCountries}>Countries</button> : <Link href="/tour">Countries</Link>}
         <Link href="/#about">About</Link>
         <Link href={partnerHref}>Partners</Link>
       </nav>
-      <a className="join-link" href={joinMovementUrl} target="_blank" rel="noopener noreferrer">Join the movement ↗</a>
+      <a className="join-link" href={joinMovementUrl} target="_blank" rel="noopener noreferrer">Join the movement ↗<span className="sr-only"> (opens in a new tab)</span></a>
       <details className="tour-mobile-menu">
         <summary aria-label="Open navigation menu">Menu</summary>
         <nav aria-label="Mobile navigation">
-          <a href={tangemUrl} target={tangemUrl.startsWith("http") ? "_blank" : undefined} rel={tangemUrl.startsWith("http") ? "sponsored noopener noreferrer" : undefined}>Get Tangem Wallet ↗</a>
+          <a href={tangemUrl} target={tangemUrl.startsWith("http") ? "_blank" : undefined} rel={tangemUrl.startsWith("http") ? "sponsored noopener noreferrer" : undefined}>Get Tangem Wallet ↗{tangemUrl.startsWith("http") && <span className="sr-only"> (opens in a new tab)</span>}</a>
           {onCountries ? <button type="button" onClick={onCountries}>Countries</button> : <Link href="/tour">Countries</Link>}
           <Link href="/#about">About</Link>
           <Link href={partnerHref}>Partners</Link>
-          <a href={joinMovementUrl} target="_blank" rel="noopener noreferrer">Join the movement ↗</a>
+          <a href={joinMovementUrl} target="_blank" rel="noopener noreferrer">Join the movement ↗<span className="sr-only"> (opens in a new tab)</span></a>
         </nav>
       </details>
     </header>

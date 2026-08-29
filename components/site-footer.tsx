@@ -32,7 +32,7 @@ export function SiteFooter({ nextCountry }: SiteFooterProps) {
 
           <nav className="site-footer__column" aria-labelledby="footer-useful">
             <h2 id="footer-useful">Useful links</h2>
-            <a href="mailto:partnerships@ibomblockchain.com">Become a partner</a>
+            <Link href="/partners">Become a partner</Link>
             <Link href="/#collaborators">IBX collaborators</Link>
             <Link href="/build">IBX Build</Link>
             <Link href="/ambassadors">Ambassadors</Link>
@@ -44,20 +44,21 @@ export function SiteFooter({ nextCountry }: SiteFooterProps) {
             <Link href="/summit">IBX Summit Nigeria</Link>
             <Link href="/tour">IBX Tour</Link>
             <Link href="/den-of-rogues">Den of Rogues</Link>
-            <a href="https://form.typeform.com/to/A2YCJwL2" target="_blank" rel="noopener noreferrer">Register interest</a>
+            <a href="https://form.typeform.com/to/A2YCJwL2" target="_blank" rel="noopener noreferrer">Register interest<span className="sr-only"> (opens in a new tab)</span></a>
             {nextCountry && <Link href={nextCountry.href}>Next: {nextCountry.label}</Link>}
           </nav>
 
           <nav className="site-footer__column" aria-labelledby="footer-social">
             <h2 id="footer-social">Social links</h2>
             {socialLinks.map((social) => (
-              <a key={social.label} href={social.href} target="_blank" rel="noopener noreferrer">{social.label}</a>
+              <a key={social.label} href={social.href} target="_blank" rel="noopener noreferrer">{social.label}<span className="sr-only"> (opens in a new tab)</span></a>
             ))}
           </nav>
 
           <section className="site-footer__column site-footer__contact" aria-labelledby="footer-contact">
             <h2 id="footer-contact">Contact</h2>
-            <a href="mailto:partnerships@ibomblockchain.com"><span aria-hidden="true">✉</span>partnerships@ibomblockchain.com</a>
+            <Link href="/contact"><span aria-hidden="true">✉</span>Send a message</Link>
+            <a href="mailto:partnerships@ibomblockchain.com">partnerships@ibomblockchain.com</a>
           </section>
         </div>
 

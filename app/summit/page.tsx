@@ -35,6 +35,7 @@ export default function SummitPage() {
 
           <a className="summit-landing__register" href="https://form.typeform.com/to/A2YCJwL2" target="_blank" rel="noopener noreferrer">
             Register interest
+            <span className="sr-only"> (opens in a new tab)</span>
           </a>
 
           <details className="summit-landing__mobile-menu">

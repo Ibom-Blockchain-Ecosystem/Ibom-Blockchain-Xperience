@@ -2,9 +2,11 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { ComingSoonForm } from "@/components/forms/coming-soon-form";
+import { ConfirmationBanner } from "@/components/forms/confirmation-banner";
 import { comingSoonContinents, getComingSoonContinent } from "@/data/continents";
 
-type PageProps = { params: Promise<{ continent: string }> };
+type PageProps = { params: Promise<{ continent: string }>; searchParams: Promise<{ confirmed?: string }> };
 
 export function generateStaticParams() {
   return comingSoonContinents.map(({ slug }) => ({ continent: slug }));
@@ -23,12 +25,12 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   };
 }
 
-export default async function ContinentComingSoonPage({ params }: PageProps) {
+export default async function ContinentComingSoonPage({ params, searchParams }: PageProps) {
   const { continent } = await params;
+  const { confirmed } = await searchParams;
   const item = getComingSoonContinent(continent);
   if (!item) notFound();
   const activeIndex = comingSoonContinents.findIndex(({ slug }) => slug === item.slug);
-  const updatesUrl = process.env.NEXT_PUBLIC_UPDATES_FORM_URL ?? "/#register";
 
   return (
     <main className={`continent-soon continent-soon--${item.slug}`}>
@@ -53,11 +55,8 @@ export default async function ContinentComingSoonPage({ params }: PageProps) {
         <h1><span>Coming</span> Soon</h1>
         <div>
           <p>New destinations. New communities. One borderless blockchain movement. {item.description}</p>
-          <form action={updatesUrl} method="get">
-            <label className="sr-only" htmlFor="continent-email">Email address</label>
-            <input id="continent-email" name="email" type="email" placeholder="Enter your email for updates" required />
-            <button type="submit">Notify me →</button>
-          </form>
+          <ConfirmationBanner status={confirmed} />
+          <ComingSoonForm continent={item.name} continentSlug={item.slug} />
         </div>
       </section>
 

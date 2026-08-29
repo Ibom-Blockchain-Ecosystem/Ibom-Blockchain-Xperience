@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import type { CSSProperties } from "react";
+import type { CSSProperties, KeyboardEvent } from "react";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { SiteHeader } from "@/components/site-header";
 import { tourStops } from "@/data/stops";
@@ -23,6 +23,7 @@ export function TourExperience({ initialScreen = "landing", initialCountry }: To
     const requestedIndex = tourStops.findIndex((item) => item.slug === initialCountry);
     return requestedIndex >= 0 ? requestedIndex : 0;
   });
+  const [autoRotate, setAutoRotate] = useState(true);
   const wheelLock = useRef(false);
   const touchStart = useRef(0);
   const idleTimer = useRef<number | null>(null);
@@ -46,25 +47,23 @@ export function TourExperience({ initialScreen = "landing", initialCountry }: To
     if (destination) router.push(`/tour/coming-soon/${destination.slug}`);
   }, [router]);
 
-  useEffect(() => {
-    const handleKey = (event: KeyboardEvent) => {
-      if (screen === "landing") {
-        if (event.key === "ArrowDown") cycleContinent(1);
-        if (event.key === "ArrowUp") cycleContinent(-1);
-        if (event.key === "Enter") enterContinent(continents[continentIndex]);
-      } else {
-        if (["ArrowRight", "ArrowDown"].includes(event.key)) cycleStop(1);
-        if (["ArrowLeft", "ArrowUp"].includes(event.key)) cycleStop(-1);
-        if (event.key === "Escape") setScreen("landing");
-      }
-    };
-    window.addEventListener("keydown", handleKey);
-    return () => window.removeEventListener("keydown", handleKey);
-  }, [continentIndex, enterContinent, screen]);
+  // Scoped to this widget via onKeyDown below — a keydown only reaches here
+  // when focus is somewhere inside this <main>, not anywhere on the page.
+  const handleKeyDown = (event: KeyboardEvent<HTMLElement>) => {
+    if (screen === "landing") {
+      if (event.key === "ArrowDown") cycleContinent(1);
+      if (event.key === "ArrowUp") cycleContinent(-1);
+      if (event.key === "Enter") enterContinent(continents[continentIndex]);
+    } else {
+      if (["ArrowRight", "ArrowDown"].includes(event.key)) cycleStop(1);
+      if (["ArrowLeft", "ArrowUp"].includes(event.key)) cycleStop(-1);
+      if (event.key === "Escape") setScreen("landing");
+    }
+  };
 
   useEffect(() => {
     const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    if (reducedMotion) return;
+    if (reducedMotion || !autoRotate) return;
     const clearRotation = () => {
       if (idleTimer.current) window.clearInterval(idleTimer.current);
       if (resumeTimer.current) window.clearTimeout(resumeTimer.current);
@@ -93,7 +92,7 @@ export function TourExperience({ initialScreen = "landing", initialCountry }: To
       window.removeEventListener("wheel", restartAfterIdle);
       window.removeEventListener("keydown", restartAfterIdle);
     };
-  }, [screen]);
+  }, [screen, autoRotate]);
 
   const handleWheel = (delta: number) => {
     if (wheelLock.current || Math.abs(delta) < 12) return;
@@ -108,6 +107,7 @@ export function TourExperience({ initialScreen = "landing", initialCountry }: To
       id="main-content"
       className="experience-shell"
       onWheel={(event) => handleWheel(event.deltaY)}
+      onKeyDown={handleKeyDown}
       onTouchStart={(event) => { touchStart.current = event.changedTouches[0].clientY; }}
       onTouchEnd={(event) => {
         const delta = touchStart.current - event.changedTouches[0].clientY;
@@ -149,6 +149,14 @@ export function TourExperience({ initialScreen = "landing", initialCountry }: To
             </div>
             <span className="wheel-caption">{continents[continentIndex]} <i /> Scroll to explore</span>
           </div>
+          <button
+            type="button"
+            className="auto-rotate-toggle"
+            onClick={() => setAutoRotate((value) => !value)}
+            aria-pressed={!autoRotate}
+          >
+            {autoRotate ? "⏸ Pause auto-rotate" : "▶ Resume auto-rotate"}
+          </button>
           <footer className="landing-footer-next">
             <span className="landing-powered"><Image src="/images/sponsors/powered-by-tangem.png" width={200} height={24} alt="Powered by Tangem" /></span>
             <span>Adoption <i /> Connection <i /> Expansion</span>
@@ -177,10 +185,32 @@ export function TourExperience({ initialScreen = "landing", initialCountry }: To
           </div>
           <div className="tour-progress">
             <span><strong>{String(stopIndex + 1).padStart(2, "0")}</strong> / {String(tourStops.length).padStart(2, "0")}</span>
-            <div><button onClick={() => cycleStop(-1)} aria-label="Previous country">←</button><button onClick={() => cycleStop(1)} aria-label="Next country">→</button></div>
+            <div>
+              <button onClick={() => cycleStop(-1)} aria-label="Previous country">←</button>
+              <button
+                type="button"
+                className="auto-rotate-toggle auto-rotate-toggle--inline"
+                onClick={() => setAutoRotate((value) => !value)}
+                aria-pressed={!autoRotate}
+                aria-label={autoRotate ? "Pause auto-rotate" : "Resume auto-rotate"}
+              >
+                {autoRotate ? "⏸" : "▶"}
+              </button>
+              <button onClick={() => cycleStop(1)} aria-label="Next country">→</button>
+            </div>
           </div>
           <div className="country-tabs" role="tablist" aria-label="Tour countries">
-            {tourStops.map((item, index) => <button key={item.slug} role="tab" aria-selected={index === stopIndex} onClick={() => setStopIndex(index)}>{item.country}</button>)}
+            {tourStops.map((item, index) => (
+              <button
+                key={item.slug}
+                role="tab"
+                aria-selected={index === stopIndex}
+                tabIndex={index === stopIndex ? 0 : -1}
+                onClick={() => setStopIndex(index)}
+              >
+                {item.country}
+              </button>
+            ))}
           </div>
         </section>
       )}

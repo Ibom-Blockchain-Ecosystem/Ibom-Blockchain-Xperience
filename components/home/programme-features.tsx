@@ -21,7 +21,7 @@ const features = [
     title: "IBX Ambassador Programme",
     description: "A regional leadership programme for students, founders and technology community builders ready to represent IBX, organise local activations and connect their ecosystems to the wider movement.",
     cta: "Join the waitlist",
-    href: "#footer-newsletter",
+    href: "/ambassadors",
     image: "/brand/programmes/ibx-ambassador-logo.jpg",
     imageAlt: "IBX Ambassador",
     imageWidth: 1280,

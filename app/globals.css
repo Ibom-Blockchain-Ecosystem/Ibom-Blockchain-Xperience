@@ -16,6 +16,14 @@
   --muted: #b8b8b8;
   --grid-light: rgba(255, 255, 255, .12);
   --grid-dark: rgba(255, 255, 255, .16);
+  /* Status colors for form errors/success. These read fine on the dark
+     backgrounds they were designed against (~7.6:1 / ~8:1) but fail WCAG
+     AA (need 4.5:1) once composited on a light background — see the
+     light override below, computed to actually pass on white. */
+  --status-error-text: #ff6b6b;
+  --status-error-bg: rgba(220, 53, 69, .14);
+  --status-good-text: #5ec98a;
+  --status-good-bg: rgba(47, 125, 82, .18);
   color-scheme: dark;
 }
 
@@ -27,6 +35,10 @@
   --muted: #555555;
   --grid-light: rgba(1, 1, 1, .13);
   --grid-dark: rgba(1, 1, 1, .16);
+  --status-error-text: #b3261e;
+  --status-error-bg: rgba(220, 53, 69, .1);
+  --status-good-text: #1e6b3f;
+  --status-good-bg: rgba(47, 125, 82, .12);
   color-scheme: light;
 }
 
@@ -253,6 +265,13 @@ html body *:not(svg):not(path) {
 html { background: var(--paper); scroll-behavior: smooth; }
 body { margin: 0; background: var(--paper); color: var(--ink); font-family: Arial, Helvetica, sans-serif; }
 .theme-toggle { position: fixed; z-index: 100; right: 18px; bottom: 18px; display: inline-flex; align-items: center; gap: 8px; min-height: 42px; padding: 0 14px; border: 1px solid rgba(249,73,2,.55); border-radius: 999px; background: rgba(1,1,1,.88); color: #fff; box-shadow: 0 10px 32px rgba(0,0,0,.28); backdrop-filter: blur(14px); font-size: 8px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; }
+
+/* Visible pause control for the Tour landing screen's auto-rotating
+   continent wheel — WCAG 2.2.2 wants an on-screen way to stop
+   auto-updating content, not just the prefers-reduced-motion fallback. */
+.auto-rotate-toggle { position: fixed; z-index: 50; left: 18px; bottom: 18px; display: inline-flex; align-items: center; gap: 8px; min-height: 42px; padding: 0 16px; border: 1px solid var(--grid-light); border-radius: 999px; background: rgba(1,1,1,.7); color: #fff; box-shadow: 0 10px 32px rgba(0,0,0,.24); backdrop-filter: blur(14px); font-size: 9px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; cursor: pointer; }
+:root[data-theme="light"] .auto-rotate-toggle { background: rgba(255,255,255,.82); color: var(--ibx-black); border-color: rgba(1,1,1,.14); }
+.auto-rotate-toggle--inline { position: static; z-index: auto; min-height: 0; padding: 0; background: transparent; box-shadow: none; backdrop-filter: none; border-color: rgba(255,255,255,.7); font-size: 16px; width: 50px; height: 50px; border-radius: 50%; color: #fff; }
 :root[data-theme="light"] .theme-toggle { border-color: rgba(1,1,1,.18); background: rgba(255,255,255,.9); color: var(--ibx-black); }
 .theme-toggle span:first-child { font-size: 15px; }
 button, a { color: inherit; font: inherit; }
@@ -1041,6 +1060,115 @@ button { cursor: pointer; }
   .ibx-so-far__copy h2 { font-size: 38px; }
 }
 
+/* Contact / waitlist / partner pages — shared glassmorphic form */
+.contact-page {
+  --glass-bg: rgba(255,255,255,.06);
+  --glass-border: rgba(255,255,255,.14);
+  --glass-shadow: 0 24px 70px rgba(0,0,0,.4), inset 0 1px 0 rgba(255,255,255,.08);
+  position: relative;
+  display: grid;
+  gap: 48px;
+  max-width: 720px;
+  margin: 0 auto;
+  padding: clamp(100px, 10vw, 160px) max(6vw, 24px) 100px;
+  background:
+    radial-gradient(circle at 12% 18%, rgba(249,73,2,.24), transparent 34%),
+    radial-gradient(circle at 88% 78%, rgba(249,73,2,.16), transparent 32%),
+    var(--paper);
+}
+:root[data-theme="light"] .contact-page {
+  --glass-bg: rgba(255,255,255,.6);
+  --glass-border: rgba(1,1,1,.08);
+  --glass-shadow: 0 24px 60px rgba(30,14,4,.14), inset 0 1px 0 rgba(255,255,255,.6);
+}
+.contact-page__intro h1 { margin: 14px 0 18px; font-family: var(--font-square-block), Montserrat, sans-serif; font-size: clamp(40px, 5vw, 64px); font-weight: 400; line-height: .92; text-transform: uppercase; }
+.contact-page__intro p { color: var(--muted); line-height: 1.7; }
+.contact-page__intro a { color: var(--orange); }
+
+.confirmation-banner { padding: 14px 18px; border-radius: 10px; font-size: 13px; font-weight: 600; }
+.confirmation-banner--success { background: var(--status-good-bg); color: var(--status-good-text); border: 1px solid rgba(47,125,82,.32); }
+.confirmation-banner--error { background: var(--status-error-bg); color: var(--status-error-text); border: 1px solid rgba(220,53,69,.3); }
+
+.contact-form {
+  position: relative;
+  display: grid;
+  gap: 22px;
+  padding: clamp(28px, 4vw, 44px);
+  border: 1px solid var(--glass-border);
+  border-radius: 24px;
+  background: var(--glass-bg);
+  box-shadow: var(--glass-shadow);
+  backdrop-filter: blur(22px) saturate(1.15);
+  -webkit-backdrop-filter: blur(22px) saturate(1.15);
+}
+.contact-form__field { display: grid; gap: 8px; }
+.contact-form__field label { font-size: 11px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--muted); }
+.contact-form__field input, .contact-form__field textarea, .contact-form__field select {
+  padding: 14px 16px;
+  border: 1px solid var(--glass-border);
+  border-radius: 10px;
+  background: rgba(127,127,127,.08);
+  color: var(--ink);
+  font: 500 15px Montserrat, sans-serif;
+  resize: vertical;
+  transition: border-color .15s ease, box-shadow .15s ease;
+}
+.contact-form__field input:focus, .contact-form__field textarea:focus, .contact-form__field select:focus {
+  outline: none;
+  border-color: var(--orange);
+  box-shadow: 0 0 0 3px rgba(249,73,2,.22);
+}
+.contact-form__field input:disabled, .contact-form__field textarea:disabled, .contact-form__field select:disabled { opacity: .6; }
+.contact-form__field.has-error input, .contact-form__field.has-error textarea, .contact-form__field.has-error select {
+  border-color: #ff6b6b;
+}
+.contact-form__field.has-error input:focus, .contact-form__field.has-error textarea:focus, .contact-form__field.has-error select:focus {
+  box-shadow: 0 0 0 3px rgba(255,107,107,.22);
+}
+.contact-form__field-error { margin: 0; font-size: 12px; color: var(--status-error-text); }
+.contact-form__honeypot { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; }
+.contact-form__submit {
+  justify-self: start;
+  min-height: 52px;
+  padding: 0 30px;
+  border: 0;
+  border-radius: 10px;
+  background: var(--orange);
+  color: #fff;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  cursor: pointer;
+  box-shadow: 0 14px 32px rgba(249,73,2,.32);
+  transition: transform .15s ease, box-shadow .15s ease;
+}
+.contact-form__submit:hover:not(:disabled) { transform: translateY(-1px); box-shadow: 0 18px 40px rgba(249,73,2,.4); }
+.contact-form__submit:disabled { opacity: .6; cursor: not-allowed; box-shadow: none; }
+.contact-form__error { margin: 0; padding: 12px 16px; border-radius: 8px; background: var(--status-error-bg); color: var(--status-error-text); font-size: 13px; }
+.contact-form__success {
+  display: grid;
+  gap: 8px;
+  padding: clamp(28px, 4vw, 44px);
+  border: 1px solid var(--glass-border);
+  border-radius: 24px;
+  background: var(--glass-bg);
+  box-shadow: var(--glass-shadow);
+  backdrop-filter: blur(22px) saturate(1.15);
+  -webkit-backdrop-filter: blur(22px) saturate(1.15);
+  animation: ibx-form-success-in .5s cubic-bezier(.2,.8,.2,1) both;
+}
+.contact-form__success-title { margin: 0; font-family: var(--font-square-block), Montserrat, sans-serif; font-size: 24px; text-transform: uppercase; color: var(--orange); }
+
+@keyframes ibx-form-success-in {
+  from { opacity: 0; transform: translateY(10px) scale(.98); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .contact-form__success { animation: none; }
+}
+
 /* Homepage collaborator marquee */
 .ibx-collaborators { position: relative; z-index: 3; min-height: 176px; display: grid; align-items: center; overflow: hidden; margin: 0; padding: 48px 0; border: 0; background: #fff; box-shadow: none; color: #11101f; pointer-events: none; }
 .ibx-collaborators::before { display: none; }
@@ -1496,7 +1624,12 @@ button { cursor: pointer; }
 .continent-soon__content form { display: flex; min-width: 395px; padding: 6px; border: 1px solid rgba(255,255,255,.4); border-radius: 10px; background: rgba(16,16,28,.54); backdrop-filter: blur(18px); }
 .continent-soon__content input { min-width: 260px; padding: 0 14px; border: 0; outline: 0; background: transparent; color: #fff; font: 11px Montserrat, sans-serif; }
 .continent-soon__content input::placeholder { color: #aaa5b0; }
+.continent-soon__content input[aria-invalid="true"] { box-shadow: inset 0 0 0 2px #ff6b6b; border-radius: 6px; }
 .continent-soon__content button { min-height: 42px; padding: 0 18px; border: 0; border-radius: 7px; background: var(--orange); color: #fff; font-size: 9px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; }
+.continent-soon__content button:disabled { opacity: .6; cursor: not-allowed; }
+.continent-soon__content input:disabled { opacity: .6; }
+.continent-soon__success { margin: 14px 0 0; padding: 12px 16px; border-radius: 8px; background: rgba(47,125,82,.18); color: #6fdc9d; font-size: 12px; max-width: 395px; }
+.continent-soon__error { margin: 10px 0 0; padding: 12px 16px; border-radius: 8px; background: rgba(220,53,69,.16); color: #ff8fa3; font-size: 12px; max-width: 395px; }
 .continent-soon__footer { position: absolute; z-index: 4; left: 50%; bottom: 33px; width: min(1456px, calc(100% - 64px)); display: flex; align-items: center; justify-content: space-between; transform: translateX(-50%); }
 .continent-soon__footer nav { display: flex; gap: 25px; }
 .continent-soon__footer nav a { color: #d0ccd8; font-size: 8px; letter-spacing: .13em; text-decoration: none; text-transform: uppercase; }
