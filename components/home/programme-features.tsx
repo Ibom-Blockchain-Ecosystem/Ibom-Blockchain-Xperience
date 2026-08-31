@@ -9,7 +9,7 @@ const features = [
     title: "Enter the Den of Rogues",
     description: "An intensive build experience for developers, designers and founders ready to turn ambitious Web3 ideas into working products through collaboration, mentorship and a final showcase.",
     cta: "Enter the Den",
-    href: "#footer-newsletter",
+    href: "/build",
     image: "/brand/programmes/den-of-rogues-logo.png",
     imageAlt: "Den of Rogues — Kill That Bull",
     imageWidth: 1000,
