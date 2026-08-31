@@ -47,8 +47,8 @@ export function EcosystemCarousel({ programmes }: { programmes: EcosystemProgram
         }
       }}
     >
-      <div key={`left-${programme.title}`} className={`ibx-ecosystem-preview ibx-ecosystem-preview--left${previewProgramme.logo ? " is-logo" : ""}`} aria-hidden="true"><Image src={previewImage} alt="" fill sizes="33vw" /><strong>{previewProgramme.title}</strong></div>
-      <div key={`right-${programme.title}`} className={`ibx-ecosystem-preview ibx-ecosystem-preview--right${previewProgramme.logo ? " is-logo" : ""}`} aria-hidden="true"><Image src={previewImage} alt="" fill sizes="33vw" /><strong>{previewProgramme.title}</strong></div>
+      <div key={`left-${programme.title}`} className={`ibx-ecosystem-preview ibx-ecosystem-preview--left${previewProgramme.logo ? " is-logo" : ""}${previewProgramme.logoOnLight ? " is-logo-on-light" : ""}`} aria-hidden="true"><Image src={previewImage} alt="" fill sizes="33vw" /><strong>{previewProgramme.title}</strong></div>
+      <div key={`right-${programme.title}`} className={`ibx-ecosystem-preview ibx-ecosystem-preview--right${previewProgramme.logo ? " is-logo" : ""}${previewProgramme.logoOnLight ? " is-logo-on-light" : ""}`} aria-hidden="true"><Image src={previewImage} alt="" fill sizes="33vw" /><strong>{previewProgramme.title}</strong></div>
       <span className="ibx-float-star ibx-float-star--ecosystem-one" aria-hidden="true">
         <Image src="/images/home/orange-glossy-star.png" alt="" fill sizes="72px" />
       </span>
@@ -57,7 +57,7 @@ export function EcosystemCarousel({ programmes }: { programmes: EcosystemProgram
       </span>
 
       <div key={programme.title} className="ibx-ecosystem-card" data-slide={activeIndex} aria-live="polite">
-        <div className={`ibx-ecosystem-card__visual${programme.logo ? " ibx-ecosystem-card__visual--logo" : ""}`}>
+        <div className={`ibx-ecosystem-card__visual${programme.logo ? " ibx-ecosystem-card__visual--logo" : ""}${programme.logoOnLight ? " ibx-ecosystem-card__visual--light" : ""}`}>
           <Image
             src={programme.logo ?? programmeImages[activeIndex % programmeImages.length]}
             alt={programme.logo ? `${programme.title} logo` : `${programme.title} experience`}

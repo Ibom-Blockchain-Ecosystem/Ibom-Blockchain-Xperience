@@ -2,14 +2,23 @@
 
 import Image from "next/image";
 import { useEffect, useState } from "react";
+import { Countdown } from "@/components/countdown";
+
+// TODO: placeholder target — swap for the real Den of Rogues kickoff date
+// the moment it's confirmed, same convention as the Summit countdown.
+const ROGUES_COUNTDOWN_TARGET = new Date("2026-09-30T00:00:00+01:00").getTime();
 
 const features = [
   {
     eyebrow: "IBX Build experience",
     title: "Enter the Den of Rogues",
     description: "An intensive build experience for developers, designers and founders ready to turn ambitious Web3 ideas into working products through collaboration, mentorship and a final showcase.",
-    cta: "Enter the Den",
-    href: "#footer-newsletter",
+    // Unreachable while `type === "rogues"` always renders the countdown
+    // below instead (see the render logic), but kept real — pointing at
+    // an actual page rather than the dead `#footer-newsletter` anchor
+    // this used to be — in case that render logic ever changes.
+    cta: "Learn more",
+    href: "/den-of-rogues",
     image: "/brand/programmes/den-of-rogues-logo.png",
     imageAlt: "Den of Rogues — Kill That Bull",
     imageWidth: 1000,
@@ -81,7 +90,15 @@ export function ProgrammeFeatures() {
             <p className="ibx-programme__eyebrow">{active.eyebrow}</p>
             <h2>{active.title}</h2>
             <p>{active.description}</p>
-            <a className="ibx-programme__button" href={active.href}>{active.cta}</a>
+            {active.type === "rogues" ? (
+              <Countdown
+                target={ROGUES_COUNTDOWN_TARGET}
+                label="Time until the Den of Rogues opens"
+                className="ibx-programme__countdown"
+              />
+            ) : (
+              <a className="ibx-programme__button" href={active.href}>{active.cta}</a>
+            )}
           </div>
         </article>
 

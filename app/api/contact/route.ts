@@ -3,6 +3,7 @@ import { z } from "zod";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
 import { checkRateLimit, getClientIp } from "@/lib/forms/rate-limit";
 import { isTrustedOrigin } from "@/lib/forms/request-origin";
+import { verifyTurnstileToken } from "@/lib/forms/verify-turnstile";
 import { sendTeamNotification } from "@/lib/email/resend";
 
 const contactSchema = z.object({
@@ -14,6 +15,7 @@ const contactSchema = z.object({
   // A bot that fills in every field it finds trips this, and we silently
   // pretend the submission succeeded rather than tipping it off.
   company: z.string().max(0).optional(),
+  turnstileToken: z.string().optional(),
 });
 
 export async function POST(request: Request) {
@@ -42,6 +44,14 @@ export async function POST(request: Request) {
   // Honeypot tripped — report success without touching the database.
   if (parsed.data.company) {
     return NextResponse.json({ ok: true });
+  }
+
+  const isHuman = await verifyTurnstileToken(parsed.data.turnstileToken, ip);
+  if (!isHuman) {
+    return NextResponse.json(
+      { ok: false, error: "Couldn't verify you're not a bot — please try again." },
+      { status: 400 },
+    );
   }
 
   const { name, email, subject, message } = parsed.data;

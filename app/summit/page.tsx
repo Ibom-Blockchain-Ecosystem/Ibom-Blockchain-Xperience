@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { SummitDestinations } from "@/components/home/upcoming-events";
+import { SummitCountdown } from "@/components/summit-countdown";
 import { SiteFooter } from "@/components/site-footer";
 
 export const metadata: Metadata = {
@@ -58,7 +59,7 @@ export default function SummitPage() {
               <li>Two days of ideas, building and collaboration.</li>
             
             </ul>
-            <Link className="summit-landing__cta" href="#about-summit">Explore the summit</Link>
+            <SummitCountdown />
           </div>
 
           <div className="summit-landing__mosaic" aria-label="Ibom Blockchain Xperience Summit identity">

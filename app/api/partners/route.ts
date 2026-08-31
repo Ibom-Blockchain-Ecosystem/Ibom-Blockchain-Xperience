@@ -3,6 +3,7 @@ import { z } from "zod";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
 import { checkRateLimit, getClientIp } from "@/lib/forms/rate-limit";
 import { isTrustedOrigin } from "@/lib/forms/request-origin";
+import { verifyTurnstileToken } from "@/lib/forms/verify-turnstile";
 import { sendTeamNotification } from "@/lib/email/resend";
 
 const partnerSchema = z.object({
@@ -12,6 +13,7 @@ const partnerSchema = z.object({
   partnershipType: z.string().trim().min(1, "Choose a partnership type").max(100),
   message: z.string().trim().min(1, "Tell us a bit about the partnership").max(5000),
   company: z.string().max(0).optional(), // honeypot
+  turnstileToken: z.string().optional(),
 });
 
 export async function POST(request: Request) {
@@ -39,6 +41,14 @@ export async function POST(request: Request) {
 
   if (parsed.data.company) {
     return NextResponse.json({ ok: true });
+  }
+
+  const isHuman = await verifyTurnstileToken(parsed.data.turnstileToken, ip);
+  if (!isHuman) {
+    return NextResponse.json(
+      { ok: false, error: "Couldn't verify you're not a bot — please try again." },
+      { status: 400 },
+    );
   }
 
   const { orgName, contactName, email, partnershipType, message } = parsed.data;

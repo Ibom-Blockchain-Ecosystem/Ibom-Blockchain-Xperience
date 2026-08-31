@@ -41,7 +41,7 @@ export default async function ContinentComingSoonPage({ params, searchParams }: 
 
       <header className="continent-soon__nav">
         <Link href="/tour" aria-label="IBX Tour continents"><Image src="/brand/ibx-tour-rebrand-white.png" width={3600} height={766} alt="IBX Tour — Building for Generations" priority /></Link>
-        <nav aria-label="Tour navigation"><Link href="/tour">Countries</Link><Link href="/#about">About the tour</Link><Link href="/#partners">Partners</Link></nav>
+        <nav aria-label="Tour navigation"><Link href="/tour">Countries</Link><Link href="/about">About the tour</Link><Link href="/partners">Partners</Link></nav>
         <Link className="continent-soon__return" href="/tour">← Return to continents</Link>
       </header>
 

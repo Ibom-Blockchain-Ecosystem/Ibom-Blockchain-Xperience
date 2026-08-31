@@ -23,18 +23,16 @@ export function SiteFooter({ nextCountry }: SiteFooterProps) {
         <div className="site-footer__columns">
           <nav className="site-footer__column" aria-labelledby="footer-explore">
             <h2 id="footer-explore">Explore</h2>
-            <Link href="/#about">About IBX</Link>
-            <Link href="/speakers">Speakers</Link>
-            <Link href="/schedule">Schedule</Link>
+            <Link href="/about">About IBX</Link>
             <Link href="/summit">Summit</Link>
             <Link href="/tour">Tour</Link>
+            <Link href="/build">IBX Build</Link>
           </nav>
 
           <nav className="site-footer__column" aria-labelledby="footer-useful">
             <h2 id="footer-useful">Useful links</h2>
             <Link href="/partners">Become a partner</Link>
             <Link href="/#collaborators">IBX collaborators</Link>
-            <Link href="/build">IBX Build</Link>
             <Link href="/ambassadors">Ambassadors</Link>
             <Link href="/news">News</Link>
           </nav>
@@ -58,7 +56,6 @@ export function SiteFooter({ nextCountry }: SiteFooterProps) {
           <section className="site-footer__column site-footer__contact" aria-labelledby="footer-contact">
             <h2 id="footer-contact">Contact</h2>
             <Link href="/contact"><span aria-hidden="true">✉</span>Send a message</Link>
-            <a href="mailto:partnerships@ibomblockchain.com">partnerships@ibomblockchain.com</a>
           </section>
         </div>
 

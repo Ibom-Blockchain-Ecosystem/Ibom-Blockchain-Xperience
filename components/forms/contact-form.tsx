@@ -3,6 +3,9 @@
 import { useRef, useState, type ChangeEvent, type FocusEvent, type FormEvent } from "react";
 import { isEmpty, isValidEmail } from "@/lib/forms/validate";
 import { launchConfetti } from "@/lib/confetti";
+import { TurnstileWidget } from "@/components/forms/turnstile-widget";
+
+const turnstileEnabled = !!process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY;
 
 type Status = "idle" | "pending" | "success" | "error";
 type Values = { name: string; email: string; subject: string; message: string };
@@ -27,6 +30,7 @@ export function ContactForm() {
   const [touched, setTouched] = useState<Partial<Record<Field, boolean>>>({});
   const [status, setStatus] = useState<Status>("idle");
   const [errorMessage, setErrorMessage] = useState("");
+  const [turnstileToken, setTurnstileToken] = useState<string | null>(null);
   const fieldRefs = useRef<Partial<Record<Field, HTMLInputElement | HTMLTextAreaElement>>>({});
 
   const handleChange = (event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -51,6 +55,12 @@ export function ContactForm() {
       return;
     }
 
+    if (turnstileEnabled && !turnstileToken) {
+      setErrorMessage("Verification is still checking — wait a second and try again.");
+      setStatus("error");
+      return;
+    }
+
     setStatus("pending");
     setErrorMessage("");
 
@@ -60,7 +70,7 @@ export function ContactForm() {
       const response = await fetch("/api/contact", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ ...values, company: honeypot }),
+        body: JSON.stringify({ ...values, company: honeypot, turnstileToken }),
       });
       const result = await response.json();
 
@@ -167,6 +177,8 @@ export function ContactForm() {
         />
         {touched.message && errors.message && <p id="message-error" className="contact-form__field-error">{errors.message}</p>}
       </div>
+
+      <TurnstileWidget onToken={setTurnstileToken} />
 
       {status === "error" && (
         <p className="contact-form__error" role="alert">{errorMessage}</p>
