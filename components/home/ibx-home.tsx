@@ -1,4 +1,3 @@
-import Image from "next/image";
 import { ecosystemProgrammes, impactStats, speakerQuotes } from "@/content/site/home";
 import { EcosystemCarousel } from "@/components/home/ecosystem-carousel";
 import { PhotoSlideshow } from "@/components/home/photo-slideshow";
@@ -23,21 +22,12 @@ export function IbxHome() {
       <MainNavigation />
 
       <section className="ibx-hero ibx-event-hero" aria-labelledby="ibx-hero-title">
-        <Image
-          className="ibx-hero__image"
-          src="/images/home/ibx27-hero-poster.webp"
-          fill
-          sizes="100vw"
-          alt="A packed African Web3 conference with speakers on the IBX stage"
-          priority
-        />
         <video
           className="ibx-hero__video"
           autoPlay
           muted
           loop
           playsInline
-          poster="/images/home/ibx27-hero-poster.webp"
           aria-hidden="true"
         >
           <source src="/videos/ibx27-hero.mp4" type="video/mp4" />
