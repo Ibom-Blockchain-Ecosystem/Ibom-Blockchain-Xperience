@@ -27,7 +27,7 @@ export const ecosystemProgrammes: EcosystemProgramme[] = [
     title: "IBX Summit",
     description:
       "Our annual gathering brings founders, developers, investors, institutions, policymakers and innovators together to shape Africa’s blockchain future.",
-    href: "#summit",
+    href: "/summit",
     cta: "Discover the Summit",
     logo: "/brand/programmes/ibx-summit-logo.png",
   },
