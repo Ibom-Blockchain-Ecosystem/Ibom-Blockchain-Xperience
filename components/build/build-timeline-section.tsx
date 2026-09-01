@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import Link from "next/link";
 import { buildTimelineContent } from "@/content/build/timeline";
 
 const timelineStepDuration = 1900;
@@ -55,14 +56,9 @@ export function BuildTimelineSection() {
         <header className="build-timeline__intro">
           <h2 id="build-timeline-title">{title}</h2>
           <p>{subtitle}</p>
-          <a
-            className="build-timeline__action"
-            href={application.href}
-            target="_blank"
-            rel="noopener noreferrer"
-          >
+          <Link className="build-timeline__action" href={application.href}>
             {application.label}
-          </a>
+          </Link>
         </header>
 
         <ol

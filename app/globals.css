@@ -251,6 +251,17 @@ html body *:not(svg):not(path) {
 
 * { box-sizing: border-box; }
 html { background: var(--paper); scroll-behavior: smooth; }
+
+/* Lenis smooth scroll (mounted only on /build). These rules are inert until
+   Lenis adds the .lenis classes to <html>. */
+html.lenis,
+html.lenis body { height: auto; }
+html.lenis-smooth { scroll-behavior: auto; }
+.lenis:not(.lenis-autoToggle).lenis-stopped { overflow: clip; }
+.lenis.lenis-smooth iframe { pointer-events: none; }
+.lenis [data-lenis-prevent],
+.lenis [data-lenis-prevent-wheel],
+.lenis [data-lenis-prevent-touch] { overscroll-behavior: contain; }
 body { margin: 0; background: var(--paper); color: var(--ink); font-family: Arial, Helvetica, sans-serif; }
 .theme-toggle { position: fixed; z-index: 100; right: 18px; bottom: 18px; display: inline-flex; align-items: center; gap: 8px; min-height: 42px; padding: 0 14px; border: 1px solid rgba(249,73,2,.55); border-radius: 999px; background: rgba(1,1,1,.88); color: #fff; box-shadow: 0 10px 32px rgba(0,0,0,.28); backdrop-filter: blur(14px); font-size: 8px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; }
 :root[data-theme="light"] .theme-toggle { border-color: rgba(1,1,1,.18); background: rgba(255,255,255,.9); color: var(--ibx-black); }
@@ -287,6 +298,27 @@ button { cursor: pointer; }
 .not-found__content a { display: inline-flex; min-height: 48px; align-items: center; padding: 0 22px; border-radius: 8px; background: var(--orange); color: #fff; font-size: 9px; font-weight: 700; letter-spacing: .13em; text-decoration: none; text-transform: uppercase; }
 .not-found__actions { display: flex; justify-content: center; flex-wrap: wrap; gap: 12px; }
 .not-found__actions a:last-child { border: 1px solid rgba(255,255,255,.5); background: transparent; }
+
+/* IBX Build "coming soon" variant — same pattern, grid + orange-glow backdrop
+   instead of a photo. */
+.not-found--build { background: #060607; }
+.not-found--build .not-found__grid {
+  position: absolute; z-index: 1; inset: 0; pointer-events: none;
+  background-image:
+    linear-gradient(rgba(255,255,255,.055) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,.055) 1px, transparent 1px);
+  background-size: clamp(48px, 6vw, 92px) clamp(48px, 6vw, 92px);
+  mask-image: radial-gradient(ellipse 82% 72% at 50% 46%, #000 26%, transparent 80%);
+  -webkit-mask-image: radial-gradient(ellipse 82% 72% at 50% 46%, #000 26%, transparent 80%);
+}
+.not-found--build .not-found__glow {
+  position: absolute; z-index: 0; left: 50%; top: 44%;
+  width: min(1100px, 96vw); height: 620px; transform: translate(-50%, -50%);
+  pointer-events: none; border-radius: 50%; filter: blur(120px);
+  background: radial-gradient(ellipse at center, rgba(249,65,1,.22), transparent 70%);
+}
+.not-found--build .not-found__content > strong { color: rgba(255,255,255,.08); }
+.not-found--build .not-found__actions a { border: 0; background: var(--orange); color: #fff; }
 
 .experience-shell { min-height: 100svh; overflow: hidden; }
 .landing-screen, .tour-screen { position: relative; min-height: 100svh; overflow: hidden; }
@@ -3533,6 +3565,7 @@ body { overflow-x: clip; }
 
 /* Build community scroll sequence ---------------------------------------- */
 .build-community {
+  scroll-margin-top: 84px;
   --build-community-overlap: clamp(72px, 10svh, 154px);
   --build-community-bleed: clamp(84px, 11svh, 124px);
   --build-community-copy-opacity: 0;

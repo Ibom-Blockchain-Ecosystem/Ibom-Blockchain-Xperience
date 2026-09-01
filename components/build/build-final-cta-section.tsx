@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { buildFinalCtaContent } from "@/content/build/final-cta";
 
 export function BuildFinalCtaSection() {
@@ -12,14 +13,9 @@ export function BuildFinalCtaSection() {
       <div className="build-final-cta__gap">
         <h2 id="build-final-cta-title">{title}</h2>
         <p className="build-final-cta__subtitle">{subtitle}</p>
-        <a
-          className="build-final-cta__button"
-          href={actionHref}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
+        <Link className="build-final-cta__button" href={actionHref}>
           {actionLabel}
-        </a>
+        </Link>
       </div>
 
       <div className="build-final-cta__band build-final-cta__band--bottom" aria-hidden="true" />

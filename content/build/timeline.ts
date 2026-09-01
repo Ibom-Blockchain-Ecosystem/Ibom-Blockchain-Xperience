@@ -3,7 +3,7 @@ export const buildTimelineContent = {
   subtitle: "Talent Is Not Enough. We look for people whe demonstrate",
   application: {
     label: "Apply Now",
-    href: "https://form.typeform.com/to/A2YCJwL2",
+    href: "/build/soon",
   },
   milestones: [
     {

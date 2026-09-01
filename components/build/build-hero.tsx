@@ -3,8 +3,6 @@ import { buildHeroContent } from "@/content/build/hero";
 import { BuildHeroCityscape } from "@/components/build/build-hero-cityscape";
 import { BuildHeroTypingHeadline } from "@/components/build/build-hero-typing-headline";
 
-const registrationUrl = "https://form.typeform.com/to/A2YCJwL2";
-
 export function BuildHero() {
   return (
     <section className="build-hero" id="build" aria-labelledby="build-hero-title">
@@ -26,12 +24,12 @@ export function BuildHero() {
             ))}
           </p>
           <div className="build-hero__action-row">
-            <a className="build-hero__button build-hero__button--primary" href={registrationUrl} target="_blank" rel="noopener noreferrer">
+            <Link className="build-hero__button build-hero__button--primary" href="/build/soon">
               {buildHeroContent.registrationAction}
-            </a>
-            <Link className="build-hero__button build-hero__button--secondary" href="/">
-              {buildHeroContent.secondaryAction}
             </Link>
+            <a className="build-hero__button build-hero__button--secondary" href="#community">
+              {buildHeroContent.secondaryAction}
+            </a>
           </div>
         </div>
       </div>
