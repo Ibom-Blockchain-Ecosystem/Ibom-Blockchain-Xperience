@@ -29,19 +29,34 @@ const defaultBrand: NavigationBrand = {
   alt: "Ibom Blockchain Xperience",
 };
 
+function NavLink({ href, label }: { href: string; label: string }) {
+  if (href.startsWith("http")) {
+    return (
+      <a href={href} target="_blank" rel="noopener noreferrer">
+        {label}
+        <span className="sr-only"> (opens in a new tab)</span>
+      </a>
+    );
+  }
+  return <Link href={href}>{label}</Link>;
+}
+
 export function MainNavigation({
   buildHref = "/build",
   brandHref = "/",
   className,
-  primaryAction = { href: "#register", label: "Register" },
-  secondaryAction = { href: "/tour/nigeria#partners", label: "Partner with us" },
+  primaryAction = { href: "/register", label: "Register" },
+  secondaryAction = { href: "/partners", label: "Partner with us" },
   brand = defaultBrand,
 }: MainNavigationProps) {
+  // "Community" has no on-site section of its own — it points straight at
+  // the same Telegram group as the IBX Community card on the homepage
+  // ecosystem carousel (see `ecosystemProgrammes` in content/site/home.ts).
   const links = [
     { href: "/summit", label: "Summit" },
     { href: "/tour", label: "Tour" },
     { href: buildHref, label: "Build" },
-    { href: "#community", label: "Community" },
+    { href: "https://t.me/+tTYyl_SQzwFmY2I0", label: "Community" },
   ];
 
   return (
@@ -51,7 +66,7 @@ export function MainNavigation({
       </Link>
 
       <nav className="ibx-nav__links" aria-label="Primary navigation">
-        {links.map((link) => <Link key={link.href} href={link.href}>{link.label}</Link>)}
+        {links.map((link) => <NavLink key={link.href} {...link} />)}
       </nav>
 
       <div className="ibx-nav__actions">
@@ -62,7 +77,7 @@ export function MainNavigation({
       <details className="ibx-mobile-menu">
         <summary aria-label="Open navigation">Menu</summary>
         <nav aria-label="Mobile navigation">
-          {links.map((link) => <Link key={link.href} href={link.href}>{link.label}</Link>)}
+          {links.map((link) => <NavLink key={link.href} {...link} />)}
           {secondaryAction && <Link href={secondaryAction.href}>{secondaryAction.label}</Link>}
           <Link href={primaryAction.href}>{primaryAction.label}</Link>
         </nav>

@@ -16,6 +16,14 @@
   --muted: #b8b8b8;
   --grid-light: rgba(255, 255, 255, .12);
   --grid-dark: rgba(255, 255, 255, .16);
+  /* Status colors for form errors/success. These read fine on the dark
+     backgrounds they were designed against (~7.6:1 / ~8:1) but fail WCAG
+     AA (need 4.5:1) once composited on a light background — see the
+     light override below, computed to actually pass on white. */
+  --status-error-text: #ff6b6b;
+  --status-error-bg: rgba(220, 53, 69, .14);
+  --status-good-text: #5ec98a;
+  --status-good-bg: rgba(47, 125, 82, .18);
   color-scheme: dark;
 }
 
@@ -27,6 +35,10 @@
   --muted: #555555;
   --grid-light: rgba(1, 1, 1, .13);
   --grid-dark: rgba(1, 1, 1, .16);
+  --status-error-text: #b3261e;
+  --status-error-bg: rgba(220, 53, 69, .1);
+  --status-good-text: #1e6b3f;
+  --status-good-bg: rgba(47, 125, 82, .12);
   color-scheme: light;
 }
 
@@ -249,7 +261,7 @@ html body *:not(svg):not(path) {
   color-scheme: dark;
 }
 
-* { box-sizing: border-box; }
+* { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
 html { background: var(--paper); scroll-behavior: smooth; }
 
 /* Lenis smooth scroll (mounted only on /build). These rules are inert until
@@ -263,7 +275,48 @@ html.lenis-smooth { scroll-behavior: auto; }
 .lenis [data-lenis-prevent-wheel],
 .lenis [data-lenis-prevent-touch] { overscroll-behavior: contain; }
 body { margin: 0; background: var(--paper); color: var(--ink); font-family: Arial, Helvetica, sans-serif; }
+
+/* Real press feedback for touch — mobile has no :hover at all, so every
+   button on this site previously either flashed the browser's default
+   grey tap highlight (now suppressed above) or gave no feedback
+   whatsoever. Scoped to actual button-shaped CTAs only — several other
+   elements (the continent wheel, carousel slides) already use transform
+   for positioning, and a competing :active transform there would fight
+   it rather than add to it. */
+.ibx-button:active,
+.contact-form__submit:active,
+.tour-action:active,
+.summit-landing__cta:active,
+.summit-landing__register:active,
+.ibx-programme__button:active,
+.continent-soon__content button:active,
+.tour-copy button:active,
+.theme-toggle:active,
+.auto-rotate-toggle:active {
+  transform: scale(.96);
+}
+@media (prefers-reduced-motion: reduce) {
+  .ibx-button:active,
+  .contact-form__submit:active,
+  .tour-action:active,
+  .summit-landing__cta:active,
+  .summit-landing__register:active,
+  .ibx-programme__button:active,
+  .continent-soon__content button:active,
+  .tour-copy button:active,
+  .theme-toggle:active,
+  .auto-rotate-toggle:active {
+    transform: none;
+  }
+}
 .theme-toggle { position: fixed; z-index: 100; right: 18px; bottom: 18px; display: inline-flex; align-items: center; gap: 8px; min-height: 42px; padding: 0 14px; border: 1px solid rgba(249,73,2,.55); border-radius: 999px; background: rgba(1,1,1,.88); color: #fff; box-shadow: 0 10px 32px rgba(0,0,0,.28); backdrop-filter: blur(14px); font-size: 8px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; }
+
+/* Visible pause control for the Tour landing screen's auto-rotating
+   continent wheel — WCAG 2.2.2 wants an on-screen way to stop
+   auto-updating content, not just the prefers-reduced-motion fallback. */
+.auto-rotate-toggle { position: fixed; z-index: 50; left: 18px; bottom: 18px; display: inline-flex; align-items: center; gap: 8px; min-height: 42px; padding: 0 16px; border: 1px solid var(--grid-light); border-radius: 999px; background: rgba(1,1,1,.7); color: #fff; box-shadow: 0 10px 32px rgba(0,0,0,.24); backdrop-filter: blur(14px); font-size: 9px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; cursor: pointer; }
+:root[data-theme="light"] .auto-rotate-toggle { background: rgba(255,255,255,.82); color: var(--ibx-black); border-color: rgba(1,1,1,.14); }
+.auto-rotate-toggle--inline { position: static; z-index: auto; min-height: 0; padding: 0; background: transparent; box-shadow: none; backdrop-filter: none; border-color: rgba(255,255,255,.7); font-size: 16px; width: 50px; height: 50px; border-radius: 50%; color: #fff; }
 :root[data-theme="light"] .theme-toggle { border-color: rgba(1,1,1,.18); background: rgba(255,255,255,.9); color: var(--ibx-black); }
 .theme-toggle span:first-child { font-size: 15px; }
 button, a { color: inherit; font: inherit; }
@@ -336,6 +389,7 @@ button { cursor: pointer; }
 .site-header nav { display: flex; align-items: center; justify-content: center; gap: clamp(22px, 3vw, 48px); text-transform: uppercase; letter-spacing: .12em; font-size: 10px; }
 .site-header nav button, .site-header nav a { border: 0; padding: 11px 0; background: none; text-decoration: none; white-space: nowrap; }
 .site-header .tangem-link { color: var(--orange); font-weight: 700; }
+.site-header .tangem-link.is-disabled { color: var(--muted); font-weight: 600; cursor: default; opacity: .7; }
 .join-link { justify-self: end; padding: 15px 17px; border: 1px solid currentColor; text-decoration: none; text-transform: uppercase; letter-spacing: .12em; font-size: 9px; }
 .tour-mobile-menu { display: none; }
 
@@ -525,9 +579,8 @@ button { cursor: pointer; }
 .ibx-grid { position: absolute; z-index: 2; inset: 0; display: grid; grid-template-columns: repeat(6, 1fr); pointer-events: none; }
 .ibx-grid i { border-right: 1px solid rgba(255,255,255,.13); }
 .ibx-hero { position: relative; min-height: 100svh; overflow: hidden; background: #080808; color: #fff; }
-.ibx-hero__image { object-fit: cover; animation: ibx-hero-in 1.4s cubic-bezier(.2,.8,.2,1) both; }
 .ibx-hero__shade { position: absolute; z-index: 1; inset: 0; background: linear-gradient(90deg, rgba(8,8,8,.9) 0%, rgba(8,8,8,.52) 54%, rgba(8,8,8,.28) 100%), linear-gradient(0deg, rgba(8,8,8,.85), transparent 55%); }
-.ibx-nav { position: absolute; z-index: 10; top: 0; left: 0; right: 0; min-height: 94px; display: grid; grid-template-columns: minmax(190px, 1.35fr) 3fr auto; align-items: center; gap: 40px; padding: 0 4vw; border-bottom: 1px solid rgba(255,255,255,.16); color: #fff; }
+.ibx-nav { position: fixed; z-index: 100; top: 0; left: 0; right: 0; min-height: 94px; display: grid; grid-template-columns: minmax(190px, 1.35fr) 3fr auto; align-items: center; gap: 40px; padding: 0 4vw; border-bottom: 1px solid rgba(255,255,255,.16); color: #fff; }
 .ibx-nav__brand { display: block; width: min(250px, 20vw); }
 .ibx-nav__brand img { display: block; width: 100%; height: auto; }
 .ibx-nav__links { display: flex; justify-content: center; gap: clamp(18px, 2.4vw, 42px); }
@@ -666,15 +719,13 @@ button { cursor: pointer; }
 .site-footer__next { display: flex; flex-direction: column; gap: 8px; padding: 20px 0 3px 30px; border-left: 1px solid rgba(255,255,255,.2); color: rgba(255,255,255,.58); }
 .site-footer__next strong { color: #fff; font-family: var(--font-square-block), Montserrat, sans-serif; font-size: 25px; font-weight: 400; letter-spacing: .04em; }
 .site-footer__legal { display: flex; justify-content: space-between; gap: 20px; margin: 0 max(6vw, calc((100vw - 1450px) / 2)); padding: 28px 0 32px; border-top: 1px solid rgba(255,255,255,.16); color: rgba(255,255,255,.42); font-size: 8px; letter-spacing: .12em; text-transform: uppercase; }
-
-@keyframes ibx-hero-in { from { opacity: .2; transform: scale(1.08); } to { opacity: 1; transform: scale(1); } }
 @keyframes ibx-pulse { 50% { box-shadow: 0 0 0 9px rgba(249,73,2,0); } }
 @keyframes ibx-marquee { to { transform: translateX(-20%); } }
 
 @media (max-width: 1000px) {
   .ibx-nav { grid-template-columns: 1fr auto; }
   .ibx-nav__brand { width: 230px; }
-  .ibx-nav__links, .ibx-nav > .ibx-button { display: none; }
+  .ibx-nav__links, .ibx-nav__actions { display: none; }
   .ibx-mobile-menu { position: relative; display: block; }
   .ibx-mobile-menu summary { list-style: none; padding: 13px 16px; border: 1px solid rgba(255,255,255,.5); font-size: 9px; letter-spacing: .14em; text-transform: uppercase; cursor: pointer; }
   .ibx-mobile-menu summary::-webkit-details-marker { display: none; }
@@ -799,6 +850,13 @@ button { cursor: pointer; }
 .ibx-programme-focus__copy h2 { margin: 0; font-family: var(--font-square-block), Montserrat, sans-serif; font-size: clamp(46px, 4.4vw, 68px); font-weight: 400; line-height: .88; letter-spacing: -.02em; text-transform: uppercase; }
 .ibx-programme-focus__copy > p:not(.ibx-programme__eyebrow) { margin: 24px 0 28px; color: #666666; font-size: 14px; line-height: 1.72; }
 .ibx-programme-focus .ibx-programme__button { min-height: 48px; background: #f94902; box-shadow: 0 10px 24px rgba(7,7,20,.18); }
+/* Den of Rogues swaps its CTA for a live countdown — inherits the
+   surrounding copy color so it tracks the light/dark theme override
+   on `.ibx-programme-focus` automatically, same as the heading. */
+.ibx-programme__countdown { display: flex; gap: clamp(18px, 3vw, 30px); }
+.ibx-programme__countdown time { display: flex; flex-direction: column; align-items: flex-start; gap: 4px; }
+.ibx-programme__countdown strong { font-family: var(--font-square-block), Montserrat, sans-serif; font-size: clamp(28px, 3vw, 38px); font-weight: 500; line-height: 1; color: inherit; font-variant-numeric: tabular-nums; }
+.ibx-programme__countdown small { font-size: 9px; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; color: inherit; opacity: .55; }
 .ibx-programme-preview { position: absolute; z-index: 1; top: 50%; width: min(430px, 34vw); height: 390px; display: flex; align-items: flex-end; padding: 42px; overflow: hidden; border: 1px solid rgba(255,255,255,.1); border-radius: 28px; color: rgba(255,255,255,.72); background: #0b0b0b; filter: blur(6px); opacity: .62; transform: translateY(-50%) scale(.94); box-shadow: 0 24px 60px rgba(3,4,16,.28); }
 .ibx-programme-preview::after { content: ""; position: absolute; inset: 0; background: linear-gradient(0deg, rgba(12,13,32,.86), rgba(25,27,55,.18) 70%); }
 .ibx-programme-preview img { object-fit: cover; filter: saturate(.68); }
@@ -1073,6 +1131,173 @@ button { cursor: pointer; }
   .ibx-so-far__copy h2 { font-size: 38px; }
 }
 
+/* Contact / waitlist / partner pages — shared glassmorphic form */
+.contact-page {
+  --glass-bg: rgba(255,255,255,.06);
+  --glass-border: rgba(255,255,255,.14);
+  --glass-shadow: 0 24px 70px rgba(0,0,0,.4), inset 0 1px 0 rgba(255,255,255,.08);
+  position: relative;
+  display: grid;
+  gap: 48px;
+  max-width: 720px;
+  margin: 0 auto;
+  padding: clamp(100px, 10vw, 160px) max(6vw, 24px) 100px;
+  background:
+    radial-gradient(circle at 12% 18%, rgba(249,73,2,.24), transparent 34%),
+    radial-gradient(circle at 88% 78%, rgba(249,73,2,.16), transparent 32%),
+    var(--paper);
+}
+:root[data-theme="light"] .contact-page {
+  --glass-bg: rgba(255,255,255,.6);
+  --glass-border: rgba(1,1,1,.08);
+  --glass-shadow: 0 24px 60px rgba(30,14,4,.14), inset 0 1px 0 rgba(255,255,255,.6);
+}
+.contact-page__intro h1 { margin: 14px 0 18px; font-family: var(--font-square-block), Montserrat, sans-serif; font-size: clamp(40px, 5vw, 64px); font-weight: 400; line-height: .92; text-transform: uppercase; }
+.contact-page__intro p { color: var(--muted); line-height: 1.7; }
+.contact-page__intro a { color: var(--orange); }
+
+/* Coming-soon placeholder pages (About, Build, News, Den of Rogues,
+   Privacy, Terms) — reuses the contact-page glass shell so a page that
+   isn't built yet still looks like a deliberate part of the site. */
+.coming-soon-page__badge { display: inline-flex; align-items: center; gap: 8px; margin-bottom: 4px; padding: 7px 14px; border: 1px solid var(--glass-border); border-radius: 999px; background: var(--glass-bg); color: var(--orange); font-size: 11px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; }
+.coming-soon-page .contact-page__intro { max-width: 560px; }
+.coming-soon-page .contact-page__intro h1 { margin-top: 16px; }
+.coming-soon-page .contact-page__intro > .ibx-button { margin-top: 14px; }
+
+.confirmation-banner { padding: 14px 18px; border-radius: 10px; font-size: 13px; font-weight: 600; }
+.confirmation-banner--success { background: var(--status-good-bg); color: var(--status-good-text); border: 1px solid rgba(47,125,82,.32); }
+.confirmation-banner--error { background: var(--status-error-bg); color: var(--status-error-text); border: 1px solid rgba(220,53,69,.3); }
+
+.contact-form {
+  position: relative;
+  display: grid;
+  gap: 22px;
+  padding: clamp(28px, 4vw, 44px);
+  border: 1px solid var(--glass-border);
+  border-radius: 24px;
+  background: var(--glass-bg);
+  box-shadow: var(--glass-shadow);
+  backdrop-filter: blur(22px) saturate(1.15);
+  -webkit-backdrop-filter: blur(22px) saturate(1.15);
+}
+.contact-form__field { display: grid; gap: 8px; }
+.contact-form__field label { font-size: 11px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--muted); }
+.contact-form__field input, .contact-form__field textarea, .contact-form__field select {
+  padding: 14px 16px;
+  border: 1px solid var(--glass-border);
+  border-radius: 10px;
+  background: rgba(127,127,127,.08);
+  color: var(--ink);
+  font: 500 15px Montserrat, sans-serif;
+  resize: vertical;
+  transition: border-color .15s ease, box-shadow .15s ease;
+}
+.contact-form__field input:focus, .contact-form__field textarea:focus, .contact-form__field select:focus {
+  outline: none;
+  border-color: var(--orange);
+  box-shadow: 0 0 0 3px rgba(249,73,2,.22);
+}
+.contact-form__field input:disabled, .contact-form__field textarea:disabled, .contact-form__field select:disabled { opacity: .6; }
+.contact-form__field.has-error input, .contact-form__field.has-error textarea, .contact-form__field.has-error select {
+  border-color: #ff6b6b;
+}
+.contact-form__field.has-error input:focus, .contact-form__field.has-error textarea:focus, .contact-form__field.has-error select:focus {
+  box-shadow: 0 0 0 3px rgba(255,107,107,.22);
+}
+
+/* Checkmark chip group — which campaign(s) a partner wants (Partner
+   Application form). The checkbox itself is visually hidden; the chip
+   and its checkmark box track the `is-checked` state instead, matching
+   how every other stateful control in this codebase (`is-active`,
+   `is-disabled`) is driven from JS rather than a `:checked` selector. */
+fieldset.contact-form__field { margin: 0; padding: 0; border: 0; min-width: 0; }
+fieldset.contact-form__field legend { padding: 0; font-size: 11px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--muted); }
+.contact-form__checkbox-group { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 8px; }
+.contact-form__checkbox {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  padding: 11px 16px;
+  border: 1px solid var(--glass-border);
+  border-radius: 999px;
+  background: rgba(127,127,127,.08);
+  color: var(--ink);
+  font: 600 13px Montserrat, sans-serif;
+  cursor: pointer;
+  transition: border-color .15s ease, background .15s ease;
+}
+.contact-form__checkbox input { position: absolute; opacity: 0; width: 1px; height: 1px; pointer-events: none; }
+.contact-form__checkbox__mark {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 18px;
+  height: 18px;
+  border: 1px solid var(--glass-border);
+  border-radius: 5px;
+  color: transparent;
+  font-size: 12px;
+  line-height: 1;
+  transition: background .15s ease, border-color .15s ease, color .15s ease;
+}
+.contact-form__checkbox.is-checked { border-color: var(--orange); background: rgba(249,73,2,.12); }
+.contact-form__checkbox.is-checked .contact-form__checkbox__mark { background: var(--orange); border-color: var(--orange); color: #fff; }
+.contact-form__checkbox input:focus-visible ~ .contact-form__checkbox__mark { box-shadow: 0 0 0 3px rgba(249,73,2,.22); }
+.contact-form__checkbox--all { border-style: dashed; }
+.contact-form__field.has-error .contact-form__checkbox { border-color: #ff6b6b; }
+.contact-form__field-error { margin: 0; font-size: 12px; color: var(--status-error-text); }
+.contact-form__honeypot { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; }
+.turnstile-widget { min-height: 65px; }
+.contact-form__submit {
+  justify-self: start;
+  min-height: 52px;
+  padding: 0 30px;
+  border: 0;
+  border-radius: 10px;
+  background: var(--orange);
+  color: #fff;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  cursor: pointer;
+  box-shadow: 0 14px 32px rgba(249,73,2,.32);
+  transition: transform .15s ease, box-shadow .15s ease;
+}
+.contact-form__submit:hover:not(:disabled) { transform: translateY(-1px); box-shadow: 0 18px 40px rgba(249,73,2,.4); }
+.contact-form__submit:disabled { opacity: .6; cursor: not-allowed; box-shadow: none; }
+.contact-form__error { margin: 0; padding: 12px 16px; border-radius: 8px; background: var(--status-error-bg); color: var(--status-error-text); font-size: 13px; }
+.contact-form__success {
+  display: grid;
+  gap: 8px;
+  padding: clamp(28px, 4vw, 44px);
+  border: 1px solid var(--glass-border);
+  border-radius: 24px;
+  background: var(--glass-bg);
+  box-shadow: var(--glass-shadow);
+  backdrop-filter: blur(22px) saturate(1.15);
+  -webkit-backdrop-filter: blur(22px) saturate(1.15);
+  animation: ibx-form-success-in .5s cubic-bezier(.2,.8,.2,1) both;
+}
+.contact-form__success-title { margin: 0; font-family: var(--font-square-block), Montserrat, sans-serif; font-size: 24px; text-transform: uppercase; color: var(--orange); }
+
+@media (max-width: 560px) {
+  .contact-page { gap: 32px; padding: 90px 20px 64px; }
+  .contact-page__intro h1 { font-size: clamp(34px, 11vw, 44px); }
+  .contact-form, .contact-form__success { padding: 24px 20px; border-radius: 18px; }
+  .contact-form__submit { justify-self: stretch; width: 100%; }
+}
+
+@keyframes ibx-form-success-in {
+  from { opacity: 0; transform: translateY(10px) scale(.98); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .contact-form__success { animation: none; }
+}
+
 /* Homepage collaborator marquee */
 .ibx-collaborators { position: relative; z-index: 3; min-height: 176px; display: grid; align-items: center; overflow: hidden; margin: 0; padding: 48px 0; border: 0; background: #fff; box-shadow: none; color: #11101f; pointer-events: none; }
 .ibx-collaborators::before { display: none; }
@@ -1174,10 +1399,9 @@ button { cursor: pointer; }
 /* Approved homepage stage 01: TOKEN2049-inspired hero + KPI strip only */
 .ibx-home--stage-one { min-height: 100svh; background: #101020; }
 .ibx-home--stage-one .ibx-event-hero { min-height: 100svh; }
-.ibx-home--stage-one .ibx-hero__image { object-fit: cover; object-position: center; }
 .ibx-home--stage-one .ibx-hero__video { position: absolute; z-index: 0; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: center; }
 .ibx-home--stage-one .ibx-hero__shade { background: linear-gradient(90deg, rgba(5,5,18,.48) 0%, rgba(5,5,18,.1) 64%, rgba(5,5,18,.14) 100%), linear-gradient(0deg, rgba(5,5,18,.9) 0%, rgba(5,5,18,.18) 58%, rgba(5,5,18,.42) 100%); }
-.ibx-home--stage-one .ibx-nav { position: absolute; width: 100%; left: 0; right: 0; transform: none; grid-template-columns: minmax(230px, 330px) minmax(0, 1fr) auto; gap: clamp(28px, 3vw, 58px); min-height: 130px; padding: 0 max(4vw, calc((100vw - 1640px) / 2)); border-bottom: 1px solid rgba(255,255,255,.2); background: linear-gradient(180deg, rgba(11,10,27,.58), rgba(11,10,27,.3)); text-shadow: 0 2px 16px rgba(0,0,0,.9); backdrop-filter: blur(8px); box-sizing: border-box; }
+.ibx-home--stage-one .ibx-nav { position: fixed; width: 100%; left: 0; right: 0; transform: none; grid-template-columns: minmax(230px, 330px) minmax(0, 1fr) auto; gap: clamp(28px, 3vw, 58px); min-height: 130px; padding: 0 max(4vw, calc((100vw - 1640px) / 2)); border-bottom: 1px solid rgba(255,255,255,.2); background: linear-gradient(180deg, rgba(11,10,27,.58), rgba(11,10,27,.3)); text-shadow: 0 2px 16px rgba(0,0,0,.9); backdrop-filter: blur(8px); box-sizing: border-box; }
 .ibx-home--stage-one .ibx-nav__brand { width: clamp(240px, 16.2vw, 310px); filter: drop-shadow(0 4px 14px rgba(0,0,0,.75)); }
 .ibx-home--stage-one .ibx-nav__brand img { width: 100%; }
 .ibx-home--stage-one .ibx-nav__links { gap: clamp(25px, 2.25vw, 44px); }
@@ -1212,7 +1436,6 @@ button { cursor: pointer; }
   .ibx-home--stage-one .ibx-event-hero { min-height: 920px; }
   .ibx-home--stage-one .ibx-nav { min-height: 94px; }
   .ibx-home--stage-one .ibx-nav__brand { width: 185px; }
-  .ibx-home--stage-one .ibx-hero__image { object-position: 62% center; }
   .ibx-home--stage-one .ibx-hero__video { object-position: 62% center; }
   .ibx-home--stage-one .ibx-hero__shade { background: linear-gradient(90deg, rgba(5,5,15,.8), rgba(5,5,15,.32)), linear-gradient(0deg, rgba(5,5,15,.86), transparent 68%); }
   .ibx-home--stage-one .ibx-hero__content { position: absolute; inset: auto auto 190px 50%; width: calc(100% - 40px); padding: 0 0 36px; }
@@ -1528,7 +1751,12 @@ button { cursor: pointer; }
 .continent-soon__content form { display: flex; min-width: 395px; padding: 6px; border: 1px solid rgba(255,255,255,.4); border-radius: 10px; background: rgba(16,16,28,.54); backdrop-filter: blur(18px); }
 .continent-soon__content input { min-width: 260px; padding: 0 14px; border: 0; outline: 0; background: transparent; color: #fff; font: 11px Montserrat, sans-serif; }
 .continent-soon__content input::placeholder { color: #aaa5b0; }
+.continent-soon__content input[aria-invalid="true"] { box-shadow: inset 0 0 0 2px #ff6b6b; border-radius: 6px; }
 .continent-soon__content button { min-height: 42px; padding: 0 18px; border: 0; border-radius: 7px; background: var(--orange); color: #fff; font-size: 9px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; }
+.continent-soon__content button:disabled { opacity: .6; cursor: not-allowed; }
+.continent-soon__content input:disabled { opacity: .6; }
+.continent-soon__success { margin: 14px 0 0; padding: 12px 16px; border-radius: 8px; background: rgba(47,125,82,.18); color: #6fdc9d; font-size: 12px; max-width: 395px; }
+.continent-soon__error { margin: 10px 0 0; padding: 12px 16px; border-radius: 8px; background: rgba(220,53,69,.16); color: #ff8fa3; font-size: 12px; max-width: 395px; }
 .continent-soon__footer { position: absolute; z-index: 4; left: 50%; bottom: 33px; width: min(1456px, calc(100% - 64px)); display: flex; align-items: center; justify-content: space-between; transform: translateX(-50%); }
 .continent-soon__footer nav { display: flex; gap: 25px; }
 .continent-soon__footer nav a { color: #d0ccd8; font-size: 8px; letter-spacing: .13em; text-decoration: none; text-transform: uppercase; }
@@ -1822,7 +2050,7 @@ body .ibx-home--stage-one .ibx-ecosystem-card > .ibx-button { background: #f9490
 body .ibx-home--stage-one .ibx-ecosystem-stage > .ibx-carousel-controls { position: absolute; z-index: 7; bottom: 12px; left: 50%; width: auto; min-width: 210px; margin: 0; padding: 5px 8px; transform: translateX(-50%); border-radius: 999px; background: rgba(245,246,250,.92); box-shadow: 0 8px 24px rgba(3,4,16,.18); }
 body .ibx-home--stage-one .ibx-ecosystem-stage > .ibx-carousel-controls > button { width: 32px; height: 26px; color: #0b0b0b; font-size: 18px; }
 
-@media (max-width: 800px) {
+@media (max-width: 900px) {
   body .ibx-home--stage-one .ibx-ecosystem { min-height: 680px; padding: 54px 0 40px; }
   body .ibx-home--stage-one .ibx-ecosystem-card { width: calc(100% - 32px); min-height: 500px; padding: 44px 24px 32px; border-radius: 24px; }
   body .ibx-home--stage-one .ibx-ecosystem-stage > .ibx-carousel-controls { bottom: 0; }
@@ -1857,14 +2085,38 @@ body .ibx-home--stage-one .ibx-ecosystem-card__copy { min-height: 0; color: #666
   object-fit: contain !important;
   filter: none;
 }
+/* The Build wordmark is a dark logo — invisible on the tile's default
+   near-black background, so it gets a light backing chip instead. */
+.ibx-ecosystem-card__visual--light { background: linear-gradient(160deg, #f5f1e9, #e6ded0); }
+.ibx-ecosystem-card__visual--light img { filter: none; }
+
 .ibx-ecosystem-card__content { position: relative; display: flex; flex-direction: column; align-items: flex-start; }
-body .ibx-home--stage-one .ibx-ecosystem-card__content > .ibx-button { background: #f94902; border-color: #f94902; }
+body .ibx-home--stage-one .ibx-ecosystem-card__content > .ibx-button {
+  position: relative;
+  overflow: hidden;
+  border-color: rgba(255,255,255,.3);
+  background: linear-gradient(165deg, #ff6a2e, #d1470c);
+  box-shadow: 0 10px 28px rgba(209,71,12,.38), inset 0 1px 0 rgba(255,255,255,.4), inset 0 -1px 0 rgba(0,0,0,.12);
+  -webkit-backdrop-filter: saturate(1.15);
+  backdrop-filter: saturate(1.15);
+  transition: transform .18s ease, box-shadow .18s ease;
+}
+body .ibx-home--stage-one .ibx-ecosystem-card__content > .ibx-button::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(115deg, rgba(255,255,255,.32) 0%, rgba(255,255,255,0) 42%);
+  pointer-events: none;
+}
+body .ibx-home--stage-one .ibx-ecosystem-card__content > .ibx-button:hover {
+  box-shadow: 0 14px 34px rgba(209,71,12,.46), inset 0 1px 0 rgba(255,255,255,.45), inset 0 -1px 0 rgba(0,0,0,.12);
+}
 .ibx-ecosystem-preview { align-items: flex-end; overflow: hidden; color: rgba(255,255,255,.7); background: #0b0b0b; }
 .ibx-ecosystem-preview::after { content: ""; position: absolute; inset: 0; background: linear-gradient(0deg, rgba(12,13,32,.88), rgba(25,27,55,.12) 72%); }
 .ibx-ecosystem-preview img { object-fit: cover; filter: saturate(.66); }
 .ibx-ecosystem-preview strong { position: relative; z-index: 2; }
 
-@media (max-width: 800px) {
+@media (max-width: 900px) {
   body .ibx-home--stage-one .ibx-ecosystem-card { width: calc(100% - 32px); min-height: 570px; grid-template-columns: 1fr; gap: 24px; padding: 18px 18px 34px; border-radius: 24px; }
   .ibx-ecosystem-card__visual { min-height: 250px; border-radius: 18px; }
   .ibx-ecosystem-card__content { padding: 0 8px; }
@@ -1925,6 +2177,20 @@ body .site-footer__inner { width: min(1440px, calc(100% - 48px)); margin: 0 auto
 .summit-landing__copy li::before { content: ""; position: absolute; top: .48em; left: 0; width: 7px; height: 7px; border-radius: 50%; background: #f94902; }
 .summit-landing__cta { display: inline-flex; align-items: center; gap: 28px; min-height: 52px; padding: 0 11px 0 24px; color: #0b0b0b; background: #f5fbff; font-size: 11px; font-weight: 750; letter-spacing: .06em; text-decoration: none; text-transform: uppercase; }
 .summit-landing__cta span { width: 34px; height: 34px; display: grid; place-items: center; background: #e8eef5; }
+/* Portable "no fake countdown" placeholder — `color: inherit` + a
+   currentColor border mean it reads correctly wherever it's dropped in
+   (white on the Summit hero video, theme-aware ink on the Den of Rogues
+   card) without needing its own light/dark rules. */
+.ibx-coming-soon-pill { display: inline-flex; align-items: center; gap: 9px; margin: 0; padding: 10px 18px; border: 1px solid currentColor; border-radius: 999px; color: inherit; opacity: .82; font-size: 11px; font-weight: 700; letter-spacing: .07em; text-transform: uppercase; }
+/* Sits directly under a countdown wherever both are shown together —
+   give it its own breathing room instead of hugging the numbers above. */
+.summit-landing__countdown + .ibx-coming-soon-pill,
+.ibx-programme__countdown + .ibx-coming-soon-pill { margin-top: 22px; }
+
+.summit-landing__countdown { display: flex; gap: clamp(20px, 3vw, 34px); }
+.summit-landing__countdown time { display: flex; flex-direction: column; align-items: flex-start; gap: 4px; }
+.summit-landing__countdown strong { font-family: var(--font-square-block), Montserrat, sans-serif; font-size: clamp(30px, 3.2vw, 42px); font-weight: 500; line-height: 1; color: #fff; font-variant-numeric: tabular-nums; }
+.summit-landing__countdown small { font-size: 9px; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; color: rgba(255,255,255,.6); }
 .summit-landing__mosaic { min-height: clamp(460px, 38vw, 590px); display: block; }
 .summit-landing__mosaic > div { position: relative; overflow: hidden; border: 1px solid rgba(255,255,255,.12); background: #0b0b0b; box-shadow: 0 24px 60px rgba(0,0,0,.28); }
 .summit-landing__mosaic img { object-fit: cover; filter: saturate(.86) contrast(1.05); }
@@ -2344,6 +2610,7 @@ body { overflow-x: clip; }
   .summit-landing__copy ul { gap: 14px; margin: 32px 0 28px; }
   .summit-landing__copy li { font-size: 16px; line-height: 1.45; }
   .summit-landing__cta { min-height: 50px; font-size: 11px; }
+  .summit-landing__countdown { gap: 16px; }
   .summit-landing__mosaic { min-height: 480px; gap: 10px; }
   .summit-upcoming { width: calc(100% - 32px); padding: 30px 16px; border-radius: 22px; }
   .summit-upcoming__heading > p { font-size: 16px; }
@@ -2589,6 +2856,14 @@ body { overflow-x: clip; }
     padding: 12px 20px !important;
   }
 
+  .ibx-home--stage-one .ibx-programme__countdown {
+    gap: 16px !important;
+  }
+
+  .ibx-home--stage-one .ibx-programme__countdown strong {
+    font-size: clamp(24px, 8vw, 30px) !important;
+  }
+
   .ibx-home--stage-one .ibx-programme-preview,
   .ibx-home--stage-one .ibx-ecosystem-preview {
     display: none !important;
@@ -2726,27 +3001,17 @@ body { overflow-x: clip; }
     pointer-events: none;
   }
 
-  /* IBX so far: every tile follows one responsive box model; no black void. */
-  .ibx-home--stage-one .ibx-so-far {
-    padding: 32px 12px 42px !important;
-  }
+}
 
-  .ibx-home--stage-one .ibx-so-far__simple-grid {
-    display: grid !important;
-    grid-template-columns: minmax(0, 1fr) !important;
-    grid-template-rows: none !important;
-    gap: 10px !important;
-  }
-
-  .ibx-home--stage-one .ibx-so-far__simple-grid > * {
-    grid-column: 1 !important;
-    grid-row: auto !important;
-    min-height: 0 !important;
-    aspect-ratio: 4 / 3;
-    border-radius: 18px !important;
-    overflow: hidden;
-  }
-
+/* The video's own box model (fixed aspect ratio, absolute-fill <video>,
+   button size) has no stake in the sticky/grid layout fight below — it
+   already forced `position: relative` (never sticky) before any of that
+   existed, so it stays scoped to the full ≤720px range. Without this,
+   the ≤560px stack gives the container only a `min-height`, and since a
+   video's `height: 100%` can't resolve against a `min-height`-only
+   parent, it was collapsing to the poster's own aspect ratio and leaving
+   dead space in the rest of the (dark) card. */
+@media (max-width: 720px) {
   .ibx-home--stage-one .ibx-so-far__video {
     order: -1;
     aspect-ratio: 16 / 10 !important;
@@ -5169,6 +5434,36 @@ body { overflow-x: clip; }
   .build-hero__typing-cursor {
     display: none;
     animation: none;
+  }
+}
+/* IBX so far, 561–720px only: below 561px the dedicated sticky "stacking
+   card" design (see the ≤560px rule earlier) already owns this section —
+   scoping this compact single-column pass to stop above it, rather than
+   the flat ≤720px this used to share, keeps the two from fighting over
+   `display`/`position` and re-opening either the stray gap between cards
+   or a dead scroll-to-stack effect on real phones. */
+@media (min-width: 561px) and (max-width: 720px) {
+  .ibx-home--stage-one .ibx-so-far {
+    padding: 32px 12px 42px !important;
+  }
+
+  .ibx-home--stage-one .ibx-so-far__simple-grid {
+    display: grid !important;
+    grid-template-columns: minmax(0, 1fr) !important;
+    grid-template-rows: none !important;
+    gap: 10px !important;
+  }
+
+  .ibx-home--stage-one .ibx-so-far__simple-grid > * {
+    grid-column: 1 !important;
+    grid-row: auto !important;
+    position: relative !important;
+    top: auto !important;
+    min-height: 0 !important;
+    aspect-ratio: 4 / 3;
+    border-radius: 18px !important;
+    box-shadow: none !important;
+    overflow: hidden;
   }
 }
 

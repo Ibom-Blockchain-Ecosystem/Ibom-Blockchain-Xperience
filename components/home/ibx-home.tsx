@@ -1,4 +1,3 @@
-import Image from "next/image";
 import { ecosystemProgrammes, impactStats, speakerQuotes } from "@/content/site/home";
 import { EcosystemCarousel } from "@/components/home/ecosystem-carousel";
 import { PhotoSlideshow } from "@/components/home/photo-slideshow";
@@ -12,40 +11,36 @@ import { MainNavigation } from "@/components/navigation/main-navigation";
 import { SiteFooter } from "@/components/site-footer";
 
 export function IbxHome() {
-  const registrationUrl = process.env.NEXT_PUBLIC_REGISTRATION_URL ?? "#register";
-
   return (
     <main className="ibx-home ibx-home--stage-one" id="main-content">
-      <section className="ibx-hero ibx-event-hero" id="register" aria-labelledby="ibx-hero-title">
-        <Image
-          className="ibx-hero__image"
-          src="/images/home/ibx27-hero-poster.webp"
-          fill
-          sizes="100vw"
-          alt="A packed African Web3 conference with speakers on the IBX stage"
-          priority
-        />
+      {/* Rendered here, as a sibling above the hero, rather than nested
+          inside it — the hero section has `overflow: hidden` (needed to
+          clip its video/image to its own edges), and a `position: fixed`
+          nav trapped inside an `overflow: hidden` ancestor gets clipped
+          away the moment you scroll past that ancestor's height. Sitting
+          outside it lets the nav stay pinned for the whole page. */}
+      <MainNavigation />
+
+      <section className="ibx-hero ibx-event-hero" aria-labelledby="ibx-hero-title">
         <video
           className="ibx-hero__video"
           autoPlay
           muted
           loop
           playsInline
-          poster="/images/home/ibx27-hero-poster.webp"
           aria-hidden="true"
         >
           <source src="/videos/ibx27-hero.mp4" type="video/mp4" />
         </video>
         <div className="ibx-hero__shade" />
-        <MainNavigation />
 
         <div className="ibx-hero__content">
-          <p className="ibx-announcement"><span aria-hidden="true">▣</span> IBX27 registration</p>
+          <p className="ibx-announcement"><span aria-hidden="true">▣</span> The future is being built</p>
           <h1 id="ibx-hero-title">
             <span>The Global</span>
             <span>blockchain movement</span>
           </h1>
-          <a className="ibx-button" href={registrationUrl}>Explore</a>
+          <a className="ibx-button" href="#summit">Explore</a>
         </div>
 
         <div className="ibx-kpi-strip" aria-label="IBX impact statistics">
@@ -77,7 +72,7 @@ export function IbxHome() {
               sizes="(max-width: 800px) 100vw, 18vw"
               images={[
                 { src: "/images/home/ibx-so-far-panel-enhanced.webp", alt: "An IBX fireside panel on the summit stage" },
-                { src: "/images/home/ibx-so-far-stage-2-enhanced.jpg", alt: "The Ibom Blockchain Summit main stage with the audience watching two large screens" },
+                { src: "/images/home/ibx-tour-arch-enhanced.jpg", alt: "Crowds arriving through the IBX Tour welcome archway" },
               ]}
             />
             <figcaption>Ideas take the stage.</figcaption>
@@ -95,6 +90,7 @@ export function IbxHome() {
               images={[
                 { src: "/images/home/ibx-so-far-audience-enhanced.webp", alt: "A large audience gathered for the Ibom Blockchain Summit" },
                 { src: "/images/home/ibx-so-far-balcony-enhanced.jpg", alt: "A two-level venue packed with attendees at the Ibom Blockchain Summit" },
+                { src: "/images/home/ibx-tour-courtyard-enhanced.jpg", alt: "Students and attendees gathered at an IBX Tour stop" },
               ]}
             />
             <figcaption>A community built to connect.</figcaption>
@@ -104,7 +100,8 @@ export function IbxHome() {
             <PhotoSlideshow
               sizes="(max-width: 800px) 100vw, 34vw"
               images={[
-                { src: "/images/home/ibx-so-far-stage-2-enhanced.jpg", alt: "The Ibom Blockchain Summit main stage with the audience watching two large screens" },
+                { src: "/images/home/ibx-so-far-booth-1-enhanced.jpg", alt: "Attendees queuing at the CoinEx and SmartBet booths at IBX Summit" },
+                { src: "/images/home/ibx-so-far-booth-2-enhanced.jpg", alt: "IBX Summit attendees registering at the Summit booth" },
                 { src: "/images/home/ibx-so-far-sax-enhanced.jpg", alt: "A musician performing on stage at the Ibom Blockchain Summit" },
               ]}
             />

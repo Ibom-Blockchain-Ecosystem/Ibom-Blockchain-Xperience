@@ -78,7 +78,7 @@ export default async function TourStopPage({ params }: PageProps) {
         <article><span>Tour date</span><strong>Date to be confirmed</strong></article>
         <article><span>Primary city</span><strong>{stop.city}</strong></article>
         <article><span>Experience</span><strong>Workshops + activations</strong></article>
-        <article><span>Registration</span><a href={registrationUrl} target="_blank" rel="noopener noreferrer">Register interest ↗</a></article>
+        <article><span>Registration</span><a href={registrationUrl} target="_blank" rel="noopener noreferrer">Register interest ↗<span className="sr-only"> (opens in a new tab)</span></a></article>
       </section>
 
       <section className={`editorial-intro${stop.cityImages ? " editorial-intro--collage" : stop.visualTheme ? ` country-story country-story--${stop.visualTheme}` : stop.featuredCities ? " editorial-intro--city-feature" : ""}`}>
@@ -143,7 +143,7 @@ export default async function TourStopPage({ params }: PageProps) {
       <section className="country-programme" id="programme">
         <div className="country-section-heading">
           <div><span>What is happening here</span><h2>The country programme</h2></div>
-          <a className="tour-action" href={registrationUrl} target="_blank" rel="noopener noreferrer">Register interest</a>
+          <a className="tour-action" href={registrationUrl} target="_blank" rel="noopener noreferrer">Register interest<span className="sr-only"> (opens in a new tab)</span></a>
         </div>
         <div className="country-programme__grid">
           <article><strong>01</strong><h3>Workshops</h3><p>Practical blockchain learning, demonstrations and useful digital skills.</p></article>
@@ -209,7 +209,7 @@ export default async function TourStopPage({ params }: PageProps) {
 
       <section className="country-final-cta">
         <div><span>IBX27 Tour · {stop.country}</span><h2>Be part of this stop.</h2></div>
-        <a className="tour-action" href={registrationUrl} target="_blank" rel="noopener noreferrer">Register interest ↗</a>
+        <a className="tour-action" href={registrationUrl} target="_blank" rel="noopener noreferrer">Register interest ↗<span className="sr-only"> (opens in a new tab)</span></a>
       </section>
 
       <SiteFooter nextCountry={{ href: `/tour/${nextStop.slug}`, label: nextStop.country }} />

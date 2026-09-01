@@ -13,12 +13,12 @@ export function ComingUpNext() {
           <div className="summit-upcoming__logo">
             <Image src="/brand/programmes/ibx-summit-logo.png" width={1800} height={333} alt="Ibom Blockchain Xperience Summit — Built for This" />
           </div>
-          <h2 id="coming-up-next-title">Uyo <span>·</span> London <span>·</span> Dubai <span>·</span> New York</h2>
+          <h2 id="coming-up-next-title">Uyo <span>·</span> London <span>·</span> Thailand <span>·</span> New York</h2>
           <p>Four continents. One blockchain movement.</p>
         </div>
 
         <div className="summit-upcoming__tape summit-upcoming__tape--lower" aria-hidden="true">
-          <span>IBX SUMMIT · NIGERIA · LONDON · DUBAI · UYO · COMING SOON · IBX SUMMIT · NIGERIA</span>
+          <span>IBX SUMMIT · NIGERIA · LONDON · THAILAND · UYO · COMING SOON · IBX SUMMIT · NIGERIA</span>
         </div>
       </div>
     </section>
@@ -44,10 +44,10 @@ export function SummitDestinations() {
 
           <article className="summit-event-card">
             <div className="summit-event-card__image">
-              <Image src="/brand/summit/Tour-City-Dubai.png" fill sizes="(max-width: 700px) 100vw, 28vw" alt="Ibom Blockchain Xperience Summit Dubai logo" />
+              <Image src="/brand/summit/Tour-City-Thailand.png" fill sizes="(max-width: 700px) 100vw, 28vw" alt="Ibom Blockchain Xperience Summit Thailand logo" />
             </div>
-            <p>United Arab Emirates</p>
-            <h3>IBX Dubai</h3>
+            <p>Thailand</p>
+            <h3>IBX Thailand</h3>
             <div><span>Date ·To be Annouced</span><span>Venue · To be Annouced</span></div>
             <span className="summit-event-card__status">Updates coming soon</span>
           </article>

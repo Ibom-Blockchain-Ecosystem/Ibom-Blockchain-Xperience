@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { SummitDestinations } from "@/components/home/upcoming-events";
+import { Countdown } from "@/components/countdown";
+import { DetailsComingSoon } from "@/components/details-coming-soon";
 import { SiteFooter } from "@/components/site-footer";
 
 export const metadata: Metadata = {
@@ -9,6 +11,11 @@ export const metadata: Metadata = {
   description: "Discover the flagship Ibom Blockchain Xperience summit in Uyo, Nigeria.",
   alternates: { canonical: "/summit" },
 };
+
+// TODO: placeholder target — swap for the real Summit date the moment
+// it's confirmed. The "more details coming soon" note next to it is
+// what keeps this honest in the meantime, not the date itself.
+const SUMMIT_COUNTDOWN_TARGET = new Date("2026-09-30T00:00:00+01:00").getTime();
 
 export default function SummitPage() {
   return (
@@ -35,6 +42,7 @@ export default function SummitPage() {
 
           <a className="summit-landing__register" href="https://form.typeform.com/to/A2YCJwL2" target="_blank" rel="noopener noreferrer">
             Register interest
+            <span className="sr-only"> (opens in a new tab)</span>
           </a>
 
           <details className="summit-landing__mobile-menu">
@@ -57,7 +65,8 @@ export default function SummitPage() {
               <li>Two days of ideas, building and collaboration.</li>
             
             </ul>
-            <Link className="summit-landing__cta" href="#about-summit">Explore the summit</Link>
+            <Countdown target={SUMMIT_COUNTDOWN_TARGET} label="Time until the Summit" className="summit-landing__countdown" />
+            <DetailsComingSoon label="Dates & venue — more details coming soon" />
           </div>
 
           <div className="summit-landing__mosaic" aria-label="Ibom Blockchain Xperience Summit identity">

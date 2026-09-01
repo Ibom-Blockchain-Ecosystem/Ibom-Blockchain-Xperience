@@ -8,6 +8,10 @@ export type EcosystemProgramme = {
   // to a rotating photo in EcosystemCarousel when omitted (currently only
   // true for Ambassador — there's no dedicated Ambassador logo file yet).
   logo?: string;
+  // Some logo files are dark wordmarks meant for a light background — the
+  // visual panel is dark by default, so those need a light chip behind
+  // them instead, or they'd be invisible.
+  logoOnLight?: boolean;
 };
 
 export const impactStats = [
@@ -43,9 +47,8 @@ export const ecosystemProgrammes: EcosystemProgramme[] = [
       "A year-round platform empowering founders and developers through hackathons, startup support, innovation challenges, mentorship and ecosystem collaboration.",
     href: "/build",
     cta: "Explore IBX Build",
-    // No dedicated "IBX Build" logo file exists yet — using the generic
-    // white IBX mark as a stand-in until a real one is provided.
-    logo: "/brand/ibx-primary-white.png",
+    logo: "/brand/programmes/ibx-build-logo.png",
+    logoOnLight: true,
   },
   {
     eyebrow: "Represent the movement",
