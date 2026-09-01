@@ -1175,6 +1175,48 @@ button { cursor: pointer; }
 .contact-form__field.has-error input:focus, .contact-form__field.has-error textarea:focus, .contact-form__field.has-error select:focus {
   box-shadow: 0 0 0 3px rgba(255,107,107,.22);
 }
+
+/* Checkmark chip group — which campaign(s) a partner wants (Partner
+   Application form). The checkbox itself is visually hidden; the chip
+   and its checkmark box track the `is-checked` state instead, matching
+   how every other stateful control in this codebase (`is-active`,
+   `is-disabled`) is driven from JS rather than a `:checked` selector. */
+fieldset.contact-form__field { margin: 0; padding: 0; border: 0; min-width: 0; }
+fieldset.contact-form__field legend { padding: 0; font-size: 11px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--muted); }
+.contact-form__checkbox-group { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 8px; }
+.contact-form__checkbox {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  padding: 11px 16px;
+  border: 1px solid var(--glass-border);
+  border-radius: 999px;
+  background: rgba(127,127,127,.08);
+  color: var(--ink);
+  font: 600 13px Montserrat, sans-serif;
+  cursor: pointer;
+  transition: border-color .15s ease, background .15s ease;
+}
+.contact-form__checkbox input { position: absolute; opacity: 0; width: 1px; height: 1px; pointer-events: none; }
+.contact-form__checkbox__mark {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 18px;
+  height: 18px;
+  border: 1px solid var(--glass-border);
+  border-radius: 5px;
+  color: transparent;
+  font-size: 12px;
+  line-height: 1;
+  transition: background .15s ease, border-color .15s ease, color .15s ease;
+}
+.contact-form__checkbox.is-checked { border-color: var(--orange); background: rgba(249,73,2,.12); }
+.contact-form__checkbox.is-checked .contact-form__checkbox__mark { background: var(--orange); border-color: var(--orange); color: #fff; }
+.contact-form__checkbox input:focus-visible ~ .contact-form__checkbox__mark { box-shadow: 0 0 0 3px rgba(249,73,2,.22); }
+.contact-form__checkbox--all { border-style: dashed; }
+.contact-form__field.has-error .contact-form__checkbox { border-color: #ff6b6b; }
 .contact-form__field-error { margin: 0; font-size: 12px; color: var(--status-error-text); }
 .contact-form__honeypot { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; }
 .turnstile-widget { min-height: 65px; }
@@ -2108,6 +2150,16 @@ body .site-footer__inner { width: min(1440px, calc(100% - 48px)); margin: 0 auto
 .summit-landing__copy li::before { content: ""; position: absolute; top: .48em; left: 0; width: 7px; height: 7px; border-radius: 50%; background: #f94902; }
 .summit-landing__cta { display: inline-flex; align-items: center; gap: 28px; min-height: 52px; padding: 0 11px 0 24px; color: #0b0b0b; background: #f5fbff; font-size: 11px; font-weight: 750; letter-spacing: .06em; text-decoration: none; text-transform: uppercase; }
 .summit-landing__cta span { width: 34px; height: 34px; display: grid; place-items: center; background: #e8eef5; }
+/* Portable "no fake countdown" placeholder — `color: inherit` + a
+   currentColor border mean it reads correctly wherever it's dropped in
+   (white on the Summit hero video, theme-aware ink on the Den of Rogues
+   card) without needing its own light/dark rules. */
+.ibx-coming-soon-pill { display: inline-flex; align-items: center; gap: 9px; margin: 0; padding: 10px 18px; border: 1px solid currentColor; border-radius: 999px; color: inherit; opacity: .82; font-size: 11px; font-weight: 700; letter-spacing: .07em; text-transform: uppercase; }
+/* Sits directly under a countdown wherever both are shown together —
+   give it its own breathing room instead of hugging the numbers above. */
+.summit-landing__countdown + .ibx-coming-soon-pill,
+.ibx-programme__countdown + .ibx-coming-soon-pill { margin-top: 22px; }
+
 .summit-landing__countdown { display: flex; gap: clamp(20px, 3vw, 34px); }
 .summit-landing__countdown time { display: flex; flex-direction: column; align-items: flex-start; gap: 4px; }
 .summit-landing__countdown strong { font-family: var(--font-square-block), Montserrat, sans-serif; font-size: clamp(30px, 3.2vw, 42px); font-weight: 500; line-height: 1; color: #fff; font-variant-numeric: tabular-nums; }

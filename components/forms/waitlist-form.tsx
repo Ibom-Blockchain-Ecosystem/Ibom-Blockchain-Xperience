@@ -3,14 +3,17 @@
 import { useRef, useState, type ChangeEvent, type FocusEvent, type FormEvent } from "react";
 import { isEmpty, isValidEmail } from "@/lib/forms/validate";
 import { launchConfetti } from "@/lib/confetti";
+import { tourCountries } from "@/content/site/home";
 
 type Status = "idle" | "pending" | "success" | "error";
-type Values = { name: string; email: string; role: string };
+type Values = { name: string; email: string; role: string; country: string; motivation: string };
 type Field = keyof Values;
 
-const initialValues: Values = { name: "", email: "", role: "" };
+const initialValues: Values = { name: "", email: "", role: "", country: "", motivation: "" };
 const roles = ["Student", "Founder", "Developer", "Community builder", "Other"];
-const fields: Field[] = ["name", "email", "role"];
+const countries = [...tourCountries, "Other"];
+const requiredFields: Field[] = ["name", "email", "role", "country"];
+const fields: Field[] = ["name", "email", "role", "country", "motivation"];
 
 function getFieldError(field: Field, values: Values): string | null {
   const value = values[field];
@@ -22,6 +25,10 @@ function getFieldError(field: Field, values: Values): string | null {
   if (field === "role") {
     return isEmpty(value) ? "Choose the option closest to you" : null;
   }
+  if (field === "country") {
+    return isEmpty(value) ? "Tell us which country you're applying from" : null;
+  }
+  if (field === "motivation") return null; // optional
   if (isEmpty(value)) return "This field can't be empty";
   return null;
 }
@@ -31,26 +38,26 @@ export function WaitlistForm() {
   const [touched, setTouched] = useState<Partial<Record<Field, boolean>>>({});
   const [status, setStatus] = useState<Status>("idle");
   const [errorMessage, setErrorMessage] = useState("");
-  const fieldRefs = useRef<Partial<Record<Field, HTMLInputElement | HTMLSelectElement>>>({});
+  const fieldRefs = useRef<Partial<Record<Field, HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>>>({});
 
-  const handleChange = (event: ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+  const handleChange = (event: ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
     const { name, value } = event.target;
     setValues((current) => ({ ...current, [name]: value }));
   };
 
-  const handleBlur = (event: FocusEvent<HTMLInputElement | HTMLSelectElement>) => {
+  const handleBlur = (event: FocusEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
     setTouched((current) => ({ ...current, [event.target.name]: true }));
   };
 
   const errors = Object.fromEntries(fields.map((field) => [field, getFieldError(field, values)])) as Record<Field, string | null>;
-  const hasErrors = fields.some((field) => errors[field]);
+  const hasErrors = requiredFields.some((field) => errors[field]);
 
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    setTouched({ name: true, email: true, role: true });
+    setTouched({ name: true, email: true, role: true, country: true, motivation: true });
 
     if (hasErrors) {
-      const firstInvalid = fields.find((field) => errors[field]);
+      const firstInvalid = requiredFields.find((field) => errors[field]);
       if (firstInvalid) fieldRefs.current[firstInvalid]?.focus();
       return;
     }
@@ -136,6 +143,26 @@ export function WaitlistForm() {
         {touched.email && errors.email && <p id="wl-email-error" className="contact-form__field-error">{errors.email}</p>}
       </div>
 
+      <div className={`contact-form__field${touched.country && errors.country ? " has-error" : ""}`}>
+        <label htmlFor="wl-country">Which country are you applying from?</label>
+        <select
+          id="wl-country"
+          name="country"
+          value={values.country}
+          onChange={handleChange}
+          onBlur={handleBlur}
+          disabled={status === "pending"}
+          ref={(el) => { fieldRefs.current.country = el ?? undefined; }}
+          aria-required="true"
+          aria-invalid={!!(touched.country && errors.country)}
+          aria-describedby={touched.country && errors.country ? "wl-country-error" : undefined}
+        >
+          <option value="" disabled>Choose one</option>
+          {countries.map((country) => <option key={country} value={country}>{country}</option>)}
+        </select>
+        {touched.country && errors.country && <p id="wl-country-error" className="contact-form__field-error">{errors.country}</p>}
+      </div>
+
       <div className={`contact-form__field${touched.role && errors.role ? " has-error" : ""}`}>
         <label htmlFor="wl-role">Which best describes you?</label>
         <select
@@ -154,6 +181,21 @@ export function WaitlistForm() {
           {roles.map((role) => <option key={role} value={role}>{role}</option>)}
         </select>
         {touched.role && errors.role && <p id="wl-role-error" className="contact-form__field-error">{errors.role}</p>}
+      </div>
+
+      <div className="contact-form__field">
+        <label htmlFor="wl-motivation">Why do you want to be an IBX Ambassador? (optional)</label>
+        <textarea
+          id="wl-motivation"
+          name="motivation"
+          rows={4}
+          value={values.motivation}
+          onChange={handleChange}
+          onBlur={handleBlur}
+          disabled={status === "pending"}
+          ref={(el) => { fieldRefs.current.motivation = el ?? undefined; }}
+          placeholder="Tell us about your community, experience or what you'd want to do locally."
+        />
       </div>
 
       {status === "error" && (

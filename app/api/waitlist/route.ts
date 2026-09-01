@@ -9,6 +9,8 @@ const waitlistSchema = z.object({
   name: z.string().trim().min(1, "Enter your name").max(200),
   email: z.string().trim().email("Enter a valid email address").max(320),
   role: z.string().trim().min(1, "Choose the option closest to you").max(100),
+  country: z.string().trim().min(1, "Tell us which country you're applying from").max(100),
+  motivation: z.string().trim().max(2000).optional(),
   company: z.string().max(0).optional(), // honeypot
 });
 
@@ -39,12 +41,12 @@ export async function POST(request: Request) {
     return NextResponse.json({ ok: true });
   }
 
-  const { name, email, role } = parsed.data;
+  const { name, email, role, country, motivation } = parsed.data;
   const supabase = createSupabaseServerClient();
 
   const { data, error } = await supabase
     .from("waitlist_entries")
-    .insert({ name, email, role })
+    .insert({ name, email, role, country, motivation: motivation || null })
     .select("verification_token")
     .single();
 
@@ -70,7 +72,13 @@ export async function POST(request: Request) {
     sendVerificationEmail({ to: email, confirmUrl, formLabel: "IBX Ambassador Programme waitlist" }),
     sendTeamNotification({
       subject: "New Ambassador Programme waitlist signup",
-      lines: [["Name", name], ["Email", email], ["Role", role]],
+      lines: [
+        ["Name", name],
+        ["Email", email],
+        ["Role", role],
+        ["Country", country],
+        ...(motivation ? ([["Motivation", motivation]] as [string, string][]) : []),
+      ],
     }),
   ]);
 

@@ -45,7 +45,7 @@ export function IbxHome() {
         <div className="ibx-hero__shade" />
 
         <div className="ibx-hero__content">
-          <p className="ibx-announcement"><span aria-hidden="true">▣</span> IBX27 registration</p>
+          <p className="ibx-announcement"><span aria-hidden="true">▣</span> The future is being built</p>
           <h1 id="ibx-hero-title">
             <span>The Global</span>
             <span>blockchain movement</span>

@@ -3,9 +3,11 @@
 import Image from "next/image";
 import { useEffect, useState } from "react";
 import { Countdown } from "@/components/countdown";
+import { DetailsComingSoon } from "@/components/details-coming-soon";
 
 // TODO: placeholder target — swap for the real Den of Rogues kickoff date
-// the moment it's confirmed, same convention as the Summit countdown.
+// the moment it's confirmed. The "more details coming soon" note next to
+// it is what keeps this honest in the meantime, not the date itself.
 const ROGUES_COUNTDOWN_TARGET = new Date("2026-09-30T00:00:00+01:00").getTime();
 
 const features = [
@@ -91,11 +93,10 @@ export function ProgrammeFeatures() {
             <h2>{active.title}</h2>
             <p>{active.description}</p>
             {active.type === "rogues" ? (
-              <Countdown
-                target={ROGUES_COUNTDOWN_TARGET}
-                label="Time until the Den of Rogues opens"
-                className="ibx-programme__countdown"
-              />
+              <>
+                <Countdown target={ROGUES_COUNTDOWN_TARGET} label="Time until the Den of Rogues opens" className="ibx-programme__countdown" />
+                <DetailsComingSoon label="Programme dates — more details coming soon" />
+              </>
             ) : (
               <a className="ibx-programme__button" href={active.href}>{active.cta}</a>
             )}

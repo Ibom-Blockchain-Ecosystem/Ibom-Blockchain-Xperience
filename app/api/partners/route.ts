@@ -6,11 +6,14 @@ import { isTrustedOrigin } from "@/lib/forms/request-origin";
 import { verifyTurnstileToken } from "@/lib/forms/verify-turnstile";
 import { sendTeamNotification } from "@/lib/email/resend";
 
+const PROGRAMME_OPTIONS = ["summit", "tour", "build"] as const;
+
 const partnerSchema = z.object({
   orgName: z.string().trim().min(1, "Enter your organisation's name").max(200),
   contactName: z.string().trim().min(1, "Enter your name").max(200),
   email: z.string().trim().email("Enter a valid email address").max(320),
   partnershipType: z.string().trim().min(1, "Choose a partnership type").max(100),
+  programmes: z.array(z.enum(PROGRAMME_OPTIONS)).min(1, "Choose at least one campaign"),
   message: z.string().trim().min(1, "Tell us a bit about the partnership").max(5000),
   company: z.string().max(0).optional(), // honeypot
   turnstileToken: z.string().optional(),
@@ -51,7 +54,7 @@ export async function POST(request: Request) {
     );
   }
 
-  const { orgName, contactName, email, partnershipType, message } = parsed.data;
+  const { orgName, contactName, email, partnershipType, programmes, message } = parsed.data;
   const supabase = createSupabaseServerClient();
 
   const { error } = await supabase.from("partner_applications").insert({
@@ -59,6 +62,7 @@ export async function POST(request: Request) {
     contact_name: contactName,
     email,
     partnership_type: partnershipType,
+    programmes,
     message,
   });
 
@@ -70,6 +74,12 @@ export async function POST(request: Request) {
     );
   }
 
+  const programmeLabels: Record<(typeof PROGRAMME_OPTIONS)[number], string> = {
+    summit: "Summit",
+    tour: "Tour",
+    build: "Build",
+  };
+
   await sendTeamNotification({
     subject: `New partner application: ${orgName}`,
     lines: [
@@ -77,6 +87,7 @@ export async function POST(request: Request) {
       ["Contact", contactName],
       ["Email", email],
       ["Type", partnershipType],
+      ["Campaigns", programmes.map((programme) => programmeLabels[programme]).join(", ")],
       ["Message", message],
     ],
   });
