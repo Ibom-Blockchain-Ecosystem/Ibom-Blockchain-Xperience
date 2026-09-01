@@ -1,3 +1,3 @@
 # Build content
 
-Builder pathways, Den of Rogues, mentors, prizes and application information.
+Builder pathways, the access/build/demo/win journey, Den of Rogues, mentors, prizes and application information.
