@@ -45,7 +45,7 @@ export const ecosystemProgrammes: EcosystemProgramme[] = [
     title: "IBX Build",
     description:
       "A year-round platform empowering founders and developers through hackathons, startup support, innovation challenges, mentorship and ecosystem collaboration.",
-    href: "#build",
+    href: "/build",
     cta: "Explore IBX Build",
     logo: "/brand/programmes/ibx-build-logo.png",
     logoOnLight: true,

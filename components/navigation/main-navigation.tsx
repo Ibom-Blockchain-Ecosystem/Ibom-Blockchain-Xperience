@@ -1,19 +1,33 @@
 import Image from "next/image";
 import Link from "next/link";
 
-// "Build" is an in-page anchor that only exists on the homepage —
-// `/#build` (leading slash) always resolves there first regardless of
-// which page this nav is rendered on, unlike a bare `#build` which
-// would look for that id on the *current* page.
-// "Community" has no on-site section of its own — it points straight at
-// the same Telegram group as the IBX Community card on the homepage
-// ecosystem carousel (see `ecosystemProgrammes` in content/site/home.ts).
-const links = [
-  { href: "/summit", label: "Summit" },
-  { href: "/tour", label: "Tour" },
-  { href: "/#build", label: "Build" },
-  { href: "https://t.me/+tTYyl_SQzwFmY2I0", label: "Community" },
-];
+type NavigationAction = {
+  href: string;
+  label: string;
+};
+
+type NavigationBrand = {
+  src: string;
+  width: number;
+  height: number;
+  alt: string;
+};
+
+type MainNavigationProps = {
+  buildHref?: string;
+  brandHref?: string;
+  className?: string;
+  primaryAction?: NavigationAction;
+  secondaryAction?: NavigationAction | null;
+  brand?: NavigationBrand;
+};
+
+const defaultBrand: NavigationBrand = {
+  src: "/brand/ibx-rebrand-white.png",
+  width: 3600,
+  height: 829,
+  alt: "Ibom Blockchain Xperience",
+};
 
 function NavLink({ href, label }: { href: string; label: string }) {
   if (href.startsWith("http")) {
@@ -27,11 +41,28 @@ function NavLink({ href, label }: { href: string; label: string }) {
   return <Link href={href}>{label}</Link>;
 }
 
-export function MainNavigation() {
+export function MainNavigation({
+  buildHref = "/build",
+  brandHref = "/",
+  className,
+  primaryAction = { href: "/register", label: "Register" },
+  secondaryAction = { href: "/partners", label: "Partner with us" },
+  brand = defaultBrand,
+}: MainNavigationProps) {
+  // "Community" has no on-site section of its own — it points straight at
+  // the same Telegram group as the IBX Community card on the homepage
+  // ecosystem carousel (see `ecosystemProgrammes` in content/site/home.ts).
+  const links = [
+    { href: "/summit", label: "Summit" },
+    { href: "/tour", label: "Tour" },
+    { href: buildHref, label: "Build" },
+    { href: "https://t.me/+tTYyl_SQzwFmY2I0", label: "Community" },
+  ];
+
   return (
-    <header className="ibx-nav">
-      <Link className="ibx-nav__brand" href="/" aria-label="Ibom Blockchain Xperience home">
-        <Image src="/brand/ibx-rebrand-white.png" width={3600} height={829} alt="Ibom Blockchain Xperience" priority />
+    <header className={`ibx-nav${className ? ` ${className}` : ""}`}>
+      <Link className="ibx-nav__brand" href={brandHref} aria-label="Ibom Blockchain Xperience home">
+        <Image src={brand.src} width={brand.width} height={brand.height} alt={brand.alt} priority />
       </Link>
 
       <nav className="ibx-nav__links" aria-label="Primary navigation">
@@ -39,16 +70,16 @@ export function MainNavigation() {
       </nav>
 
       <div className="ibx-nav__actions">
-        <Link className="ibx-button ibx-button--small ibx-button--outline" href="/partners">Partner with us</Link>
-        <Link className="ibx-button ibx-button--small" href="/register">Register</Link>
+        {secondaryAction && <Link className="ibx-button ibx-button--small ibx-button--outline" href={secondaryAction.href}>{secondaryAction.label}</Link>}
+        <Link className="ibx-button ibx-button--small" href={primaryAction.href}>{primaryAction.label}</Link>
       </div>
 
       <details className="ibx-mobile-menu">
         <summary aria-label="Open navigation">Menu</summary>
         <nav aria-label="Mobile navigation">
           {links.map((link) => <NavLink key={link.href} {...link} />)}
-          <Link href="/partners">Partner with us</Link>
-          <Link href="/register">Register</Link>
+          {secondaryAction && <Link href={secondaryAction.href}>{secondaryAction.label}</Link>}
+          <Link href={primaryAction.href}>{primaryAction.label}</Link>
         </nav>
       </details>
     </header>

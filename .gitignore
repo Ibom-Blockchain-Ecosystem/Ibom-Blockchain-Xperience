@@ -22,3 +22,9 @@ supabase/.temp/
 .DS_Store
 .vscode/
 .idea/
+
+# About page — work in progress, kept local, not shipped yet
+/app/about/page.tsx
+/app/about/about.css
+/components/about/
+/content/site/about.ts
