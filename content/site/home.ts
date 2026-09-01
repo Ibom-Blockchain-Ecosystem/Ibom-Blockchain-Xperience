@@ -15,7 +15,7 @@ export type EcosystemProgramme = {
 };
 
 export const impactStats = [
-  { value: "200,000+", label: "people reached", verified: false },
+  { value: "200,000+", label: "reached", verified: false },
   { value: "200+", label: "collaborators", verified: false },
   { value: "100+", label: "stakeholders", verified: false },
   { value: "4", label: "continents", verified: true },

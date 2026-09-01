@@ -583,7 +583,7 @@ button { cursor: pointer; }
 .ibx-ecosystem-card__copy { min-height: 72px; max-width: 690px; margin-bottom: 34px; color: #625d56; font-size: 14px; line-height: 1.7; }
 .ibx-carousel-controls { width: 100%; display: grid; grid-template-columns: 50px 1fr 50px; align-items: center; margin-top: 44px; }
 .ibx-carousel-controls > button { width: 46px; height: 46px; border: 1px solid #c7c2ba; border-radius: 50%; background: transparent; }
-.ibx-carousel-dots { display: flex; justify-content: center; gap: 10px; }
+.ibx-carousel-dots { display: none; }
 .ibx-carousel-dots button { width: 7px; height: 7px; padding: 0; border: 0; border-radius: 50%; background: #c9c5be; }
 .ibx-carousel-dots button.is-active { width: 22px; border-radius: 8px; background: var(--orange); }
 
@@ -831,9 +831,9 @@ button { cursor: pointer; }
 .ibx-programme-preview strong { position: relative; z-index: 2; font-family: var(--font-square-block), Montserrat, sans-serif; font-size: clamp(30px, 3vw, 48px); font-weight: 400; line-height: .9; text-transform: uppercase; }
 .ibx-programme-preview--left { right: calc(50% + 410px); justify-content: flex-end; text-align: right; animation: ibx-preview-left-arrive .72s cubic-bezier(.2,.8,.2,1) both; }
 .ibx-programme-preview--right { left: calc(50% + 410px); animation: ibx-preview-right-arrive .72s cubic-bezier(.2,.8,.2,1) both; }
-.ibx-programme-controls { position: absolute; z-index: 7; bottom: 2px; left: 50%; display: flex; align-items: center; gap: 12px; padding: 5px 8px; transform: translateX(-50%); border: 1px solid rgba(255,255,255,.16); border-radius: 999px; background: rgba(245,246,250,.92); box-shadow: 0 8px 24px rgba(3,4,16,.18); }
-.ibx-programme-controls > button { width: 28px; height: 24px; border: 0; background: transparent; color: #0b0b0b; }
-.ibx-programme-controls > div { display: flex; gap: 8px; }
+.ibx-programme-controls { position: absolute; z-index: 7; bottom: 2px; left: 50%; display: flex; align-items: center; gap: 12px; padding: 5px 8px; transform: translateX(-50%); border: 1px solid rgba(255,255,255,.16); border-radius: 999px; background: transparent; box-shadow: none; backdrop-filter: none; -webkit-backdrop-filter: none; border-color: transparent; }
+.ibx-programme-controls > button { width: 28px; height: 24px; border: 0; background: transparent; color: #fff; text-shadow: 0 2px 8px rgba(0,0,0,.65); }
+.ibx-programme-controls > div { display: none; }
 .ibx-programme-controls > div button { width: 7px; height: 7px; padding: 0; border: 0; border-radius: 50%; background: #c8c8c8; }
 .ibx-programme-controls > div button.is-active { width: 20px; border-radius: 6px; background: #f94902; }
 .ibx-float-star { position: absolute; z-index: 6; width: 38px; aspect-ratio: 1; clip-path: polygon(50% 0, 63% 37%, 100% 50%, 63% 63%, 50% 100%, 37% 63%, 0 50%, 37% 37%); background: #f94902; pointer-events: none; filter: drop-shadow(0 12px 12px rgba(1,3,15,.28)); animation: ibx-float 4.8s ease-in-out infinite; will-change: transform; }
@@ -873,8 +873,8 @@ button { cursor: pointer; }
 .ibx-ecosystem-preview strong { font-family: var(--font-square-block), Montserrat, sans-serif; font-size: clamp(30px, 3vw, 48px); font-weight: 400; line-height: .9; text-transform: uppercase; }
 .ibx-ecosystem-preview--left { right: calc(50% + 375px); justify-content: flex-end; text-align: right; animation: ibx-preview-left-arrive .72s cubic-bezier(.2,.8,.2,1) both; }
 .ibx-ecosystem-preview--right { left: calc(50% + 375px); animation: ibx-preview-right-arrive .72s cubic-bezier(.2,.8,.2,1) both; }
-.ibx-ecosystem-stage > .ibx-carousel-controls { position: absolute; z-index: 7; bottom: 12px; left: 50%; width: auto; min-width: 210px; margin: 0; padding: 5px 8px; transform: translateX(-50%); border-radius: 999px; background: rgba(245,246,250,.92); box-shadow: 0 8px 24px rgba(3,4,16,.18); }
-.ibx-home--stage-one .ibx-ecosystem-stage > .ibx-carousel-controls > button { width: 32px; height: 26px; color: #0b0b0b; font-size: 18px; }
+.ibx-ecosystem-stage > .ibx-carousel-controls { position: absolute; z-index: 7; bottom: 12px; left: 50%; width: auto; min-width: 210px; margin: 0; padding: 5px 8px; transform: translateX(-50%); border-radius: 999px; background: transparent; box-shadow: none; backdrop-filter: none; -webkit-backdrop-filter: none; border-color: transparent; }
+.ibx-home--stage-one .ibx-ecosystem-stage > .ibx-carousel-controls > button { width: 32px; height: 26px; color: #fff; font-size: 18px; text-shadow: 0 2px 8px rgba(0,0,0,.65); }
 .ibx-float-star--ecosystem-one,
 .ibx-float-star--ecosystem-two { clip-path: none; background: transparent; filter: drop-shadow(0 14px 22px rgba(249,73,2,.24)); }
 .ibx-float-star--ecosystem-one { top: 26px; right: 10%; width: 72px; animation-duration: 5.6s; }
@@ -1393,7 +1393,14 @@ fieldset.contact-form__field legend { padding: 0; font-size: 11px; font-weight: 
 .ibx-kpi-strip span { font-size: 10px; font-weight: 500; letter-spacing: .04em; text-transform: uppercase; }
 
 @media (max-width: 1000px) {
-  .ibx-home--stage-one .ibx-nav { width: calc(100% - 44px); left: 50%; right: auto; grid-template-columns: 1fr auto; min-height: 102px; padding: 0; border-bottom: 0; background: transparent; transform: translateX(-50%); backdrop-filter: none; }
+  /* `background: transparent` + no blur was fine back when this bar only
+     ever sat over the hero video (it was `position: absolute` and simply
+     scrolled away with it). Now that it's `position: fixed` and stays on
+     screen over every section as you scroll, a transparent bar lets
+     whatever's underneath show straight through and collide with the
+     logo/menu button — hence the same dark glass treatment as desktop,
+     just lighter, plus a shorter bar overall. */
+  .ibx-home--stage-one .ibx-nav { width: calc(100% - 32px); left: 50%; right: auto; grid-template-columns: 1fr auto; min-height: 68px; padding: 0 18px; border-bottom: 0; border-radius: 14px; background: linear-gradient(180deg, rgba(11,10,27,.86), rgba(11,10,27,.74)); transform: translateX(-50%); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px); }
   .ibx-home--stage-one .ibx-nav__actions { display: none; }
   .ibx-home--stage-one .ibx-mobile-menu { display: block; }
   .ibx-home--stage-one .ibx-hero__content { width: calc(100% - 44px); padding-left: 0; padding-right: 0; }
@@ -1402,8 +1409,8 @@ fieldset.contact-form__field legend { padding: 0; font-size: 11px; font-weight: 
 
 @media (max-width: 650px) {
   .ibx-home--stage-one .ibx-event-hero { min-height: 920px; }
-  .ibx-home--stage-one .ibx-nav { min-height: 94px; }
-  .ibx-home--stage-one .ibx-nav__brand { width: 185px; }
+  .ibx-home--stage-one .ibx-nav { min-height: 60px; }
+  .ibx-home--stage-one .ibx-nav__brand { width: 148px; }
   .ibx-home--stage-one .ibx-hero__video { object-position: 62% center; }
   .ibx-home--stage-one .ibx-hero__shade { background: linear-gradient(90deg, rgba(5,5,15,.8), rgba(5,5,15,.32)), linear-gradient(0deg, rgba(5,5,15,.86), transparent 68%); }
   .ibx-home--stage-one .ibx-hero__content { position: absolute; inset: auto auto 190px 50%; width: calc(100% - 40px); padding: 0 0 36px; }
@@ -2015,8 +2022,8 @@ body .ibx-home--stage-one .ibx-ecosystem-card[data-slide="3"] { --slide-accent: 
 body .ibx-home--stage-one .ibx-ecosystem-card h3 { color: #f6f5fa; }
 body .ibx-home--stage-one .ibx-ecosystem-card__copy { color: rgba(246,245,250,.72); }
 body .ibx-home--stage-one .ibx-ecosystem-card > .ibx-button { background: #f94902; border-color: #f94902; }
-body .ibx-home--stage-one .ibx-ecosystem-stage > .ibx-carousel-controls { position: absolute; z-index: 7; bottom: 12px; left: 50%; width: auto; min-width: 210px; margin: 0; padding: 5px 8px; transform: translateX(-50%); border-radius: 999px; background: rgba(245,246,250,.92); box-shadow: 0 8px 24px rgba(3,4,16,.18); }
-body .ibx-home--stage-one .ibx-ecosystem-stage > .ibx-carousel-controls > button { width: 32px; height: 26px; color: #0b0b0b; font-size: 18px; }
+body .ibx-home--stage-one .ibx-ecosystem-stage > .ibx-carousel-controls { position: absolute; z-index: 7; bottom: 12px; left: 50%; width: auto; min-width: 210px; margin: 0; padding: 5px 8px; transform: translateX(-50%); border-radius: 999px; background: transparent; box-shadow: none; backdrop-filter: none; -webkit-backdrop-filter: none; border-color: transparent; }
+body .ibx-home--stage-one .ibx-ecosystem-stage > .ibx-carousel-controls > button { width: 32px; height: 26px; color: #fff; font-size: 18px; text-shadow: 0 2px 8px rgba(0,0,0,.65); }
 
 @media (max-width: 900px) {
   body .ibx-home--stage-one .ibx-ecosystem { min-height: 680px; padding: 54px 0 40px; }
@@ -2503,24 +2510,24 @@ body { overflow-x: clip; }
   .ibx-home--stage-one .ibx-event-hero { min-height: max(820px, 100svh); }
   .ibx-home--stage-one .ibx-nav {
     width: calc(100% - 32px);
-    min-height: 82px;
+    min-height: 60px;
   }
-  .ibx-home--stage-one .ibx-nav__brand { width: min(178px, 54vw); }
+  .ibx-home--stage-one .ibx-nav__brand { width: min(148px, 46vw); }
   .ibx-home--stage-one .ibx-mobile-menu summary,
   .ibx-mobile-menu summary {
-    min-width: 68px;
-    min-height: 46px;
+    min-width: 60px;
+    min-height: 38px;
     display: grid;
     place-items: center;
-    padding: 0 14px;
-    font-size: 11px;
+    padding: 0 12px;
+    font-size: 10px;
   }
   .ibx-mobile-menu nav {
     position: fixed;
-    top: 76px;
+    top: 70px;
     right: 16px;
     width: calc(100vw - 32px);
-    max-height: calc(100dvh - 92px);
+    max-height: calc(100dvh - 86px);
     overflow-y: auto;
     border-radius: 12px;
     background: rgba(1,1,1,.97);
@@ -2857,8 +2864,15 @@ body { overflow-x: clip; }
     touch-action: manipulation;
   }
 
-  .ibx-home--stage-one .ibx-programme-controls__dots button,
-  .ibx-home--stage-one .ibx-carousel-controls__dots button {
+  /* `__dots` doesn't exist on either carousel's real markup — the dots
+     wrapper is a bare `<div>` here and `.ibx-carousel-dots` there — so
+     this enlarged touch-target size never actually applied; only the
+     Ecosystem carousel's dots looked right, from a smaller fallback size
+     set elsewhere, while the Programme carousel's stayed at their tiny
+     unconditional default. Same selector shape as the button fix above,
+     matching what each carousel's dots are really called. */
+  .ibx-home--stage-one .ibx-programme-controls > div button,
+  .ibx-home--stage-one .ibx-carousel-dots button {
     min-width: 28px !important;
     min-height: 44px !important;
     padding: 17px 9px !important;
@@ -2918,6 +2932,16 @@ body { overflow-x: clip; }
     background:
       radial-gradient(circle at 50% 52%, rgba(249,73,2,.22), transparent 62%),
       #0b0b0b !important;
+  }
+
+  /* Build's logo is a dark wordmark — it needs the light chip from
+     `.ibx-ecosystem-card__visual--light`, not the dark spotlight above.
+     That desktop rule loses to the dark `!important` one here purely
+     because this is the one written later, so it's restated here with
+     `!important` too, and independent of the site's own light/dark theme
+     toggle (the chip's job is contrast for the logo, not matching mode). */
+  .ibx-home--stage-one .ibx-ecosystem-card__visual--light {
+    background: linear-gradient(160deg, #f5f1e9, #e6ded0) !important;
   }
 
   .ibx-home--stage-one .ibx-ecosystem-card__visual--logo img {
