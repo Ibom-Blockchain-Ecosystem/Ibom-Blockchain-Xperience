@@ -3,7 +3,8 @@ import { z } from "zod";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
 import { checkRateLimit, getClientIp } from "@/lib/forms/rate-limit";
 import { isTrustedOrigin } from "@/lib/forms/request-origin";
-import { sendTeamNotification, sendVerificationEmail } from "@/lib/email/resend";
+import { AMBASSADOR_NOTIFY_EMAIL, sendTeamNotification, sendVerificationEmail } from "@/lib/email/resend";
+import { describeInsertError } from "@/lib/forms/insert-error";
 
 const waitlistSchema = z.object({
   name: z.string().trim().min(1, "Enter your name").max(200),
@@ -58,9 +59,8 @@ export async function POST(request: Request) {
         { status: 409 },
       );
     }
-    console.error("waitlist_entries insert failed:", error.message);
     return NextResponse.json(
-      { ok: false, error: "Something went wrong on our end — please try again." },
+      { ok: false, error: describeInsertError("waitlist_entries", error) },
       { status: 500 },
     );
   }
@@ -71,6 +71,7 @@ export async function POST(request: Request) {
   await Promise.all([
     sendVerificationEmail({ to: email, confirmUrl, formLabel: "IBX Ambassador Programme waitlist" }),
     sendTeamNotification({
+      to: AMBASSADOR_NOTIFY_EMAIL,
       subject: "New Ambassador Programme waitlist signup",
       lines: [
         ["Name", name],

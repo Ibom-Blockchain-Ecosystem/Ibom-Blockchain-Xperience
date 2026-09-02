@@ -3,7 +3,7 @@
 import { useRef, useState, type ChangeEvent, type FocusEvent, type FormEvent } from "react";
 import { isEmpty, isValidEmail } from "@/lib/forms/validate";
 import { launchConfetti } from "@/lib/confetti";
-import { tourCountries } from "@/content/site/home";
+import { worldCountries } from "@/data/countries";
 
 type Status = "idle" | "pending" | "success" | "error";
 type Values = { name: string; email: string; role: string; country: string; motivation: string };
@@ -11,7 +11,10 @@ type Field = keyof Values;
 
 const initialValues: Values = { name: "", email: "", role: "", country: "", motivation: "" };
 const roles = ["Student", "Founder", "Developer", "Community builder", "Other"];
-const countries = [...tourCountries, "Other"];
+// The Ambassador Programme is a global movement, not limited to the
+// countries the physical Tour currently visits — every country is a
+// valid answer here.
+const countries = worldCountries;
 const requiredFields: Field[] = ["name", "email", "role", "country"];
 const fields: Field[] = ["name", "email", "role", "country", "motivation"];
 

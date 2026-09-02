@@ -1,6 +1,14 @@
 import { Resend } from "resend";
 
-const TEAM_NOTIFY_EMAIL = process.env.PARTNERSHIPS_NOTIFY_EMAIL ?? "partnerships@ibomblockchain.com";
+// Each form notifies whichever real mailbox actually owns that business —
+// verified against the team's live mailbox list rather than assumed.
+// Partnerships and Contact share one inbox (its display name is "Ibom
+// Blockchain Xperience" — it's the de facto general inbox despite the
+// address); Ambassador and the Tour "coming soon" signups each have
+// their own dedicated, already-active mailbox.
+export const PARTNERSHIPS_NOTIFY_EMAIL = process.env.PARTNERSHIPS_NOTIFY_EMAIL ?? "partnerships@ibomblockchain.com";
+export const AMBASSADOR_NOTIFY_EMAIL = process.env.AMBASSADOR_NOTIFY_EMAIL ?? "ambassador@ibomblockchain.com";
+export const TOUR_NOTIFY_EMAIL = process.env.TOUR_NOTIFY_EMAIL ?? "tour@ibomblockchain.com";
 
 function getResendClient() {
   const apiKey = process.env.RESEND_API_KEY;
@@ -39,8 +47,10 @@ function wrapEmail(bodyHtml: string) {
   `;
 }
 
-// Tells the IBX team a new submission arrived — sent for all four forms.
-export async function sendTeamNotification({ subject, lines }: { subject: string; lines: [string, string][] }) {
+// Tells the IBX team a new submission arrived — sent for all four forms,
+// each to whichever inbox actually owns that kind of enquiry (see the
+// `to` values exported above).
+export async function sendTeamNotification({ to, subject, lines }: { to: string; subject: string; lines: [string, string][] }) {
   const resend = getResendClient();
   if (!resend) {
     console.warn("RESEND_API_KEY not set — skipping team notification email:", subject);
@@ -71,7 +81,7 @@ export async function sendTeamNotification({ subject, lines }: { subject: string
 
   const { error } = await resend.emails.send({
     from: getFromAddress(),
-    to: TEAM_NOTIFY_EMAIL,
+    to,
     subject,
     html,
     text,

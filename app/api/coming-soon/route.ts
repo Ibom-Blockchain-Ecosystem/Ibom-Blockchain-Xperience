@@ -3,7 +3,8 @@ import { z } from "zod";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
 import { checkRateLimit, getClientIp } from "@/lib/forms/rate-limit";
 import { isTrustedOrigin } from "@/lib/forms/request-origin";
-import { sendTeamNotification, sendVerificationEmail } from "@/lib/email/resend";
+import { TOUR_NOTIFY_EMAIL, sendTeamNotification, sendVerificationEmail } from "@/lib/email/resend";
+import { describeInsertError } from "@/lib/forms/insert-error";
 
 const comingSoonSchema = z.object({
   email: z.string().trim().email("Enter a valid email address").max(320),
@@ -55,9 +56,8 @@ export async function POST(request: Request) {
         { status: 409 },
       );
     }
-    console.error("continent_signups insert failed:", error.message);
     return NextResponse.json(
-      { ok: false, error: "Something went wrong on our end — please try again." },
+      { ok: false, error: describeInsertError("continent_signups", error) },
       { status: 500 },
     );
   }
@@ -68,6 +68,7 @@ export async function POST(request: Request) {
   await Promise.all([
     sendVerificationEmail({ to: email, confirmUrl, formLabel: `IBX Tour ${continent} updates` }),
     sendTeamNotification({
+      to: TOUR_NOTIFY_EMAIL,
       subject: `New "coming soon" signup — ${continent}`,
       lines: [["Email", email], ["Continent", continent]],
     }),

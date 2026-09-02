@@ -1,7 +1,7 @@
 // Server-side verification for Cloudflare Turnstile — the actual bot
 // check. The client-side widget only produces a token; this is what
 // confirms that token is real by asking Cloudflare directly.
-export async function verifyTurnstileToken(token: string | undefined, ip: string): Promise<boolean> {
+export async function verifyTurnstileToken(token: string | null | undefined, ip: string): Promise<boolean> {
   const secretKey = process.env.TURNSTILE_SECRET_KEY;
 
   // Not configured — skip the check rather than block every submission.

@@ -4,7 +4,8 @@ import { createSupabaseServerClient } from "@/lib/supabase/server";
 import { checkRateLimit, getClientIp } from "@/lib/forms/rate-limit";
 import { isTrustedOrigin } from "@/lib/forms/request-origin";
 import { verifyTurnstileToken } from "@/lib/forms/verify-turnstile";
-import { sendTeamNotification } from "@/lib/email/resend";
+import { PARTNERSHIPS_NOTIFY_EMAIL, sendTeamNotification } from "@/lib/email/resend";
+import { describeInsertError } from "@/lib/forms/insert-error";
 
 const PROGRAMME_OPTIONS = ["summit", "tour", "build"] as const;
 
@@ -16,7 +17,12 @@ const partnerSchema = z.object({
   programmes: z.array(z.enum(PROGRAMME_OPTIONS)).min(1, "Choose at least one campaign"),
   message: z.string().trim().min(1, "Tell us a bit about the partnership").max(5000),
   company: z.string().max(0).optional(), // honeypot
-  turnstileToken: z.string().optional(),
+  // `.nullish()`, not `.optional()` — the widget's React state starts as
+  // `null` (not `undefined`) until a token arrives, and with Turnstile
+  // unconfigured it never does, so the client sends literal `null` here.
+  // `.optional()` only accepts a string or a missing field, not `null`,
+  // so every submission was failing validation regardless of form input.
+  turnstileToken: z.string().nullish(),
 });
 
 export async function POST(request: Request) {
@@ -67,9 +73,8 @@ export async function POST(request: Request) {
   });
 
   if (error) {
-    console.error("partner_applications insert failed:", error.message);
     return NextResponse.json(
-      { ok: false, error: "Something went wrong on our end — please try again." },
+      { ok: false, error: describeInsertError("partner_applications", error) },
       { status: 500 },
     );
   }
@@ -81,6 +86,7 @@ export async function POST(request: Request) {
   };
 
   await sendTeamNotification({
+    to: PARTNERSHIPS_NOTIFY_EMAIL,
     subject: `New partner application: ${orgName}`,
     lines: [
       ["Organisation", orgName],

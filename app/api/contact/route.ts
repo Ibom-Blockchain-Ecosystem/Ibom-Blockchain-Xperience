@@ -4,7 +4,8 @@ import { createSupabaseServerClient } from "@/lib/supabase/server";
 import { checkRateLimit, getClientIp } from "@/lib/forms/rate-limit";
 import { isTrustedOrigin } from "@/lib/forms/request-origin";
 import { verifyTurnstileToken } from "@/lib/forms/verify-turnstile";
-import { sendTeamNotification } from "@/lib/email/resend";
+import { PARTNERSHIPS_NOTIFY_EMAIL, sendTeamNotification } from "@/lib/email/resend";
+import { describeInsertError } from "@/lib/forms/insert-error";
 
 const contactSchema = z.object({
   name: z.string().trim().min(1, "Enter your name").max(200),
@@ -15,7 +16,12 @@ const contactSchema = z.object({
   // A bot that fills in every field it finds trips this, and we silently
   // pretend the submission succeeded rather than tipping it off.
   company: z.string().max(0).optional(),
-  turnstileToken: z.string().optional(),
+  // `.nullish()`, not `.optional()` — the widget's React state starts as
+  // `null` (not `undefined`) until a token arrives, and with Turnstile
+  // unconfigured it never does, so the client sends literal `null` here.
+  // `.optional()` only accepts a string or a missing field, not `null`,
+  // so every submission was failing validation regardless of form input.
+  turnstileToken: z.string().nullish(),
 });
 
 export async function POST(request: Request) {
@@ -60,14 +66,14 @@ export async function POST(request: Request) {
   const { error } = await supabase.from("contact_messages").insert({ name, email, subject, message });
 
   if (error) {
-    console.error("contact_messages insert failed:", error.message);
     return NextResponse.json(
-      { ok: false, error: "Something went wrong on our end — please try again." },
+      { ok: false, error: describeInsertError("contact_messages", error) },
       { status: 500 },
     );
   }
 
   await sendTeamNotification({
+    to: PARTNERSHIPS_NOTIFY_EMAIL,
     subject: `New contact message: ${subject}`,
     lines: [["Name", name], ["Email", email], ["Message", message]],
   });
