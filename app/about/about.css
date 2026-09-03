@@ -126,8 +126,8 @@
   to { transform: translate(-48%, 26px) scale(1.08); }
 }
 
-/* shared primitives */
-.about-page section {
+/* shared primitives — scoped to the page body so footer <section>s are untouched */
+.about-page__body section {
   position: relative;
   z-index: 1;
   width: min(var(--about-max), 100% - var(--about-pad) * 2);
@@ -135,7 +135,7 @@
   padding-block: var(--about-rhythm);
 }
 
-.about-page section + section {
+.about-page__body section + section {
   border-top: 1px solid var(--about-line-soft);
 }
 
@@ -227,6 +227,71 @@
 }
 
 .about-page__nav.ibx-nav .ibx-nav__brand { width: min(190px, 46vw); }
+
+/* mobile nav — mirror the Build page: logo + a single "Menu" toggle only.
+   The global rule re-shows .ibx-nav__actions further down the stylesheet, so
+   these need class-scoped specificity to win inside the query. */
+@media (max-width: 1000px) {
+  .about-page__nav.ibx-nav {
+    grid-template-columns: 1fr auto;
+    min-height: 64px;
+  }
+
+  .about-page__nav.ibx-nav .ibx-nav__brand { width: min(290px, 70vw); }
+
+  .about-page__nav.ibx-nav .ibx-nav__links,
+  .about-page__nav.ibx-nav .ibx-nav__actions {
+    display: none;
+  }
+
+  .about-page__nav.ibx-nav .ibx-mobile-menu {
+    position: relative;
+    display: block;
+  }
+
+  .about-page__nav.ibx-nav .ibx-mobile-menu summary {
+    min-width: 60px;
+    min-height: 32px;
+    display: grid;
+    place-items: center;
+    padding: 0 10px;
+    border: 1px solid rgba(255, 255, 255, .32);
+    color: #fff;
+    font-size: 8px;
+    letter-spacing: .1em;
+  }
+
+  .about-page__nav.ibx-nav .ibx-mobile-menu nav {
+    position: absolute;
+    top: calc(100% + 10px);
+    right: 0;
+    width: min(280px, calc(100vw - 40px));
+    display: flex;
+    flex-direction: column;
+    padding: 11px;
+    border: 1px solid rgba(255, 255, 255, .12);
+    background: rgba(1, 1, 1, .94);
+    color: #fff;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, .35);
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
+  }
+
+  .about-page__nav.ibx-nav .ibx-mobile-menu nav a {
+    padding: 12px;
+    border-bottom: 1px solid rgba(255, 255, 255, .1);
+    color: inherit;
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+  }
+}
+
+@media (max-width: 680px) {
+  .about-page__nav.ibx-nav { padding: 0 16px; }
+  .about-page__nav.ibx-nav .ibx-nav__brand { width: min(144px, 60vw); }
+}
 
 /* SECTION 1 - HERO */
 .about-hero {
@@ -629,7 +694,8 @@
     flex-direction: column;
   }
 
-  .about-story__pill { order: 0; }
+  /* flex column stretches children by default — keep the pill hugging its text */
+  .about-story__pill { order: 0; align-self: flex-start; max-width: 100%; }
   .about-story__heading { order: 1; margin-bottom: clamp(16px, 4vw, 28px); }
   .about-story__stats { order: 3; }
 
