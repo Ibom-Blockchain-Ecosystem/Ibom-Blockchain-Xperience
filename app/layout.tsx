@@ -5,6 +5,7 @@ import "@fontsource/space-grotesk/500.css";
 import "@fontsource/space-grotesk/600.css";
 import "@fontsource/space-grotesk/700.css";
 import "./globals.css";
+import { SmoothScroll } from "@/components/smooth-scroll";
 import { ThemeToggle } from "@/components/theme-toggle";
 
 export const metadata: Metadata = {
@@ -52,6 +53,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
       </head>
       <body>
         <a className="skip-link" href="#main-content">Skip to main content</a>
+        <SmoothScroll />
         {children}
         <ThemeToggle />
       </body>

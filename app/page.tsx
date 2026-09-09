@@ -20,10 +20,10 @@ export default function HomePage() {
     "@type": "Organization",
     "@id": `${siteUrl}/#organization`,
     name: "Ibom Blockchain Xperience",
-    alternateName: ["IBX", "Ibom Blockchain Summit"],
+    alternateName: ["IBX", "Ibom Blockchain Summit",""],
     url: siteUrl,
     logo: `${siteUrl}/brand/ibx-rebrand-black.png`,
-    description: "West Africa's largest blockchain movement, connecting builders, founders, protocols and communities across Africa.",
+    description: "Largest global blockchain movement, connecting builders, founders, protocols and communities across Africa.",
     sameAs: [
       "https://x.com/IbomBlockchain",
       "https://www.instagram.com/ibomblockchainxperience/",
