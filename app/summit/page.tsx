@@ -2,8 +2,7 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { SummitDestinations } from "@/components/home/upcoming-events";
-import { Countdown } from "@/components/countdown";
-import { DetailsComingSoon } from "@/components/details-coming-soon";
+import { RingCountdown } from "@/components/ring-countdown";
 import { SiteFooter } from "@/components/site-footer";
 
 export const metadata: Metadata = {
@@ -13,8 +12,8 @@ export const metadata: Metadata = {
 };
 
 // TODO: placeholder target — swap for the real Summit date the moment
-// it's confirmed. The "more details coming soon" note next to it is
-// what keeps this honest in the meantime, not the date itself.
+// it's confirmed. The caption under the rings, not the date itself, is
+// what keeps this honest in the meantime.
 const SUMMIT_COUNTDOWN_TARGET = new Date("2026-09-30T00:00:00+01:00").getTime();
 
 export default function SummitPage() {
@@ -65,8 +64,11 @@ export default function SummitPage() {
               <li>Two days of ideas, building and collaboration.</li>
             
             </ul>
-            <Countdown target={SUMMIT_COUNTDOWN_TARGET} label="Time until the Summit" className="summit-landing__countdown" />
-            <DetailsComingSoon label="Dates & venue — more details coming soon" />
+            <RingCountdown
+              target={SUMMIT_COUNTDOWN_TARGET}
+              label="Time until the Summit"
+              caption="Exact date and full programme to be announced."
+            />
           </div>
 
           <div className="summit-landing__mosaic" aria-label="Ibom Blockchain Xperience Summit identity">
