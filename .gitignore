@@ -23,6 +23,11 @@ supabase/.temp/
 .vscode/
 .idea/
 
+# Claude Code background-agent worktrees — each is its own linked git
+# repo, so `git add .` treats it as an embedded repository if it's ever
+# left on disk (it's meant to be ephemeral, cleaned up automatically).
+.claude/worktrees/
+
 # About page — work in progress, kept local, not shipped yet
 /app/about/page.tsx
 /app/about/about.css
