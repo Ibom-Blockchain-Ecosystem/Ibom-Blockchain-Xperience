@@ -11,7 +11,10 @@ const waitlistSchema = z.object({
   email: z.string().trim().email("Enter a valid email address").max(320),
   role: z.string().trim().min(1, "Choose the option closest to you").max(100),
   country: z.string().trim().min(1, "Tell us which country you're applying from").max(100),
-  motivation: z.string().trim().max(2000).optional(),
+  motivation: z.string().trim().min(1, "Tell us why you want to be an IBX Ambassador").max(2000),
+  socialHandle: z.string().trim().max(200).optional(),
+  whatsapp: z.string().trim().max(50).optional(),
+  telegram: z.string().trim().max(200).optional(),
   company: z.string().max(0).optional(), // honeypot
 });
 
@@ -42,12 +45,21 @@ export async function POST(request: Request) {
     return NextResponse.json({ ok: true });
   }
 
-  const { name, email, role, country, motivation } = parsed.data;
+  const { name, email, role, country, motivation, socialHandle, whatsapp, telegram } = parsed.data;
   const supabase = createSupabaseServerClient();
 
   const { data, error } = await supabase
     .from("waitlist_entries")
-    .insert({ name, email, role, country, motivation: motivation || null })
+    .insert({
+      name,
+      email,
+      role,
+      country,
+      motivation,
+      social_handle: socialHandle || null,
+      whatsapp: whatsapp || null,
+      telegram: telegram || null,
+    })
     .select("verification_token")
     .single();
 
@@ -78,7 +90,10 @@ export async function POST(request: Request) {
         ["Email", email],
         ["Role", role],
         ["Country", country],
-        ...(motivation ? ([["Motivation", motivation]] as [string, string][]) : []),
+        ...(socialHandle ? ([["Social media", socialHandle]] as [string, string][]) : []),
+        ...(whatsapp ? ([["WhatsApp", whatsapp]] as [string, string][]) : []),
+        ...(telegram ? ([["Telegram", telegram]] as [string, string][]) : []),
+        ["Motivation", motivation],
       ],
     }),
   ]);

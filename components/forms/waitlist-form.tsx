@@ -6,17 +6,35 @@ import { launchConfetti } from "@/lib/confetti";
 import { worldCountries } from "@/data/countries";
 
 type Status = "idle" | "pending" | "success" | "error";
-type Values = { name: string; email: string; role: string; country: string; motivation: string };
+type Values = {
+  name: string;
+  email: string;
+  role: string;
+  country: string;
+  motivation: string;
+  socialHandle: string;
+  whatsapp: string;
+  telegram: string;
+};
 type Field = keyof Values;
 
-const initialValues: Values = { name: "", email: "", role: "", country: "", motivation: "" };
+const initialValues: Values = {
+  name: "",
+  email: "",
+  role: "",
+  country: "",
+  motivation: "",
+  socialHandle: "",
+  whatsapp: "",
+  telegram: "",
+};
 const roles = ["Student", "Founder", "Developer", "Community builder", "Other"];
 // The Ambassador Programme is a global movement, not limited to the
 // countries the physical Tour currently visits — every country is a
 // valid answer here.
 const countries = worldCountries;
-const requiredFields: Field[] = ["name", "email", "role", "country"];
-const fields: Field[] = ["name", "email", "role", "country", "motivation"];
+const requiredFields: Field[] = ["name", "email", "role", "country", "motivation"];
+const fields: Field[] = [...requiredFields, "socialHandle", "whatsapp", "telegram"];
 
 function getFieldError(field: Field, values: Values): string | null {
   const value = values[field];
@@ -31,7 +49,10 @@ function getFieldError(field: Field, values: Values): string | null {
   if (field === "country") {
     return isEmpty(value) ? "Tell us which country you're applying from" : null;
   }
-  if (field === "motivation") return null; // optional
+  if (field === "motivation") {
+    return isEmpty(value) ? "Tell us why you want to be an IBX Ambassador" : null;
+  }
+  if (field === "socialHandle" || field === "whatsapp" || field === "telegram") return null; // optional
   if (isEmpty(value)) return "This field can't be empty";
   return null;
 }
@@ -57,7 +78,16 @@ export function WaitlistForm() {
 
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    setTouched({ name: true, email: true, role: true, country: true, motivation: true });
+    setTouched({
+      name: true,
+      email: true,
+      role: true,
+      country: true,
+      motivation: true,
+      socialHandle: true,
+      whatsapp: true,
+      telegram: true,
+    });
 
     if (hasErrors) {
       const firstInvalid = requiredFields.find((field) => errors[field]);
@@ -187,7 +217,55 @@ export function WaitlistForm() {
       </div>
 
       <div className="contact-form__field">
-        <label htmlFor="wl-motivation">Why do you want to be an IBX Ambassador? (optional)</label>
+        <label htmlFor="wl-social">Twitter/X, TikTok or Instagram handle (optional)</label>
+        <input
+          id="wl-social"
+          name="socialHandle"
+          type="text"
+          autoComplete="off"
+          value={values.socialHandle}
+          onChange={handleChange}
+          onBlur={handleBlur}
+          disabled={status === "pending"}
+          ref={(el) => { fieldRefs.current.socialHandle = el ?? undefined; }}
+          placeholder="@yourhandle"
+        />
+      </div>
+
+      <div className="contact-form__field">
+        <label htmlFor="wl-whatsapp">WhatsApp number (optional)</label>
+        <input
+          id="wl-whatsapp"
+          name="whatsapp"
+          type="tel"
+          autoComplete="tel"
+          value={values.whatsapp}
+          onChange={handleChange}
+          onBlur={handleBlur}
+          disabled={status === "pending"}
+          ref={(el) => { fieldRefs.current.whatsapp = el ?? undefined; }}
+          placeholder="+234 800 000 0000"
+        />
+      </div>
+
+      <div className="contact-form__field">
+        <label htmlFor="wl-telegram">Telegram handle (optional)</label>
+        <input
+          id="wl-telegram"
+          name="telegram"
+          type="text"
+          autoComplete="off"
+          value={values.telegram}
+          onChange={handleChange}
+          onBlur={handleBlur}
+          disabled={status === "pending"}
+          ref={(el) => { fieldRefs.current.telegram = el ?? undefined; }}
+          placeholder="@yourhandle"
+        />
+      </div>
+
+      <div className={`contact-form__field${touched.motivation && errors.motivation ? " has-error" : ""}`}>
+        <label htmlFor="wl-motivation">Why do you want to be an IBX Ambassador?</label>
         <textarea
           id="wl-motivation"
           name="motivation"
@@ -197,8 +275,12 @@ export function WaitlistForm() {
           onBlur={handleBlur}
           disabled={status === "pending"}
           ref={(el) => { fieldRefs.current.motivation = el ?? undefined; }}
+          aria-required="true"
+          aria-invalid={!!(touched.motivation && errors.motivation)}
+          aria-describedby={touched.motivation && errors.motivation ? "wl-motivation-error" : undefined}
           placeholder="Tell us about your community, experience or what you'd want to do locally."
         />
+        {touched.motivation && errors.motivation && <p id="wl-motivation-error" className="contact-form__field-error">{errors.motivation}</p>}
       </div>
 
       {status === "error" && (
