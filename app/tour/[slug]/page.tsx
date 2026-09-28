@@ -182,15 +182,6 @@ export default async function TourStopPage({ params }: PageProps) {
         </div>
       </section>
 
-      <section className="country-people">
-        <div><span>Local ecosystem</span><h2>Meet the people building the stop.</h2><p>Country leads, facilitators and community partners will be announced when the local programme is confirmed.</p></div>
-        <div className="country-people__grid">
-          <article><span>Country lead</span><strong>To be announced</strong></article>
-          <article><span>Facilitator</span><strong>To be announced</strong></article>
-          <article><span>Community partner</span><strong>To be announced</strong></article>
-        </div>
-      </section>
-
       <section className="country-partners" id="partners">
         <span>Powered together</span><h2>Tour partners</h2>
         <div className="country-partners__viewport">

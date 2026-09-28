@@ -330,9 +330,9 @@ button { cursor: pointer; }
 :root[data-theme="dark"] .brand__logo--light { display: none !important; }
 :root[data-theme="dark"] .brand__logo--dark { display: block !important; }
 :root[data-theme="dark"] .detail-page, :root[data-theme="dark"] .country-gallery, :root[data-theme="dark"] .country-partners { background: var(--ibx-black); color: #fff; }
-:root[data-theme="dark"] .country-programme, :root[data-theme="dark"] .country-people { background: var(--surface); color: #fff; }
-:root[data-theme="dark"] .country-programme__grid article, :root[data-theme="dark"] .country-people__grid article { border-color: #292929; background: var(--surface-raised); }
-:root[data-theme="dark"] .country-programme__grid p, :root[data-theme="dark"] .country-people > div > p { color: #b7b1bf; }
+:root[data-theme="dark"] .country-programme { background: var(--surface); color: #fff; }
+:root[data-theme="dark"] .country-programme__grid article { border-color: #292929; background: var(--surface-raised); }
+:root[data-theme="dark"] .country-programme__grid p { color: #b7b1bf; }
 :root[data-theme="dark"] .country-partners::before { color: rgba(255,255,255,.035); }
 :root[data-theme="dark"] .country-partners article img { filter: invert(1) grayscale(1) brightness(1.8); }
 :root[data-theme="dark"] .site-footer__newsletter { background: var(--surface); color: #fff; }
@@ -1571,11 +1571,11 @@ fieldset.contact-form__field legend { padding: 0; font-size: 11px; font-weight: 
 .detail-facts span { margin-bottom: 22px; color: #77717e; font-size: 9px; letter-spacing: .12em; text-transform: uppercase; }
 .detail-facts strong, .detail-facts a { color: #11101f; font-size: 13px; font-weight: 700; text-decoration: none; text-transform: uppercase; }
 .detail-page .editorial-copy > span,
-.country-section-heading span, .country-people > div > span, .country-partners > span, .tour-tangem__copy > span, .country-final-cta span { color: var(--orange); font-size: 9px; font-weight: 600; letter-spacing: .16em; text-transform: uppercase; }
+.country-section-heading span, .country-partners > span, .tour-tangem__copy > span, .country-final-cta span { color: var(--orange); font-size: 9px; font-weight: 600; letter-spacing: .16em; text-transform: uppercase; }
 .detail-page .editorial-copy h2,
-.country-section-heading h2, .country-people h2, .country-partners h2, .tour-tangem h2, .country-final-cta h2 { font-family: var(--font-square-block), Montserrat, sans-serif; font-weight: 400; text-transform: uppercase; }
+.country-section-heading h2, .country-partners h2, .tour-tangem h2, .country-final-cta h2 { font-family: var(--font-square-block), Montserrat, sans-serif; font-weight: 400; text-transform: uppercase; }
 .detail-page .editorial-copy h2 { font-size: clamp(48px, 5.2vw, 82px); line-height: .9; }
-.country-programme, .country-gallery, .country-people, .country-partners { padding: 110px max(4.2vw, calc((100% - 1456px) / 2)); }
+.country-programme, .country-gallery, .country-partners { padding: 110px max(4.2vw, calc((100% - 1456px) / 2)); }
 .country-programme { background: #f5f2eb; }
 .country-section-heading { display: flex; align-items: flex-end; justify-content: space-between; gap: 50px; margin-bottom: 54px; }
 .country-section-heading h2 { margin: 14px 0 0; font-size: clamp(48px, 5vw, 76px); line-height: .9; }
@@ -1617,13 +1617,6 @@ fieldset.contact-form__field legend { padding: 0; font-size: 11px; font-weight: 
 .country-gallery figure:first-child { grid-row: span 2; }
 .country-gallery img { object-fit: cover; transition: transform .6s ease; }
 .country-gallery figure:hover img { transform: scale(1.03); }
-.country-people { display: grid; grid-template-columns: .85fr 1.15fr; align-items: center; gap: 70px; border-top: 0; }
-.country-people h2 { max-width: 620px; margin: 15px 0 20px; font-size: clamp(46px, 4.8vw, 72px); line-height: .9; }
-.country-people > div > p { max-width: 560px; color: #686270; line-height: 1.7; }
-.country-people__grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
-.country-people__grid article { min-height: 270px; display: flex; flex-direction: column; justify-content: flex-end; padding: 20px; border: 1px dashed #918b96; border-radius: 12px; background: #f4f3f1; }
-.country-people__grid span { margin-bottom: 9px; color: var(--purple); font-size: 9px; text-transform: uppercase; }
-.country-people__grid strong { font-size: 12px; text-transform: uppercase; }
 .country-partners { position: relative; isolation: isolate; overflow: hidden; display: flex; flex-direction: column; align-items: center; padding-top: 70px; padding-bottom: 70px; border-top: 0; text-align: center; }
 .country-partners::before { content: "IBX TOUR"; position: absolute; z-index: -1; left: 50%; top: 55%; color: rgba(17,16,31,.035); font-family: var(--font-square-block), Montserrat, sans-serif; font-size: clamp(120px, 18vw, 310px); line-height: .7; letter-spacing: .02em; white-space: nowrap; transform: translate(-50%, -50%); pointer-events: none; }
 .country-partners h2 { margin: 12px 0 30px; font-size: clamp(42px, 4vw, 60px); line-height: .9; }
@@ -1679,14 +1672,13 @@ fieldset.contact-form__field legend { padding: 0; font-size: 11px; font-weight: 
 
 @media (max-width: 900px) {
   .detail-facts { grid-template-columns: 1fr 1fr; }
-  .country-programme, .country-gallery, .country-people, .country-partners { padding: 80px 22px; }
+  .country-programme, .country-gallery, .country-partners { padding: 80px 22px; }
   .tour-activities { padding: 80px 0; }
   .tour-activities > .country-section-heading { padding-right: 22px; padding-left: 22px; }
   .country-section-heading { align-items: flex-start; flex-direction: column; gap: 25px; }
   .country-programme__grid { grid-template-columns: 1fr 1fr; }
   .country-gallery__grid { grid-template-columns: 1fr 1fr; grid-template-rows: 350px 230px 230px; }
   .country-gallery figure:first-child { grid-column: span 2; grid-row: auto; }
-  .country-people { grid-template-columns: 1fr; }
   .tour-tangem { grid-template-columns: 1fr; padding: 80px 22px; }
   .tour-tangem__card { height: 300px; }
   .tour-tangem__sale-tag { top: 16px; right: 16px; transform: scale(.9) rotate(2deg); transform-origin: top right; }
@@ -1696,7 +1688,7 @@ fieldset.contact-form__field legend { padding: 0; font-size: 11px; font-weight: 
   .detail-facts article { min-height: 125px; padding: 24px 20px; }
   .detail-facts strong, .detail-facts a { font-size: 11px; }
   .country-programme__grid { grid-template-columns: 1fr; }
-  .country-section-heading h2, .country-people h2, .country-partners h2, .country-final-cta h2 { font-size: clamp(40px, 12vw, 54px); line-height: .9; }
+  .country-section-heading h2, .country-partners h2, .country-final-cta h2 { font-size: clamp(40px, 12vw, 54px); line-height: .9; }
   .tour-activities__viewport { overflow-x: auto; padding: 0 22px 18px; scroll-padding-left: 22px; scroll-snap-type: x mandatory; scrollbar-width: thin; scrollbar-color: var(--orange) rgba(255,255,255,.12); }
   .tour-activities__track { animation: none; }
   .tour-activities__set { gap: 14px; padding-right: 14px; }
@@ -1706,8 +1698,6 @@ fieldset.contact-form__field legend { padding: 0; font-size: 11px; font-weight: 
   .country-gallery__grid { display: flex; flex-direction: column; }
   .country-gallery figure { min-height: 260px; }
   .country-gallery figure:first-child { min-height: 380px; }
-  .country-people__grid { overflow-x: auto; }
-  .country-people__grid article { min-width: 190px; }
   .country-partners { padding: 60px 22px; }
   .country-partners article { width: min(300px, 100%); min-height: 92px; }
   .tour-tangem { min-height: 720px; }
@@ -2332,7 +2322,6 @@ body .site-footer__inner { width: min(1440px, calc(100% - 48px)); margin: 0 auto
   .ibx-programme-focus,
   .placeholder-grid article,
   .country-programme__grid article,
-  .country-people__grid article,
   .summit-event-card
 ) {
   border-color: rgba(255,255,255,.13);
@@ -2357,8 +2346,7 @@ body .site-footer__inner { width: min(1440px, calc(100% - 48px)); margin: 0 auto
   .ibx-newsletter p,
   .summit-intro > p:last-child,
   .summit-about > p:last-child,
-  .country-programme__grid p,
-  .country-people > div > p
+  .country-programme__grid p
 ) {
   color: var(--muted);
 }
@@ -2377,7 +2365,6 @@ body .site-footer__inner { width: min(1440px, calc(100% - 48px)); margin: 0 auto
   .detail-facts,
   .country-programme,
   .country-gallery,
-  .country-people,
   .country-partners,
   .summit-intro,
   .summit-about
@@ -2419,8 +2406,7 @@ body .site-footer__inner { width: min(1440px, calc(100% - 48px)); margin: 0 auto
   .ibx-ecosystem-card,
   .ibx-programme-focus,
   .placeholder-grid article,
-  .country-programme__grid article,
-  .country-people__grid article
+  .country-programme__grid article
 ) {
   border-color: rgba(1,1,1,.12);
   background-color: #f5f5f5;
