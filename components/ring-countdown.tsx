@@ -2,8 +2,16 @@
 
 import { useEffect, useState } from "react";
 
-function remainingTime(target: number, now: number) {
-  const difference = Math.max(0, target - now);
+const CYCLE_MS = 30 * 86_400_000; // 30 days
+
+// A perpetual loop, not a countdown to a real date — there isn't a
+// confirmed one yet (see the caption below the rings). Phase is derived
+// from absolute epoch time (not page-load time), so every visitor sees
+// the same position in the cycle at the same real moment, and it just
+// keeps counting down and resetting to 30 days on its own.
+function remainingTime(now: number) {
+  const elapsed = now % CYCLE_MS;
+  const difference = CYCLE_MS - elapsed;
   return {
     days: Math.floor(difference / 86_400_000),
     hours: Math.floor((difference / 3_600_000) % 24),
@@ -52,7 +60,7 @@ function Ring({ value, unit, label }: { value: number; unit: keyof typeof RING_M
   );
 }
 
-export function RingCountdown({ target, label, caption }: { target: number; label: string; caption: string }) {
+export function RingCountdown({ label, caption }: { label: string; caption: string }) {
   const [now, setNow] = useState<number | null>(null);
 
   useEffect(() => {
@@ -62,7 +70,12 @@ export function RingCountdown({ target, label, caption }: { target: number; labe
     return () => window.clearInterval(interval);
   }, []);
 
-  const time = remainingTime(target, now ?? target);
+  // `now ?? 0` (not `Date.now()`) deliberately — a live clock read here
+  // would differ between the server's render and the client's first
+  // render before `useEffect` runs, causing a hydration mismatch. `0` is
+  // a fixed, deterministic fallback (renders as a full 30-day ring on
+  // both sides); the real time takes over the moment it mounts.
+  const time = remainingTime(now ?? 0);
 
   return (
     <div className="ibx-ring-countdown" aria-label={label}>

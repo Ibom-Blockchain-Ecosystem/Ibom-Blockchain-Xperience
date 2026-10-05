@@ -11,11 +11,6 @@ export const metadata: Metadata = {
   alternates: { canonical: "/summit" },
 };
 
-// TODO: placeholder target — swap for the real Summit date the moment
-// it's confirmed. The caption under the rings, not the date itself, is
-// what keeps this honest in the meantime.
-const SUMMIT_COUNTDOWN_TARGET = new Date("2026-09-30T00:00:00+01:00").getTime();
-
 export default function SummitPage() {
   return (
     <main className="summit-landing" id="main-content">
@@ -65,7 +60,6 @@ export default function SummitPage() {
             
             </ul>
             <RingCountdown
-              target={SUMMIT_COUNTDOWN_TARGET}
               label="Time until the Summit"
               caption="Exact date and full programme to be announced."
             />

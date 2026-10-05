@@ -4,11 +4,6 @@ import Image from "next/image";
 import { useEffect, useState } from "react";
 import { RingCountdown } from "@/components/ring-countdown";
 
-// TODO: placeholder target — swap for the real Den of Rogues kickoff date
-// the moment it's confirmed. The caption under the rings, not the date
-// itself, is what keeps this honest in the meantime.
-const ROGUES_COUNTDOWN_TARGET = new Date("2026-09-30T00:00:00+01:00").getTime();
-
 const features = [
   {
     eyebrow: "IBX Build experience",
@@ -93,7 +88,6 @@ export function ProgrammeFeatures() {
             <p>{active.description}</p>
             {active.type === "rogues" ? (
               <RingCountdown
-                target={ROGUES_COUNTDOWN_TARGET}
                 label="Time until the Den of Rogues opens"
                 caption="Exact dates and programme details to be announced."
               />
