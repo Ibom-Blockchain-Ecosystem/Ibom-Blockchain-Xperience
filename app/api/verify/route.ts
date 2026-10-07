@@ -1,10 +1,10 @@
 import { NextResponse } from "next/server";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
 
-type FormKey = "waitlist" | "coming-soon";
+type FormKey = "waitlist" | "coming-soon" | "tour-register";
 
 function isFormKey(value: string | null): value is FormKey {
-  return value === "waitlist" || value === "coming-soon";
+  return value === "waitlist" || value === "coming-soon" || value === "tour-register";
 }
 
 export async function GET(request: Request) {
@@ -36,6 +36,23 @@ export async function GET(request: Request) {
     // No row matched — either an already-used link or an invalid token.
     // Either way, don't reveal which, since that only helps someone probing.
     return NextResponse.redirect(new URL(`/ambassadors?confirmed=${data ? "success" : "invalid"}`, siteUrl));
+  }
+
+  if (form === "tour-register") {
+    const { data, error } = await supabase
+      .from("tour_registrations")
+      .update({ verified: true })
+      .eq("verification_token", token)
+      .eq("verified", false)
+      .select("id")
+      .maybeSingle();
+
+    if (error) {
+      console.error("Verification failed for tour_registrations:", error.message);
+      return NextResponse.redirect(new URL("/tour/register?confirmed=error", siteUrl));
+    }
+
+    return NextResponse.redirect(new URL(`/tour/register?confirmed=${data ? "success" : "invalid"}`, siteUrl));
   }
 
   const { data, error } = await supabase

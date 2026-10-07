@@ -146,3 +146,14 @@ export const tourStops: TourStop[] = [
 export function getTourStop(slug: string) {
   return tourStops.find((stop) => stop.slug === slug);
 }
+
+// Country + city options for the Tour registration form — the primary
+// `city` first (it's the actual stop), then any other featured cities
+// in that country, deduped.
+export const tourCountryOptions = tourStops.map((stop) => ({ country: stop.country, slug: stop.slug }));
+
+export function getCitiesForCountry(country: string): string[] {
+  const stop = tourStops.find((item) => item.country === country);
+  if (!stop) return [];
+  return [stop.city, ...(stop.featuredCities ?? [])].filter((city, index, all) => all.indexOf(city) === index);
+}

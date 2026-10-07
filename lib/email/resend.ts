@@ -20,30 +20,59 @@ function getFromAddress() {
   return process.env.RESEND_FROM_EMAIL ?? "IBX <onboarding@resend.dev>";
 }
 
-// Email clients fetch images over the open internet — they can't reach a
-// local file or go through Next's image pipeline, so this has to be a
-// real, public URL. Using the black logo deliberately: almost every
-// email client renders on a white background by default, and the white
-// logo would be invisible on it.
-function getLogoUrl() {
-  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://www.ibomblockchain.com";
-  return `${siteUrl}/brand/ibx-rebrand-black.png`;
+function getSiteUrl() {
+  return process.env.NEXT_PUBLIC_SITE_URL ?? "https://www.ibomblockchain.com";
 }
 
+// Email clients fetch images over the open internet — they can't reach a
+// local file or go through Next's image pipeline, so this has to be a
+// real, public URL. The header now paints its own dark background
+// rather than relying on the client's (usually white) default, so the
+// white wordmark is the right one here — unlike the old white-background
+// header, which needed the black version to stay visible.
+function getLogoUrl() {
+  return `${getSiteUrl()}/brand/ibx-rebrand-white.png`;
+}
+
+// Table-based layout and plain inline styles throughout — no flexbox,
+// grid or box-shadow relied on for anything structural, since Outlook's
+// renderer (still Word's, not a browser engine) drops all three. Visual
+// flourishes that degrade gracefully (the button's shadow, the card's
+// border) are fine; layout itself never depends on them.
 function wrapEmail(bodyHtml: string) {
   return `
-    <div style="font-family: Arial, Helvetica, sans-serif; max-width: 480px; margin: 0 auto; background: #ffffff;">
-      <div style="padding: 28px 0 22px; text-align: center; border-bottom: 3px solid #f94902;">
-        <img src="${getLogoUrl()}" alt="Ibom Blockchain Xperience" width="170" style="display: inline-block; height: auto; max-width: 170px;" />
-      </div>
-      <div style="padding: 32px 28px; color: #17140f; font-size: 15px; line-height: 1.6;">
-        ${bodyHtml}
-      </div>
-      <div style="padding: 20px 28px; border-top: 1px solid #ece6db; color: #948a7d; font-size: 12px; text-align: center;">
-        Ibom Blockchain Xperience &middot; West Africa's largest blockchain movement<br />
-        <a href="https://www.ibomblockchain.com" style="color: #948a7d;">ibomblockchain.com</a>
-      </div>
+    <div style="background: #f4efe6; padding: 40px 16px; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, Helvetica, sans-serif;">
+      <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="max-width: 520px; margin: 0 auto; border-collapse: separate;">
+        <tr>
+          <td style="background: #11101f; border-radius: 16px 16px 0 0; padding: 36px 32px; text-align: center;">
+            <img src="${getLogoUrl()}" alt="Ibom Blockchain Xperience" width="180" style="display: inline-block; height: auto; max-width: 180px;" />
+          </td>
+        </tr>
+        <tr>
+          <td style="background: #ffffff; padding: 40px 36px; color: #17140f; font-size: 15px; line-height: 1.65; border-left: 1px solid #e9e2d4; border-right: 1px solid #e9e2d4;">
+            ${bodyHtml}
+          </td>
+        </tr>
+        <tr>
+          <td style="background: #ffffff; border-radius: 0 0 16px 16px; border: 1px solid #e9e2d4; border-top: 1px solid #ece6db; padding: 22px 36px; color: #948a7d; font-size: 12px; line-height: 1.6; text-align: center;">
+            Ibom Blockchain Xperience &middot; West Africa's largest blockchain movement<br />
+            <a href="${getSiteUrl()}" style="color: #d1470c; text-decoration: none;">ibomblockchain.com</a>
+          </td>
+        </tr>
+      </table>
     </div>
+  `;
+}
+
+function pillButton(href: string, label: string) {
+  return `
+    <table role="presentation" cellpadding="0" cellspacing="0" style="margin: 28px auto;">
+      <tr>
+        <td style="border-radius: 999px; background: #f94902; box-shadow: 0 8px 20px rgba(249,73,2,.32);">
+          <a href="${href}" style="display: inline-block; padding: 15px 36px; color: #ffffff; text-decoration: none; font-weight: 700; font-size: 14px; letter-spacing: .01em; border-radius: 999px;">${escapeHtml(label)}</a>
+        </td>
+      </tr>
+    </table>
   `;
 }
 
@@ -61,17 +90,17 @@ export async function sendTeamNotification({ to, subject, lines }: { to: string;
     .map(
       ([label, value]) => `
         <tr>
-          <td style="padding: 10px 14px; background: #f6f3ee; color: #948a7d; font-size: 11px; font-weight: 700; letter-spacing: .05em; text-transform: uppercase; white-space: nowrap; vertical-align: top; border-bottom: 1px solid #ece6db;">${escapeHtml(label)}</td>
-          <td style="padding: 10px 14px; border-bottom: 1px solid #ece6db;">${escapeHtml(value)}</td>
+          <td style="padding: 12px 16px; background: #f6f3ee; color: #948a7d; font-size: 11px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; white-space: nowrap; vertical-align: top; border-bottom: 1px solid #ece6db;">${escapeHtml(label)}</td>
+          <td style="padding: 12px 16px; border-bottom: 1px solid #ece6db; color: #17140f;">${escapeHtml(value)}</td>
         </tr>
       `,
     )
     .join("");
 
   const html = wrapEmail(`
-    <p style="margin: 0 0 6px; color: #d1470c; font-size: 11px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase;">New submission</p>
-    <h1 style="margin: 0 0 20px; font-size: 20px; line-height: 1.3;">${escapeHtml(subject)}</h1>
-    <table style="width: 100%; border-collapse: collapse; border-radius: 8px; overflow: hidden;">
+    <p style="margin: 0 0 8px; color: #d1470c; font-size: 11px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase;">New submission</p>
+    <h1 style="margin: 0 0 24px; font-size: 22px; font-weight: 700; line-height: 1.3; color: #11101f;">${escapeHtml(subject)}</h1>
+    <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="border-collapse: collapse; border-radius: 10px; overflow: hidden; border: 1px solid #ece6db;">
       ${rows}
     </table>
     <p style="margin: 24px 0 0; color: #6e6459; font-size: 13px;">This came in through the form on ibomblockchain.com — no action needed here beyond following up with them directly.</p>
@@ -90,28 +119,55 @@ export async function sendTeamNotification({ to, subject, lines }: { to: string;
   if (error) console.error("Team notification email failed:", error.message);
 }
 
-// Sent to the visitor themselves for the two signup forms (waitlist,
-// coming-soon), asking them to confirm they own the email they typed in.
-export async function sendVerificationEmail({ to, confirmUrl, formLabel }: { to: string; confirmUrl: string; formLabel: string }) {
+// Sent to the visitor themselves for the signup forms (waitlist,
+// coming-soon, Tour registration), asking them to confirm they own the
+// email they typed in. `telegramUrl`, when passed, adds a "stay
+// updated" CTA below the confirm button — opt-in per call rather than
+// shown everywhere, since not every form has asked for it.
+export async function sendVerificationEmail({
+  to,
+  confirmUrl,
+  formLabel,
+  telegramUrl,
+}: {
+  to: string;
+  confirmUrl: string;
+  formLabel: string;
+  telegramUrl?: string;
+}) {
   const resend = getResendClient();
   if (!resend) {
     console.warn("RESEND_API_KEY not set — skipping verification email to:", to);
     return;
   }
 
+  const telegramHtml = telegramUrl
+    ? `
+    <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="margin-top: 28px;">
+      <tr>
+        <td style="padding: 22px 24px; border-radius: 12px; background: #f6f3ee; border: 1px solid #ece6db;">
+          <p style="margin: 0 0 10px; font-weight: 700; color: #11101f; font-size: 15px;">Stay updated in the meantime</p>
+          <p style="margin: 0 0 16px; color: #6e6459; font-size: 13px; line-height: 1.6;">Join our Telegram channel for announcements, schedule updates and everything else happening before the Tour reaches you.</p>
+          <a href="${telegramUrl}" style="display: inline-block; padding: 11px 22px; border: 1.5px solid #f94902; color: #d1470c; text-decoration: none; border-radius: 999px; font-weight: 700; font-size: 13px;">Join our Telegram ↗</a>
+        </td>
+      </tr>
+    </table>`
+    : "";
+
   const html = wrapEmail(`
-    <p style="margin: 0 0 6px; color: #d1470c; font-size: 11px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase;">One more step</p>
-    <h1 style="margin: 0 0 16px; font-size: 22px; line-height: 1.3;">Confirm your email</h1>
-    <p>Thanks for signing up for the <strong>${escapeHtml(formLabel)}</strong> — we're glad to have you.</p>
-    <p>We just need to confirm this is really your inbox before we add you to the list. Click below and you're done:</p>
-    <p style="margin: 28px 0; text-align: center;">
-      <a href="${confirmUrl}" style="display: inline-block; padding: 14px 32px; background: #f94902; color: #ffffff; text-decoration: none; border-radius: 8px; font-weight: 700; font-size: 14px;">Confirm my email</a>
-    </p>
-    <p style="color: #948a7d; font-size: 12.5px;">If the button doesn't work, copy this link into your browser:<br /><a href="${confirmUrl}" style="color: #d1470c; word-break: break-all;">${confirmUrl}</a></p>
-    <p style="margin-top: 24px; color: #6e6459; font-size: 13px;">If you didn't sign up for this, you can safely ignore this email — no account has been created, and nothing further will happen.</p>
+    <p style="margin: 0 0 8px; color: #d1470c; font-size: 11px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase;">One more step</p>
+    <h1 style="margin: 0 0 18px; font-size: 26px; font-weight: 700; line-height: 1.25; color: #11101f;">Confirm your email</h1>
+    <p style="margin: 0 0 14px;">Thanks for signing up for the <strong>${escapeHtml(formLabel)}</strong> — we're glad to have you.</p>
+    <p style="margin: 0;">We just need to confirm this is really your inbox before we add you to the list. Click below and you're done:</p>
+    <div style="text-align: center;">${pillButton(confirmUrl, "Confirm my email")}</div>
+    <p style="margin: 0; color: #948a7d; font-size: 12.5px; line-height: 1.6;">If the button doesn't work, copy this link into your browser:<br /><a href="${confirmUrl}" style="color: #d1470c; word-break: break-all;">${confirmUrl}</a></p>
+    ${telegramHtml}
+    <p style="margin: 24px 0 0; color: #6e6459; font-size: 13px;">If you didn't sign up for this, you can safely ignore this email — no account has been created, and nothing further will happen.</p>
   `);
 
-  const text = `Confirm your email\n\nThanks for signing up for the ${formLabel} — we're glad to have you.\n\nConfirm this is your inbox to complete your signup:\n${confirmUrl}\n\nIf you didn't sign up for this, you can safely ignore this email — nothing further will happen.`;
+  const text = `Confirm your email\n\nThanks for signing up for the ${formLabel} — we're glad to have you.\n\nConfirm this is your inbox to complete your signup:\n${confirmUrl}\n${
+    telegramUrl ? `\nStay updated in the meantime — join our Telegram channel:\n${telegramUrl}\n` : ""
+  }\nIf you didn't sign up for this, you can safely ignore this email — nothing further will happen.`;
 
   const { error } = await resend.emails.send({
     from: getFromAddress(),
